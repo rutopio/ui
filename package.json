@@ -1,0 +1,48 @@
+{
+  "name": "@rutopio/base-component",
+  "version": "0.1.0",
+  "description": "Shared interface primitives for ChingRu's sites",
+  "license": "MIT",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./drawer": {
+      "types": "./dist/drawer.d.ts",
+      "import": "./dist/drawer.js"
+    },
+    "./action-menu": {
+      "types": "./dist/action-menu.d.ts",
+      "import": "./dist/action-menu.js"
+    },
+    "./outline-list": {
+      "types": "./dist/outline-list.d.ts",
+      "import": "./dist/outline-list.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc --noEmit -p tsconfig.json"
+  },
+  "packageManager": "pnpm@11.8.0",
+  "peerDependencies": {
+    "@base-ui/react": "^1.6.0",
+    "motion": "^12.40.0",
+    "react": "^19.2.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@base-ui/react": "1.6.0",
+    "@types/react": "19.2.17",
+    "motion": "12.40.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "typescript": "6.0.3"
+  }
+}
