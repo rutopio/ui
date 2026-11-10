@@ -1,0 +1,6 @@
+@layer base {
+  :link,
+  :visited {
+    cursor: pointer;
+  }
+}
