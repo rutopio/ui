@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
