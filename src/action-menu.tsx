@@ -21,6 +21,7 @@ import { cn } from "./utils.js"
 export type ActionMenuItem = {
   id: string
   label: string
+  lang?: string
   href?: string
   onSelect?: (event: MouseEvent<HTMLElement>) => void
   active?: boolean
@@ -249,6 +250,7 @@ export function ActionMenu({
                     const external = item.external ?? /^https?:\/\//.test(item.href ?? "")
                     const itemProps = {
                       role: "menuitem" as const,
+                      lang: item.lang,
                       "aria-current": item.ariaCurrent,
                       "data-active": item.active || undefined,
                       onPointerMove: () => setFocusedIndex(index),

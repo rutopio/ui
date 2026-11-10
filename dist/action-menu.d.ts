@@ -2,6 +2,7 @@ import { type MouseEvent, type ReactNode } from "react";
 export type ActionMenuItem = {
     id: string;
     label: string;
+    lang?: string;
     href?: string;
     onSelect?: (event: MouseEvent<HTMLElement>) => void;
     active?: boolean;

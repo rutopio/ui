@@ -147,6 +147,7 @@ export function ActionMenu({ label, trigger, items, side = "bottom", align = "en
                                         const external = item.external ?? /^https?:\/\//.test(item.href ?? "");
                                         const itemProps = {
                                             role: "menuitem",
+                                            lang: item.lang,
                                             "aria-current": item.ariaCurrent,
                                             "data-active": item.active || undefined,
                                             onPointerMove: () => setFocusedIndex(index),

@@ -5,7 +5,7 @@ Shared interface primitives used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.1.0
+pnpm add github:rutopio/base-component#v0.1.1
 ```
 
 Import `Drawer` from `@rutopio/base-component/drawer`, `ActionMenu` from `@rutopio/base-component/action-menu`, and `OutlineList` from `@rutopio/base-component/outline-list`. All five sites use these shared implementations. Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
