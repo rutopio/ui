@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.7.0
+pnpm add github:rutopio/base-component#v0.8.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -26,6 +26,8 @@ The shared stylesheet sets `cursor: pointer` only on `:link` and `:visited`. But
 The shared `Button` owns the variants, sizes, and one-pixel press feedback for every site. `SiteHeader` applies the header action scale and transition to its controls automatically, including the navigation drawer trigger. The shared `ActionMenu` trigger uses the same button interaction class. Reduced motion disables the movement and transition.
 
 `useFluidHover` and `FluidHoverHighlight` own pointer tracking and animated selection. `useMountEffect` is the named hook for one-time external subscriptions. Sites import these directly and do not keep local copies.
+
+`ThemeProvider` accepts a site-owned `storageKey`; the package supplies the common theme settings. `usePageScrollProgress` and `isScrollLocked` keep article progress stable while image zoom locks scrolling.
 
 ## Releasing a change
 
