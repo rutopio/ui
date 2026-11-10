@@ -1,11 +1,11 @@
 # Base Component
 
-Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com, and writing.chingru.com. The package owns the button variants, scroll area, drawer, action menu, outline navigation, header, footer, page action rail, heading link, page sharing behavior, search controls, article image rules, and shared icons. Each site supplies its routing, copy, fonts, image CDN adapter, and theme tokens.
+Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com, and writing.chingru.com. The package owns the button variants, dialog, theme toggle, scroll area, drawer, action menu, outline navigation, header, footer, page action rail, heading link, page sharing behavior, search controls, article image rules, and shared icons. Each site supplies its routing, copy, fonts, image CDN adapter, and theme tokens.
 
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.4.0
+pnpm add github:rutopio/base-component#v0.5.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -31,4 +31,4 @@ The shared `Button` owns the variants, sizes, and one-pixel press feedback for e
 2. Update the package version, commit, tag, and push the tag.
 3. Update each site's pinned `github:rutopio/base-component#vX.Y.Z` dependency and lockfile; run its type check and production build.
 
-The tag pin keeps production builds reproducible. A library edit reaches the sites after they update that pin and deploy. Keep site-specific title fonts in the site wrapper.
+The tag pin keeps production builds reproducible. A library edit reaches the sites after they update that pin and deploy. Pass site-specific heading fonts to drawer and dialog titles with `className`.

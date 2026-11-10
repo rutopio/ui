@@ -4,6 +4,8 @@ export { OutlineList } from "./outline-list.js";
 export { ButtonGroup } from "./button-group.js";
 export { Button, buttonVariants } from "./button.js";
 export { GithubMarkIcon } from "./github-mark-icon.js";
+export { ThemeToggle } from "./theme-toggle.js";
+export { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "./dialog.js";
 export { ScrollArea, ScrollBar } from "./scroll-area.js";
 export { OutlineNav, ReadingProgressRing, useOutlineActive } from "./outline-nav.js";
 export { FluidHoverControls } from "./fluid-hover-controls.js";
