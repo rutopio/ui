@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.10.0
+pnpm add github:rutopio/base-component#v0.11.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -30,6 +30,10 @@ The shared `Button` owns the variants, sizes, and one-pixel press feedback for e
 `ThemeProvider` accepts a site-owned `storageKey`; the package supplies the common theme settings. `usePageScrollProgress` and `isScrollLocked` keep article progress stable while image zoom locks scrolling.
 
 `MailPopover` owns the address display and copy feedback. The site provides its email address and inline trigger so the library does not hard-code site identity.
+
+`LanguageToggle` owns the responsive drawer/dropdown and selection state. Each site supplies its translated label, languages, current value, mobile breakpoint result, and route-change callback. The dropdown opens on hover and remains open after a click until dismissed.
+
+The `sound` entry point exports the shared audio engine and `fillSound` recipe. `SoundCelebrationFooter` preloads and plays that recipe and runs the shared confetti burst; sites pass their author name and avatar.
 
 ## Releasing a change
 

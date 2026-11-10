@@ -11,6 +11,7 @@ export { useFluidHover, useFluidHoverSelect, useRegisterFluidHoverItem } from ".
 export { Popover, usePopover } from "./popover.js";
 export { CopyFeedbackIcon } from "./copy-feedback-icon.js";
 export { MailPopover } from "./mail-popover.js";
+export { LanguageToggle } from "./language-toggle.js";
 export { ThemeProvider } from "./theme-provider.js";
 export { usePageScrollProgress } from "./use-page-scroll-progress.js";
 export { isScrollLocked } from "./is-scroll-locked.js";

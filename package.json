@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -63,6 +63,10 @@
     "./mail-popover": {
       "types": "./dist/mail-popover.d.ts",
       "import": "./dist/mail-popover.js"
+    },
+    "./language-toggle": {
+      "types": "./dist/language-toggle.d.ts",
+      "import": "./dist/language-toggle.js"
     },
     "./theme-provider": {
       "types": "./dist/theme-provider.d.ts",
