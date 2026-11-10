@@ -202,7 +202,7 @@ export function ActionMenu({
         aria-expanded={open}
         aria-controls={open ? id : undefined}
         className={cn(
-          "group/button inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-base font-medium whitespace-nowrap text-primary transition-all outline-none select-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+          "base-button-interaction group/button inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-base font-medium whitespace-nowrap text-primary outline-none select-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
           side === "left" && "size-full rounded-[inherit] hover:text-primary",
           triggerClassName,
         )}

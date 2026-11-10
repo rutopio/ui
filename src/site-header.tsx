@@ -57,7 +57,7 @@ export function HeaderNavigation({
                 type="button"
                 aria-label={label}
                 className={cn(
-                  "inline-flex size-9 items-center justify-center rounded-md border border-transparent text-primary hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring",
+                  "base-header-action inline-flex size-9 items-center justify-center rounded-md border border-transparent text-primary hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring",
                   triggerClassName,
                 )}
               >
@@ -144,7 +144,7 @@ export function SiteHeader({
         <FluidHoverControls
           compact={compactActions}
           label={actionsLabel}
-          className={actionsClassName}
+          className={cn("base-site-header-actions", actionsClassName)}
         >
           {actions}
         </FluidHoverControls>

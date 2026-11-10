@@ -4,3 +4,38 @@
     cursor: pointer;
   }
 }
+
+@layer components {
+  .base-button-interaction,
+  .base-header-action,
+  .base-site-header-actions :is(button, a[href], [role="button"]) {
+    transition-property: background-color, border-color, color, opacity, box-shadow, translate, scale;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+  }
+
+  .base-button-interaction:active:not(:disabled):not([aria-haspopup]) {
+    translate: 0 1px;
+  }
+
+  .base-header-action:active:not(:disabled),
+  .base-site-header-actions :is(button, a[href], [role="button"]):active:not(:disabled) {
+    translate: 0 0 !important;
+    scale: 0.96;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .base-button-interaction,
+    .base-header-action,
+    .base-site-header-actions :is(button, a[href], [role="button"]) {
+      transition-duration: 0ms;
+    }
+
+    .base-button-interaction:active:not(:disabled):not([aria-haspopup]),
+    .base-header-action:active:not(:disabled),
+    .base-site-header-actions :is(button, a[href], [role="button"]):active:not(:disabled) {
+      translate: 0 0 !important;
+      scale: 1;
+    }
+  }
+}
