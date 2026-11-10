@@ -15,3 +15,25 @@ export { ActionMenu } from "./action-menu.js"
 export type { ActionMenuItem, ActionMenuProps } from "./action-menu.js"
 export { OutlineList } from "./outline-list.js"
 export type { OutlineListItem } from "./outline-list.js"
+export { ButtonGroup } from "./button-group.js"
+export { FluidHoverControls } from "./fluid-hover-controls.js"
+export { AttributionFooter, CelebrationFooter } from "./footer.js"
+export { PageActionRail } from "./page-action-rail.js"
+export { HeaderNavigation, SiteHeader } from "./site-header.js"
+export type { HeaderNavItem, HeaderLinkProps } from "./site-header.js"
+export { useLogoWobble } from "./use-logo-wobble.js"
+export { SectionHeadingAnchor } from "./section-heading-anchor.js"
+export {
+  useSearchCommand,
+  SearchHighlight,
+  SearchMobileDrawer,
+} from "./search-command.js"
+export { ArticleImage } from "./article-image.js"
+export type { ArticleImageProps } from "./article-image.js"
+export {
+  usePageShare,
+  shareTargets,
+  openShareWindow,
+  shareOrCopyCurrentPage,
+} from "./page-share.js"
+export { navigateToSection, copySectionLink } from "./section-navigation.js"

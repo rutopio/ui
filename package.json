@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -21,6 +21,50 @@
     "./outline-list": {
       "types": "./dist/outline-list.d.ts",
       "import": "./dist/outline-list.js"
+    },
+    "./button-group": {
+      "types": "./dist/button-group.d.ts",
+      "import": "./dist/button-group.js"
+    },
+    "./fluid-hover-controls": {
+      "types": "./dist/fluid-hover-controls.d.ts",
+      "import": "./dist/fluid-hover-controls.js"
+    },
+    "./footer": {
+      "types": "./dist/footer.d.ts",
+      "import": "./dist/footer.js"
+    },
+    "./page-action-rail": {
+      "types": "./dist/page-action-rail.d.ts",
+      "import": "./dist/page-action-rail.js"
+    },
+    "./site-header": {
+      "types": "./dist/site-header.d.ts",
+      "import": "./dist/site-header.js"
+    },
+    "./use-logo-wobble": {
+      "types": "./dist/use-logo-wobble.d.ts",
+      "import": "./dist/use-logo-wobble.js"
+    },
+    "./section-heading-anchor": {
+      "types": "./dist/section-heading-anchor.d.ts",
+      "import": "./dist/section-heading-anchor.js"
+    },
+    "./search-command": {
+      "types": "./dist/search-command.d.ts",
+      "import": "./dist/search-command.js"
+    },
+    "./article-image": {
+      "types": "./dist/article-image.d.ts",
+      "import": "./dist/article-image.js"
+    },
+    "./page-share": {
+      "types": "./dist/page-share.d.ts",
+      "import": "./dist/page-share.js"
+    },
+    "./section-navigation": {
+      "types": "./dist/section-navigation.d.ts",
+      "import": "./dist/section-navigation.js"
     }
   },
   "scripts": {
@@ -30,19 +74,27 @@
   "packageManager": "pnpm@11.8.0",
   "peerDependencies": {
     "@base-ui/react": "^1.6.0",
+    "@phosphor-icons/react": "^2.1.10",
     "motion": "^12.40.0",
-    "react": "^19.2.0"
+    "react": "^19.2.0",
+    "react-medium-image-zoom": "^5.4.8"
+  },
+  "peerDependenciesMeta": {
+    "react-medium-image-zoom": { "optional": true }
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@base-ui/react": "1.6.0",
+    "@phosphor-icons/react": "2.1.10",
     "@types/react": "19.2.17",
     "motion": "12.40.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "react-medium-image-zoom": "5.4.8",
     "typescript": "6.0.3"
   }
 }
