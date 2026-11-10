@@ -8,6 +8,8 @@ export { ThemeToggle } from "./theme-toggle.js";
 export { FluidHoverHighlight } from "./fluid-hover-highlight.js";
 export { useMountEffect } from "./use-mount-effect.js";
 export { useFluidHover, useFluidHoverSelect, useRegisterFluidHoverItem } from "./use-fluid-hover.js";
+export { Popover, usePopover } from "./popover.js";
+export { CopyFeedbackIcon } from "./copy-feedback-icon.js";
 export { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "./dialog.js";
 export { ScrollArea, ScrollBar } from "./scroll-area.js";
 export { OutlineNav, ReadingProgressRing, useOutlineActive } from "./outline-nav.js";
