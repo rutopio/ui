@@ -1,3 +1,5 @@
+@custom-variant dark (&:is(.dark, .dark *));
+
 @theme {
   --font-weight-normal: 400;
   --font-weight-semibold: 550;
@@ -71,6 +73,7 @@
   }
 
   :root {
+    text-autospace: normal;
     --hover: rgb(0 0 0 / 0.04);
   }
 
@@ -78,12 +81,30 @@
     --hover: rgb(255 255 255 / 0.06);
   }
 
-  * {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
     @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply bg-background font-sans;
+    scrollbar-gutter: stable;
+  }
+
+  html,
+  body {
+    overscroll-behavior-y: contain;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    font-optical-sizing: auto;
+    font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -162,6 +183,10 @@
 .fluid-hover-controls :is(button, [data-slot="button"]),
 .fluid-hover-controls :is(button, [data-slot="button"]):hover {
   background-color: transparent;
+}
+
+.dark [data-rmiz-modal-overlay="visible"] {
+  background-color: var(--color-background);
 }
 
 @layer components {

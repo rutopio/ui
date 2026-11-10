@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.12.1
+pnpm add github:rutopio/base-component#v0.13.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -23,6 +23,8 @@ Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
 For `src/styles/globals.css`, use `../../node_modules/...` instead.
 
 Import `styles.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should only contain genuinely local font, layout, and content rules. The grayscale `destructive` token remains distinct by luminance rather than hue.
+
+`styles.css` also sets the shared dark variant, `text-autospace`, body type defaults (including optical sizing and tabular numerals), the HTML font and stable scrollbar gutter, overscroll containment, and the image zoom overlay. Keep these rules in the library so a new site receives the same baseline without copying a local reset.
 
 The shared stylesheet sets `cursor: pointer` only on `:link` and `:visited`. Buttons and other controls keep their default cursor. Components must not add `cursor-pointer` or `cursor-default` classes that override this rule.
 
