@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -140,10 +140,11 @@
       "types": "./dist/section-navigation.d.ts",
       "import": "./dist/section-navigation.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./neutral-theme.css": "./dist/neutral-theme.css"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp src/styles.css dist/styles.css",
+    "build": "tsc -p tsconfig.json && cp src/styles.css src/neutral-theme.css dist/",
     "check": "tsc --noEmit -p tsconfig.json"
   },
   "packageManager": "pnpm@11.8.0",

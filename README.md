@@ -1,11 +1,11 @@
 # Base Component
 
-Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com, and writing.chingru.com. The package owns the button variants, dialog, theme toggle, scroll area, drawer, popover, action menu, outline navigation, header, footer, page action rail, heading link, page sharing behavior, search controls, article image rules, and shared icons. Each site supplies its routing, copy, fonts, image CDN adapter, and theme tokens. The optional `SoundCelebrationFooter` also owns the shared fill sound and confetti effect used by chingru.com and writing.chingru.com.
+Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com, and writing.chingru.com. The package owns the button variants, dialog, theme toggle, scroll area, drawer, popover, action menu, outline navigation, header, footer, page action rail, heading link, page sharing behavior, search controls, article image rules, and shared icons. It also owns the common typography scale, neutral palette, chart colors, radii, shadows, base styles, and theme transition. Each site supplies its routing, copy, fonts, and image CDN adapter. The optional `SoundCelebrationFooter` also owns the shared fill sound and confetti effect used by chingru.com and writing.chingru.com.
 
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.11.0
+pnpm add github:rutopio/base-component#v0.12.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -17,9 +17,12 @@ Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
 ```css
 @source "../node_modules/@rutopio/base-component/dist";
 @import "@rutopio/base-component/styles.css";
+@import "@rutopio/base-component/neutral-theme.css";
 ```
 
 For `src/styles/globals.css`, use `../../node_modules/...` instead.
+
+Import `styles.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should only contain genuinely local font, layout, and content rules. The grayscale `destructive` token remains distinct by luminance rather than hue.
 
 The shared stylesheet sets `cursor: pointer` only on `:link` and `:visited`. Buttons and other controls keep their default cursor. Components must not add `cursor-pointer` or `cursor-default` classes that override this rule.
 
