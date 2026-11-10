@@ -1,6 +1,5 @@
 "use client";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, } from "react";
-import { useMountEffect } from "./use-mount-effect.js";
+import { useRef, useState, useCallback, useEffect, useLayoutEffect, useMemo, useSyncExternalStore, } from "react";
 /**
  * The rule, as one pure function: an item the pointer is inside wins;
  * otherwise the item whose center is nearest does, so a pointer in a gap, in
@@ -102,15 +101,33 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : use
 const measurementAttempts = 3;
 export function useFluidHover(containerRef, options = {}) {
     const { axis = "y", isItemDisabled, gapClick = true, nearest = false, } = options;
-    const gapClickMaxDistance = typeof gapClick === "object" ? (gapClick.maxDistance ?? Infinity) : Infinity;
+    const gapClickMaxDistance = typeof gapClick === "object"
+        ? (gapClick.maxDistance ?? Infinity)
+        : Infinity;
     const itemsRef = useRef(new Map());
     const [activeIndex, setActiveIndex] = useState(null);
     // Mirrored for handlers that read it outside a render (the gap click, a
     // row registering). Written in a layout effect, which runs before any
     // row's registration effect in the same commit.
     const activeIndexRef = useRef(null);
+    const listenersRef = useRef(new Set());
+    const activeStore = useMemo(() => ({
+        subscribe: (listener) => {
+            listenersRef.current.add(listener);
+            return () => {
+                listenersRef.current.delete(listener);
+            };
+        },
+        get: () => activeIndexRef.current,
+    }), []);
     useIsoLayoutEffect(() => {
         activeIndexRef.current = activeIndex;
+        // The store lags `activeIndex` by this one effect, so a row rendering
+        // alongside the change reads the old value; subscribed rows re-render
+        // with the new one in this same commit, before paint.
+        listenersRef.current.forEach((listener) => {
+            listener();
+        });
     }, [activeIndex]);
     // The state, in the DOM: `data-fluid-hover-active` on the highlighted item
     // and `data-fluid-hover-active-index` on the container. Devtools shows it
@@ -427,7 +444,7 @@ export function useFluidHover(containerRef, options = {}) {
         return () => ro.disconnect();
     }, [containerRef, scheduleMeasurement]);
     // Clean up rAF and the item observer on unmount
-    useMountEffect(() => {
+    useEffect(() => {
         return () => {
             if (rafIdRef.current !== null) {
                 cancelAnimationFrame(rafIdRef.current);
@@ -438,10 +455,11 @@ export function useFluidHover(containerRef, options = {}) {
             itemRoRef.current?.disconnect();
             itemRoRef.current = null;
         };
-    });
+    }, []);
     return {
         activeIndex,
         setActiveIndex,
+        activeStore,
         itemRects,
         isMeasured,
         session,
@@ -456,4 +474,31 @@ export function useFluidHover(containerRef, options = {}) {
         remeasure,
         measureItems,
     };
+}
+const subscribeNever = () => () => { };
+/**
+ * Reads one value derived from the highlighted index, re-rendering only when
+ * that value changes. The selector must return a primitive:
+ *
+ *   const isActive = useFluidHoverSelect(ctx?.activeStore, (i) => i === index);
+ *
+ * A missing store (a row rendered outside a list) reads as nothing lit.
+ */
+export function useFluidHoverSelect(store, select) {
+    return useSyncExternalStore(store?.subscribe ?? subscribeNever, () => select(store ? store.get() : null), () => select(null));
+}
+/**
+ * Registers an item's element with its list for as long as it is mounted.
+ * The one way rows join a list: pass the hook's `registerItem` (or the copy
+ * a context hands down), the row's index, and its ref. Either may be
+ * missing for a row rendered outside a list (a standalone card, an accordion
+ * item that is not grouped); then nothing is registered.
+ */
+export function useRegisterFluidHoverItem(registerItem, index, ref) {
+    useEffect(() => {
+        if (!registerItem || index === undefined)
+            return;
+        registerItem(index, ref.current);
+        return () => registerItem(index, null);
+    }, [index, registerItem, ref]);
 }

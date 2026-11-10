@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -39,6 +39,18 @@
     "./theme-toggle": {
       "types": "./dist/theme-toggle.d.ts",
       "import": "./dist/theme-toggle.js"
+    },
+    "./fluid-hover-highlight": {
+      "types": "./dist/fluid-hover-highlight.d.ts",
+      "import": "./dist/fluid-hover-highlight.js"
+    },
+    "./use-mount-effect": {
+      "types": "./dist/use-mount-effect.d.ts",
+      "import": "./dist/use-mount-effect.js"
+    },
+    "./use-fluid-hover": {
+      "types": "./dist/use-fluid-hover.d.ts",
+      "import": "./dist/use-fluid-hover.js"
     },
     "./dialog": {
       "types": "./dist/dialog.d.ts",

@@ -44,9 +44,21 @@ export interface UseFluidHoverOptions {
      */
     nearest?: boolean;
 }
+/**
+ * The highlighted index as a store a row can subscribe to. Read it with
+ * `useFluidHoverSelect` instead of passing `activeIndex` down a context: a
+ * context re-renders every row on every highlight change, a selector
+ * re-renders the row the highlight left and the row it reached.
+ */
+export interface FluidHoverActiveStore {
+    subscribe: (listener: () => void) => () => void;
+    get: () => number | null;
+}
 export interface UseFluidHoverReturn {
     activeIndex: number | null;
     setActiveIndex: Dispatch<SetStateAction<number | null>>;
+    /** `activeIndex` as a stable store, for rows (see `useFluidHoverSelect`). */
+    activeStore: FluidHoverActiveStore;
     itemRects: ItemRect[];
     /**
      * True once every registered item has been measured and no remeasure is
@@ -163,3 +175,20 @@ export declare const ACTIVE_ATTR = "data-fluid-hover-active";
 /** Set on the container: the highlighted index, or absent. */
 export declare const ACTIVE_INDEX_ATTR = "data-fluid-hover-active-index";
 export declare function useFluidHover<T extends HTMLElement>(containerRef: RefObject<T | null>, options?: UseFluidHoverOptions): UseFluidHoverReturn;
+/**
+ * Reads one value derived from the highlighted index, re-rendering only when
+ * that value changes. The selector must return a primitive:
+ *
+ *   const isActive = useFluidHoverSelect(ctx?.activeStore, (i) => i === index);
+ *
+ * A missing store (a row rendered outside a list) reads as nothing lit.
+ */
+export declare function useFluidHoverSelect<T>(store: FluidHoverActiveStore | null | undefined, select: (activeIndex: number | null) => T): T;
+/**
+ * Registers an item's element with its list for as long as it is mounted.
+ * The one way rows join a list: pass the hook's `registerItem` (or the copy
+ * a context hands down), the row's index, and its ref. Either may be
+ * missing for a row rendered outside a list (a standalone card, an accordion
+ * item that is not grouped); then nothing is registered.
+ */
+export declare function useRegisterFluidHoverItem(registerItem: ((index: number, element: HTMLElement | null) => void) | undefined, index: number | undefined, ref: RefObject<HTMLElement | null>): void;
