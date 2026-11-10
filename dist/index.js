@@ -10,6 +10,7 @@ export { useMountEffect } from "./use-mount-effect.js";
 export { useFluidHover, useFluidHoverSelect, useRegisterFluidHoverItem } from "./use-fluid-hover.js";
 export { Popover, usePopover } from "./popover.js";
 export { CopyFeedbackIcon } from "./copy-feedback-icon.js";
+export { MailPopover } from "./mail-popover.js";
 export { ThemeProvider } from "./theme-provider.js";
 export { usePageScrollProgress } from "./use-page-scroll-progress.js";
 export { isScrollLocked } from "./is-scroll-locked.js";
