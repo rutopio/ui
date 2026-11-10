@@ -1,0 +1,34 @@
+import confetti from "canvas-confetti";
+import type { Options } from "canvas-confetti";
+
+function originFromElement(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
+  return {
+    x: (rect.left + rect.width / 2) / window.innerWidth,
+    y: (rect.top + rect.height / 2) / window.innerHeight,
+  };
+}
+
+/** Realistic Look burst — https://www.kirilv.com/canvas-confetti/ */
+export function burstConfettiFrom(element: HTMLElement) {
+  const origin = originFromElement(element);
+  const count = 200;
+  const defaults: Options = {
+    origin,
+    disableForReducedMotion: true,
+  };
+
+  function fire(particleRatio: number, opts: Options) {
+    confetti({
+      ...defaults,
+      ...opts,
+      particleCount: Math.floor(count * particleRatio),
+    });
+  }
+
+  fire(0.25, { spread: 26, startVelocity: 55 });
+  fire(0.2, { spread: 60 });
+  fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+  fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+  fire(0.1, { spread: 120, startVelocity: 45 });
+}

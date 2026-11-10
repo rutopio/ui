@@ -5,6 +5,8 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "strict": true,
+    "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "declaration": true,
     "rootDir": "src",

@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -96,6 +96,14 @@
       "types": "./dist/footer.d.ts",
       "import": "./dist/footer.js"
     },
+    "./sound-celebration-footer": {
+      "types": "./dist/sound-celebration-footer.d.ts",
+      "import": "./dist/sound-celebration-footer.js"
+    },
+    "./sound": {
+      "types": "./dist/sound.d.ts",
+      "import": "./dist/sound.js"
+    },
     "./page-action-rail": {
       "types": "./dist/page-action-rail.d.ts",
       "import": "./dist/page-action-rail.js"
@@ -138,6 +146,7 @@
   "peerDependencies": {
     "@base-ui/react": "^1.6.0",
     "@phosphor-icons/react": "^2.1.10",
+    "canvas-confetti": "^1.9.4",
     "motion": "^12.40.0",
     "next-themes": "^0.4.6",
     "react": "^19.2.0",
@@ -146,6 +155,9 @@
   },
   "peerDependenciesMeta": {
     "react-medium-image-zoom": {
+      "optional": true
+    },
+    "canvas-confetti": {
       "optional": true
     }
   },
@@ -157,8 +169,10 @@
   "devDependencies": {
     "@base-ui/react": "1.6.0",
     "@phosphor-icons/react": "2.1.10",
+    "@types/canvas-confetti": "1.9.0",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
+    "canvas-confetti": "^1.9.4",
     "motion": "12.40.0",
     "next-themes": "^0.4.6",
     "react": "19.2.7",
