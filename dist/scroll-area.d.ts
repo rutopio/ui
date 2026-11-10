@@ -1,6 +1,8 @@
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
 import type React from "react";
-export declare function ScrollArea({ className, children, scrollFade, scrollbarGutter, fill, clampContentMinWidth, overscrollContain, ...props }: ScrollAreaPrimitive.Root.Props & {
+export declare function ScrollArea({ className, viewportClassName, viewportRef, children, scrollFade, scrollbarGutter, fill, clampContentMinWidth, overscrollContain, ...props }: ScrollAreaPrimitive.Root.Props & {
+    viewportClassName?: string;
+    viewportRef?: React.Ref<HTMLDivElement>;
     scrollFade?: boolean;
     scrollbarGutter?: boolean;
     fill?: boolean;

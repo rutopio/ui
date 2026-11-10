@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/base-component",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -25,6 +25,22 @@
     "./button-group": {
       "types": "./dist/button-group.d.ts",
       "import": "./dist/button-group.js"
+    },
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "import": "./dist/button.js"
+    },
+    "./github-mark-icon": {
+      "types": "./dist/github-mark-icon.d.ts",
+      "import": "./dist/github-mark-icon.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/scroll-area.d.ts",
+      "import": "./dist/scroll-area.js"
+    },
+    "./outline-nav": {
+      "types": "./dist/outline-nav.d.ts",
+      "import": "./dist/outline-nav.js"
     },
     "./fluid-hover-controls": {
       "types": "./dist/fluid-hover-controls.d.ts",

@@ -2,6 +2,10 @@ export { Drawer, DrawerPortal, DrawerOverlay, DrawerSwipeHandle, DrawerTrigger, 
 export { ActionMenu } from "./action-menu.js";
 export { OutlineList } from "./outline-list.js";
 export { ButtonGroup } from "./button-group.js";
+export { Button, buttonVariants } from "./button.js";
+export { GithubMarkIcon } from "./github-mark-icon.js";
+export { ScrollArea, ScrollBar } from "./scroll-area.js";
+export { OutlineNav, ReadingProgressRing, useOutlineActive } from "./outline-nav.js";
 export { FluidHoverControls } from "./fluid-hover-controls.js";
 export { AttributionFooter, CelebrationFooter } from "./footer.js";
 export { PageActionRail } from "./page-action-rail.js";
