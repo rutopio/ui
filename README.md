@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.19.0
+pnpm add github:rutopio/ui#v0.19.1
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -54,7 +54,7 @@ The tag pin keeps production builds reproducible. A library edit reaches the sit
 
 The default sans font is Inter Variable; monospace is Paper Mono. The library keeps font families, weights, type sizes and font-related base rules in `fonts.css`, imported by `globals.css`. Sites with Chinese or Japanese content import `@rutopio/ui/cjk-fonts.css` from their local `fonts.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. `font-mono` selects Paper Mono without forcing a font size, weight, stretch or OpenType character variants; components choose their own size and weight. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
 
-Typography has three roles, all defined in `fonts.css`: `font-normal` uses weight 400 and optical size 14, `font-semibold` uses weight 550 and optical size 18, and `font-bold` uses weight 550 and optical size 25. Each utility sets both properties, including Tailwind state and responsive variants. Body text defaults to normal, headings to bold, and semantic `b`/`strong` to semibold. Components do not specify optical-size classes or inline variation settings. Fonts without an `opsz` axis simply ignore that axis.
+Typography has three roles, all defined in `fonts.css`: `font-normal` uses weight 400 and optical size 14, `font-semibold` uses weight 550 and optical size 18, and `font-bold` uses weight 700 and optical size 25. Each utility sets both properties, including Tailwind state and responsive variants. Body text defaults to normal, headings to bold, and semantic `b`/`strong` to semibold. Components do not specify optical-size classes or inline variation settings. Fonts without an `opsz` axis simply ignore that axis.
 
 `SectionHeading` owns h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` owns page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
 
