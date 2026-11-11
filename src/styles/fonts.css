@@ -6,13 +6,6 @@
   --font-weight-normal: 400;
   --font-weight-semibold: 550;
   --font-weight-bold: 700;
-
-  --text-xs: 0.625rem;
-  --text-sm: 0.75rem;
-  --text-base: 0.875rem;
-  --text-lg: 1rem;
-  --text-xl: 1.125rem;
-  --text-2xl: 1.375rem;
 }
 
 @layer base {
