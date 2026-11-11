@@ -1,2 +1,2 @@
-/** Each successful copy starts a fresh feedback interval. */
-export declare function useCopyFeedback(): readonly [boolean, () => void];
+/** Copy completion owns its timer; rendering never starts or restarts it. */
+export declare function useCopyFeedback(): readonly [boolean, () => void, () => void];

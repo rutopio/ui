@@ -1,14 +1,32 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-/** Each successful copy starts a fresh feedback interval. */
+import { useCallback, useRef, useState } from "react";
+import { useMountEffect } from "../shared/use-mount-effect.js";
+/** Copy completion owns its timer; rendering never starts or restarts it. */
 export function useCopyFeedback() {
-    const [copyId, setCopyId] = useState(null);
-    const nextId = useRef(0);
-    const showCopied = useCallback(() => setCopyId(++nextId.current), []);
-    useEffect(() => {
-        if (copyId === null)
+    const [copied, setCopied] = useState(false);
+    const timer = useRef(undefined);
+    const mounted = useRef(false);
+    const clearCopied = useCallback(() => {
+        window.clearTimeout(timer.current);
+        timer.current = undefined;
+        if (mounted.current)
+            setCopied(false);
+    }, []);
+    const showCopied = useCallback(() => {
+        if (!mounted.current)
             return;
-        const timer = window.setTimeout(() => setCopyId(null), 2000);
-        return () => window.clearTimeout(timer);
-    }, [copyId]);
-    return [copyId !== null, showCopied];
+        window.clearTimeout(timer.current);
+        setCopied(true);
+        timer.current = window.setTimeout(() => {
+            timer.current = undefined;
+            setCopied(false);
+        }, 2000);
+    }, []);
+    useMountEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+            window.clearTimeout(timer.current);
+        };
+    });
+    return [copied, showCopied, clearCopied];
 }

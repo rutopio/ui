@@ -30,7 +30,7 @@ test("copy feedback follows completion, renews its timer, and cleans up on unmou
     await act(async () => { resolveCopy(); await copying; });
     assert.equal(timers.has(firstTimer), false);
     assert.equal(timers.size, 1);
-    await act(() => [...timers.values()][0]());
+    await act(() => { const [id, callback] = [...timers][0]; timers.delete(id); callback(); });
     assert.equal(state.copied, false);
     copying = state.copy();
     await act(async () => { rejectCopy(new Error("Denied")); await copying; });
@@ -38,7 +38,9 @@ test("copy feedback follows completion, renews its timer, and cleans up on unmou
     assert.equal(errors, 1);
     copying = state.copy();
     await act(async () => { resolveCopy(); await copying; });
+    copying = state.copy();
     await act(() => root.unmount());
+    await act(async () => { resolveCopy(); await copying; });
     assert.equal(timers.size, 0);
   } finally {
     await window.happyDOM.abort();
