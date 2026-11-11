@@ -10,36 +10,36 @@ export {
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
-} from "./primitives/drawer.js";
-export { ActionMenu } from "./navigation/action-menu.js";
-export type { ActionMenuItem, ActionMenuProps } from "./navigation/action-menu.js";
-export { OutlineList } from "./navigation/outline-list.js";
-export type { OutlineListItem } from "./navigation/outline-list.js";
-export { ButtonGroup } from "./primitives/button-group.js";
-export { Button, buttonVariants } from "./primitives/button.js";
-export { GithubMarkIcon } from "./shared/github-mark-icon.js";
-export { ThemeToggle } from "./theme/theme-toggle.js";
-export { FluidHoverHighlight } from "./motion/fluid-hover-highlight.js";
-export { useMountEffect } from "./shared/use-mount-effect.js";
+} from "./components/ui/drawer.js";
+export { ActionMenu } from "./components/navigation/action-menu.js";
+export type { ActionMenuItem, ActionMenuProps } from "./components/navigation/action-menu.js";
+export { OutlineList } from "./components/navigation/outline-list.js";
+export type { OutlineListItem } from "./components/navigation/outline-list.js";
+export { ButtonGroup } from "./components/ui/button-group.js";
+export { Button, buttonVariants } from "./components/ui/button.js";
+export { GithubMarkIcon } from "./components/icons/github-mark-icon.js";
+export { ThemeToggle } from "./components/theme/theme-toggle.js";
+export { FluidHoverHighlight } from "./components/motion/fluid-hover-highlight.js";
+export { useMountEffect } from "./hooks/use-mount-effect.js";
 export {
   useFluidHover,
   useFluidHoverSelect,
   useRegisterFluidHoverItem,
-} from "./motion/use-fluid-hover.js";
-export { Popover, usePopover } from "./primitives/popover.js";
-export { CopyFeedbackIcon } from "./feedback/copy-feedback-icon.js";
-export { EmailPopover } from "./feedback/email-popover.js";
-export { LanguageToggle } from "./navigation/language-toggle.js";
-export type { LanguageOption } from "./navigation/language-toggle.js";
-export { ThemeProvider } from "./theme/theme-provider.js";
-export { usePageScrollProgress } from "./navigation/use-page-scroll-progress.js";
-export { isScrollLocked } from "./shared/is-scroll-locked.js";
+} from "./hooks/use-fluid-hover.js";
+export { Popover, usePopover } from "./components/ui/popover.js";
+export { CopyFeedbackIcon } from "./components/feedback/copy-feedback-icon.js";
+export { EmailPopover } from "./components/feedback/email-popover.js";
+export { LanguageToggle } from "./components/navigation/language-toggle.js";
+export type { LanguageOption } from "./components/navigation/language-toggle.js";
+export { ThemeProvider } from "./providers/theme-provider.js";
+export { usePageScrollProgress } from "./hooks/use-page-scroll-progress.js";
+export { isScrollLocked } from "./lib/is-scroll-locked.js";
 export type {
   UseFluidHoverOptions,
   UseFluidHoverResult,
   HoverItemRect,
   FluidHoverActiveStore,
-} from "./motion/use-fluid-hover.js";
+} from "./hooks/use-fluid-hover.js";
 export {
   Dialog,
   DialogClose,
@@ -51,46 +51,46 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "./primitives/dialog.js";
-export { ScrollArea, ScrollBar } from "./primitives/scroll-area.js";
+} from "./components/ui/dialog.js";
+export { ScrollArea, ScrollBar } from "./components/ui/scroll-area.js";
 export {
   OutlineMenu,
   ReadingProgressRing,
   useActiveOutlineId,
-} from "./navigation/outline-menu.js";
-export type { OutlineItem } from "./navigation/outline-menu.js";
-export { FluidHoverControls } from "./motion/fluid-hover-controls.js";
-export { AttributionFooter, CelebrationFooter } from "./layout/footer.js";
-export { PageActionRail } from "./navigation/page-action-rail.js";
-export { HeaderNavigation, SiteHeader } from "./layout/site-header.js";
-export type { HeaderNavItem, HeaderLinkProps } from "./layout/site-header.js";
-export { useLogoWobble } from "./motion/use-logo-wobble.js";
-export { SectionHeadingAnchor } from "./article/section-heading-anchor.js";
+} from "./components/navigation/outline-menu.js";
+export type { OutlineItem } from "./components/navigation/outline-menu.js";
+export { FluidHoverControls } from "./components/motion/fluid-hover-controls.js";
+export { AttributionFooter, CelebrationFooter } from "./components/layout/footer.js";
+export { PageActionRail } from "./components/navigation/page-action-rail.js";
+export { HeaderNavigation, SiteHeader } from "./components/layout/site-header.js";
+export type { HeaderNavItem, HeaderLinkProps } from "./components/layout/site-header.js";
+export { useLogoWobble } from "./hooks/use-logo-wobble.js";
+export { SectionHeadingAnchor } from "./components/article/section-heading-anchor.js";
 export {
   useSearchCommand,
   SearchHighlight,
   SearchMobileDrawer,
-} from "./navigation/search-command.js";
-export { ArticleImage } from "./article/article-image.js";
-export type { ArticleImageProps } from "./article/article-image.js";
+} from "./components/navigation/search-command.js";
+export { ArticleImage } from "./components/article/article-image.js";
+export type { ArticleImageProps } from "./components/article/article-image.js";
 export {
   usePageShare,
   getSocialShareTargets,
   openShareWindow,
   shareOrCopyCurrentPage,
-} from "./feedback/page-share.js";
-export { scrollToSection, copySectionLink } from "./navigation/section-navigation.js";
-export * from "./layout/site-layout.js";
-export * from "./motion/motion-tokens.js";
-export * from "./motion/page-transition.js";
-export * from "./article/section-heading.js";
-export * from "./layout/page-intro.js";
-export * from "./shared/use-is-narrow-viewport.js";
-export * from "./primitives/input.js";
-export * from "./primitives/table.js";
-export * from "./primitives/badge.js";
-export * from "./primitives/separator.js";
-export * from "./article/article.js";
-export * from "./layout/not-found.js";
-export * from "./layout/breakpoint-indicator.js";
-export * from "./article/code-block.js";
+} from "./entries/page-share.js";
+export { scrollToSection, copySectionLink } from "./lib/navigation/section-navigation.js";
+export * from "./components/layout/site-layout.js";
+export * from "./lib/motion/motion-tokens.js";
+export * from "./components/motion/page-transition.js";
+export * from "./components/article/section-heading.js";
+export * from "./components/layout/page-intro.js";
+export * from "./hooks/use-is-narrow-viewport.js";
+export * from "./components/ui/input.js";
+export * from "./components/ui/table.js";
+export * from "./components/ui/badge.js";
+export * from "./components/ui/separator.js";
+export * from "./components/article/article.js";
+export * from "./components/layout/not-found.js";
+export * from "./components/layout/breakpoint-indicator.js";
+export * from "./components/article/code-block.js";

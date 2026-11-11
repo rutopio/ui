@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { scrollToSection } from "../dist/navigation/section-navigation.js";
+import { scrollToSection } from "../dist/lib/navigation/section-navigation.js";
 
 test("delayed outline navigation keeps only the latest click and cannot change a different page", () => {
   const timers = new Map();

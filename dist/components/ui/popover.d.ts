@@ -1,0 +1,21 @@
+import { type PopoverSide, type PopoverAlign } from "../../hooks/use-popover.js";
+export { usePopover } from "../../hooks/use-popover.js";
+export type { PopoverSide, PopoverAlign, UsePopoverOptions, UsePopoverResult } from "../../hooks/use-popover.js";
+export type PopoverProps = {
+    trigger: React.ReactNode;
+    children: React.ReactNode;
+    label: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    side?: PopoverSide;
+    align?: PopoverAlign;
+    offset?: number;
+    padding?: number;
+    arrowSize?: number;
+    boundary?: React.RefObject<HTMLElement | null>;
+    unstyledTrigger?: boolean;
+    triggerClassName?: string;
+    className?: string;
+};
+export declare function Popover({ trigger, children, label, open: controlled, defaultOpen, onOpenChange, side, align, offset, padding, arrowSize, boundary, unstyledTrigger, triggerClassName, className, }: PopoverProps): import("react").JSX.Element;

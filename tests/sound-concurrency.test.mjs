@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { playSound } from "../dist/feedback/sounds/react-bits-sound.js";
+import { playSound } from "../dist/lib/feedback/sounds/react-bits-sound.js";
 
 test("sound rendering starts while audio resume is pending and failures settle", async () => {
   let rejectResume;

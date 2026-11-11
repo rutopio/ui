@@ -5,7 +5,7 @@ import { act, createElement, useRef } from "react";
 import {
   useFluidHover,
   useFluidHoverSelect,
-} from "../dist/motion/use-fluid-hover.js";
+} from "../dist/hooks/use-fluid-hover.js";
 
 function Selected({ store }) {
   return createElement(

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Window } from "happy-dom";
 import { act, createElement } from "react";
-import { usePageShare } from "../dist/feedback/page-share.js";
+import { usePageShare } from "../dist/hooks/use-page-share.js";
 
 function Probe({ publish, onCopyError }) { publish(usePageShare({ onCopyError })); return null; }
 

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { runThemeTransition } from "../dist/theme/run-theme-transition.js";
+import { runThemeTransition } from "../dist/lib/theme/run-theme-transition.js";
 
 test("a skipped animation waits for its update and handles both rejected promises", async () => {
   let update, finish;

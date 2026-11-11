@@ -114,23 +114,21 @@ The gallery is development-only and is not included in the published package.
 
 ## Source organization
 
-Source files are grouped by responsibility. Public imports such as
-`@rutopio/ui/button` stay stable through `package.json` exports.
+Use the same top-level source roles as the five consuming sites:
 
-- `primitives`: buttons, inputs, dialogs and other base controls
-- `article`: article rendering, images, code blocks and headings
-- `layout`: page skeleton, header, footer and fallback pages
-- `navigation`: menus, search, outlines and reading navigation
-- `motion`: shared motion tokens, transitions and hover behavior
-- `feedback`: copy, sharing, notifications, sound and celebrations
-- `theme`: theme provider and theme selection
-- `build`: MDX/rehype transforms and syntax grammars; import these by subpath
-- `shared`: small utilities, generic hooks and shared icons
-- `styles`: shared CSS and design tokens
+- `src/components/`: React components, grouped into `ui`, `article`, `layout`,
+  `navigation`, `motion`, `feedback`, `theme`, and `icons`
+- `src/hooks/`: reusable React hooks, named `use-*.ts`
+- `src/lib/`: utilities, motion tokens, audio code, and build-only MDX transforms
+- `src/providers/`: application-wide provider components
+- `src/types/`: types shared across modules
+- `src/styles/`: CSS, design tokens, typography, and theme defaults
+- `src/entries/`: public entry points that combine several implementation modules
 
-Keep related implementation files together and import directly between modules.
-The root `index.ts` is the public runtime entry; build-only modules stay separate
-so consumers do not bundle syntax highlighters with their client code.
+`src/index.ts` is the public runtime entry. Build-only transforms stay under
+`src/lib/build/` and are exported by subpath, so client imports do not load
+syntax highlighters. `package.json` maps public imports such as
+`@rutopio/ui/button` to their implementation files.
 
 ## Naming and v2 migration
 
