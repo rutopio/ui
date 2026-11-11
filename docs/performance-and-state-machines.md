@@ -90,3 +90,81 @@ fallback assets must preserve candidate priority; cache misses must be checked
 before rendering. Writing's HTML shell fetch remains gated by a known route
 and GET method to avoid extra reads for HEAD, missing metadata, or unknown
 routes. Portfolio already reads HTML and SEO metadata concurrently.
+
+## State machine inventory
+
+The tables describe application-owned behavior. Base UI, TanStack Router,
+next-themes, browser APIs, and React also own internal state machines; their
+implementations are outside this review. Their inputs, completion callbacks,
+and failure paths are included below. States derived from several booleans or
+refs are named here even where the code has no enum.
+
+### Data loading and edge requests
+
+| Machine and owning files | States | Event and transition | Invariant |
+| --- | --- | --- | --- |
+| Writing `src/lib/posts.ts`; Portfolio `src/lib/webmcp.ts` | Empty, loading, ready | Read: empty → loading; concurrent read joins; success → ready; failure → empty | Failed HTTP responses are not indexed; failed requests remain retryable |
+| Both sites `src/lib/search-index-store.ts` | Idle, loading, ready, failed | Open search → loading; success → ready; failure → failed; reopen → loading | One pending request; a published snapshot has stable identity |
+| Mahjong `src/lib/tiles-data.ts` | Empty, loading, ready | Import → loading; success → ready; failure → empty | Concurrent callers share the import; application cache cannot retain rejection forever |
+| EmojiSalon `src/lib/emoji-utils.ts` | Uncached, trying original, trying fallback, cached | Read → original; unavailable → fallback; success → cached; exhausted → uncached | Original ID wins over stripped variation-selector ID; failed results are not cached |
+| IntD, Mahjong, EmojiSalon `functions/og.ts` | Uninitialized, initializing, ready | First valid request → initializing; concurrent requests join; success → ready; failure → uninitialized | Only successful initialization is permanent; resvg marks itself initialized only after success |
+| Mahjong `functions/og.ts`, `functions/img/[tile].ts` | Invalid, cache lookup, hit, render, cache write | Invalid → 400; hit → response; miss → render; render → response plus `waitUntil` write | No invalid input is rendered; response body is cloned for caching |
+| Site middleware | Redirect, bypass, metadata lookup, rewrite, missing | Preview host → redirect; asset/non-GET → bypass; known page → rewrite; unknown page → 404 | Canonical host is fixed; path/query survive; HEAD does not consume an HTML body |
+| Writing `src/components/post-detail.tsx` | Validate type, metadata, content and translation, ready/not found | Valid metadata starts both reads; missing type/post/module → not found | Content and translation refer to the same validated post |
+
+Browser module loaders can retain some import failures independently of the
+application. Clearing Mahjong's promise cache permits a retry; it does not
+promise recovery from a deleted deployment chunk without a reload.
+
+### Editors, forms, and exports
+
+| Machine and owning files | States | Event and transition | Invariant |
+| --- | --- | --- | --- |
+| EmojiSalon `src/contexts/emoji-context.tsx` | Empty, ready, loading next selection | Select → loading; newest success → ready; stale success ignored; failure keeps previous ready snapshot | Identity, label, geometry, and original palette belong to the same emoji |
+| Emoji palette persistence in the same provider | Clean, dirty with timer, saved, disposed | Edit → dirty; later edit replaces timer; timeout → saved; select/reset/randomize/dispose invalidates old timer | Old edits cannot overwrite a newer selection or route |
+| Emoji export in the same provider | Idle, decoding, drawing, delivering, completed/failed/cancelled | Export → decode → draw → delivery; decode/delivery failure → failed; share cancellation → cancelled | Every export owns its canvas; preview is published only after decoding |
+| Emoji showcase `src/components/showcase/showcase-section.tsx` | Idle, rendering, download/share, done/cancelled | Click → independent canvas render → delivery | Each operation captures its own SVG and canvas |
+| IntD `src/hooks/use-decomposition.ts` | Empty input, invalid input, results by sort mode, exhausted | Submit validates; valid submit clears old modes; mode switch reuses or computes; shuffle excludes seen results; blank submit clears session | Persisted values have validated shapes; current mode, target, result offsets, and seen keys are usable |
+| IntD `src/components/settings-dialog.tsx` | Closed, editing, invalid, saved, reset confirmation | Open → edit; invalid save stays open; valid save persists and clears calculations; reset requires confirmation | Only valid settings reach the solver; result data is invalidated when settings change |
+| IntD `src/hooks/use-local-storage.ts` | Persistent, volatile fallback, absent | Read parses and validates; write persists or falls back; remove → absent; storage event refreshes snapshot | React sees stable raw snapshots; unavailable storage does not crash rendering |
+| Mahjong `src/hooks/use-mahjong-state.ts`, `src/lib/url-state.ts` | Default, edited, empty input | Initialize from URL; input/theme/color edit → state and URL; clear → explicit empty input | URL represents the current generator state, including empty input |
+| Mahjong `src/lib/tiles-export.ts` | Loading tiles, SVG, decoding, blob, delivery, done/failed/cancelled | Each step requires the previous output | A failed decode rejects; object URLs are released; operations use separate canvases |
+
+### Shared interaction and display state
+
+| Machine and owning files | States | Event and transition | Invariant |
+| --- | --- | --- | --- |
+| UI `src/navigation/action-menu.tsx` | Closed, hover delay, hover open, click open | Enter schedules; leave cancels/closes hover; click promotes; arrows move focus; Escape/outside closes | At most one hover timer/focus frame; cleanup cancels both; empty menus do not open |
+| UI popover, search command, language toggle, site header; site outline/download/share dialogs | Closed/open, plus focused item or selected tab | Trigger/keyboard → open; selection/Escape/outside → close | Controlled state belongs to the caller; uncontrolled state stays local; focus behavior delegates to primitives where applicable |
+| UI `src/motion/use-fluid-hover.ts` | Unmeasured, measured inactive, active item, leaving, disposed | Registration/resize measures; pointer/focus activates; leave clears; cleanup removes observers/listeners | Active geometry comes from registered items; scroll locking does not move the highlight |
+| UI `src/theme/theme-toggle.tsx` | Not hydrated, idle, transitioning | Hydrate resolves theme; reduced motion toggles directly; click starts transition; settlement returns to idle | One active transition; temporary styles are removed; failure does not swallow the requested theme |
+| UI `src/feedback/page-share.ts`, `email-popover.tsx`; Mahjong action buttons | Idle, copying, copied, failed; native sharing or dialog | Clipboard success → copied; another success renews feedback; timeout → idle; cancellation → idle | Failed copying never shows success; timers do not outlive their component |
+| UI `src/article/code-block.tsx` | Idle, copied, error | Clipboard settles → feedback; feedback change restarts expiry; unmount clears timer | Feedback describes the clipboard result; effect cleanup owns expiry |
+| UI `src/feedback/sounds/react-bits-sound.js` | Muted/unavailable, suspended/running, buffer loading/ready, playing/ended | Play resumes and renders concurrently; both ready → playback; ended → resolve | Render failures can retry; rejected evicted buffers cannot remove a newer cache entry |
+| UI article image; site tile preview | Loading, loaded/error, zoom closed/open | Source change/load updates preview; zoom opens/closes | Zoom and measurement use the current element; image ownership stays with the component |
+| UI scroll progress, site reading progress and outline hooks | Tracking, scroll locked, disposed | Scroll/resize schedules a frame; locked reads are skipped; cleanup cancels observers/frames | Fractions stay in 0..1; old observers do not update a replaced article |
+| Site Taipei clocks, client-only and viewport stores | Server snapshot, subscribed client snapshot, disposed | Subscribe installs interval/media listener; cleanup removes it | Server snapshot is stable; subscriptions do not leak after unmount |
+
+Simple dialog/tab states include IntD copy formatting options and reset
+confirmation, Mahjong notation visibility and yaku selection, EmojiSalon picker
+and CSS dialogs, and both article sites' search query/outline state. They have
+no persistence or asynchronous transition of their own. They use the relevant
+closed/open or selected-value transitions above.
+
+## Confirmed issues and regression work
+
+These are local issue groups, not GitHub issues. Priority reflects user impact.
+Evidence paths refer to the implementation before each fix; tests preserve the
+reachable sequence rather than merely checking source text.
+
+| Issue | Priority | Reachable failure and evidence | Status and regression coverage |
+| --- | --- | --- | --- |
+| STATE-01: Rejected caches prevent retry | P1 | A network/parse failure in Writing `loadPostsData`, Portfolio `searchIndex`, or Mahjong `loadTilesData` leaves the rejected promise assigned. OG `ensureWasm` and sound `bufferFor` have the same failure state. Every later caller receives that rejection. | Fixed: clear rejected cache entries; check HTTP status; tests cover concurrent callers, failure, retry, and reuse |
+| STATE-02: Emoji selection and delayed persistence | P1 | `updateEmoji` changed identity before awaiting data; failure retained old geometry. A color timer captured the old emoji and survived selection, reset, and unmount. | In progress |
+| STATE-03: Emoji export completion and races | P1 | `updateCanvas` returned after assigning `onload`, so awaiting it opened an empty preview. Overlapping actions resized and drew into the same canvas. Decode had no error callback. | In progress |
+| STATE-04: Invalid persisted calculator data | P2 | `JSON.parse` was cast to any requested type. Stored `null` for `idc:byMode` reached `byMode[sortMode]`; malformed settings reached `items.map`. | In progress |
+| STATE-05: Clipboard feedback lifetime | P2 | Copy twice less than two seconds apart: the first timer clears the second success. Mahjong marked copied before clipboard completion. | In progress |
+| STATE-06: Empty Mahjong input and URL mismatch | P2 | `update` returned early for empty input, leaving the prior tiles in the share URL. Decoder also treated explicit empty input as missing. | In progress |
+| STATE-07: Theme transition failure | P2 | A skipped/rejected `ready` left `finished` unobserved; synchronous transition failure skipped the theme callback. Cleanup could run before a delayed callback. | In progress |
+| STATE-08: Markdown scanner cursor | P2 | TOC scanning switched from stripped to original text while retaining an `exec` offset. | Fixed in regex step; fenced-heading, duplicate-slug, repeated-call tests |
+| STATE-09: Canonical redirect host | P1 | Passing a `//host/path` pathname to a base-URL constructor selected that host. | Fixed in URL step; double/triple-slash regression tests |

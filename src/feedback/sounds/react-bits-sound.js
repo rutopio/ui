@@ -1029,7 +1029,10 @@ const bufferFor = (recipe, tune, rate, variant = 0) => {
   const key = `${recipeId(recipe)}:${rate}:${variant}:${JSON.stringify(shape)}`;
   let pending = cache.get(key);
   if (!pending) {
-    pending = renderSound(recipe, shape, { sampleRate: rate, variant });
+    pending = renderSound(recipe, shape, { sampleRate: rate, variant }).catch((error) => {
+      if (cache.get(key) === pending) cache.delete(key);
+      throw error;
+    });
     cache.set(key, pending);
     if (cache.size > 96) cache.delete(cache.keys().next().value);
   }
