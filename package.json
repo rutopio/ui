@@ -1,6 +1,6 @@
 {
   "name": "ui",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "ChingRu <hello@chingru.com>",
   "license": "MIT",
   "description": "Shared interface primitives for ChingRu's sites",

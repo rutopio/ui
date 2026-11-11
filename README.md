@@ -10,7 +10,7 @@ image URLs.
 Install a tagged version under the import name used by the sites:
 
 ```sh
-pnpm add @rutopio/ui@github:rutopio/ui#v2.0.0
+pnpm add @rutopio/ui@github:rutopio/ui#v2.0.1
 ```
 
 Import components through their named entry points, such as
