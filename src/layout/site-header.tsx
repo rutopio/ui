@@ -7,7 +7,7 @@ import {
   DrawerTrigger,
 } from "../primitives/drawer.js";
 import { FluidHoverControls } from "../motion/fluid-hover-controls.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 export type HeaderNavItem = {
   id: string;

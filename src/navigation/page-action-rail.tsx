@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { FluidHoverControls } from "../motion/fluid-hover-controls.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 export function PageActionRail({
   label,

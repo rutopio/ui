@@ -4,9 +4,9 @@ import { useState } from "react";
 import { ActionMenu } from "./action-menu.js";
 import { Button } from "../primitives/button.js";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, } from "../primitives/drawer.js";
-export function LanguageToggle({ label, current, options, onChange, isMobile, className, }) {
+export function LanguageToggle({ label, current, options, onChange, isNarrowViewport, className, }) {
     const [open, setOpen] = useState(false);
-    if (isMobile) {
+    if (isNarrowViewport) {
         return (_jsxs(Drawer, { open: open, onOpenChange: setOpen, children: [_jsx(DrawerTrigger, { render: _jsx(Button, { variant: "ghost", size: "icon", className: className, "aria-label": label, children: _jsx(TranslateIcon, { "aria-hidden": "true" }) }) }), _jsxs(DrawerContent, { children: [_jsx(DrawerHeader, { className: "border-border border-b pb-4", children: _jsx(DrawerTitle, { children: label }) }), _jsx("div", { className: "flex flex-col gap-1 px-4 pt-4 pb-6", children: options.map((option) => (_jsxs("button", { type: "button", lang: option.htmlLang, "aria-current": current === option.value ? "true" : undefined, className: "flex min-h-10 items-center justify-between rounded-lg px-3 text-left text-base text-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=true]:bg-muted", onClick: () => {
                                     setOpen(false);
                                     onChange(option.value);

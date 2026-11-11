@@ -13,7 +13,7 @@ import {
   type SetStateAction,
 } from "react";
 
-export interface ItemRect {
+export interface HoverItemRect {
   top: number;
   height: number;
   left: number;
@@ -69,12 +69,12 @@ export interface FluidHoverActiveStore {
   get: () => number | null;
 }
 
-export interface UseFluidHoverReturn {
+export interface UseFluidHoverResult {
   activeIndex: number | null;
   setActiveIndex: Dispatch<SetStateAction<number | null>>;
   /** `activeIndex` as a stable store, for rows (see `useFluidHoverSelect`). */
   activeStore: FluidHoverActiveStore;
-  itemRects: ItemRect[];
+  itemRects: HoverItemRect[];
   /**
    * True once every registered item has been measured and no remeasure is
    * pending, i.e. `itemRects` describes the current item set. Gate absolutely
@@ -128,13 +128,13 @@ export interface UseFluidHoverReturn {
   measureItems: () => void;
 }
 
-export interface PickNearestInput {
+export interface NearestHoverItemOptions {
   axis: "x" | "y" | "xy";
   /** The pointer, in viewport coordinates. */
   point: { x: number; y: number };
   /** Item rects in the container's layout space (sparse: unregistered slots
    *  are undefined). */
-  rects: readonly (ItemRect | undefined)[];
+  rects: readonly (HoverItemRect | undefined)[];
   /** The container's bounding rect and live scroll / border offsets, which
    *  map layout rects into the pointer's viewport space. */
   containerRect: { left: number; top: number; width: number; height: number };
@@ -155,7 +155,7 @@ export interface PickNearestInput {
  * first item. The hook calls this once per animation frame; the docs page
  * times it.
  */
-export function pickNearest({
+export function findNearestHoverItemIndex({
   axis,
   point,
   rects,
@@ -164,7 +164,7 @@ export function pickNearest({
   border,
   layoutSize,
   isDisabled,
-}: PickNearestInput): number | null {
+}: NearestHoverItemOptions): number | null {
   const scaleX =
     layoutSize.width > 0 ? containerRect.width / layoutSize.width : 1;
   const scaleY =
@@ -235,7 +235,7 @@ export function pickNearest({
  * point with no target (a caller re-picking at a remembered position)
  * counts as the list's own.
  */
-export function isOwnEvent(e: {
+export function isEventFromContainer(e: {
   currentTarget?: EventTarget | null;
   target?: EventTarget | null;
 }) {
@@ -246,9 +246,9 @@ export function isOwnEvent(e: {
 }
 
 /** Set on the highlighted item (boolean attribute). */
-export const ACTIVE_ATTR = "data-fluid-hover-active";
+export const FLUID_HOVER_ACTIVE_ATTRIBUTE = "data-fluid-hover-active";
 /** Set on the container: the highlighted index, or absent. */
-export const ACTIVE_INDEX_ATTR = "data-fluid-hover-active-index";
+export const FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE = "data-fluid-hover-active-index";
 
 const ACTIVATOR_SELECTOR =
   "a[href], button, [role='menuitem'], [role='menuitemradio'], [role='menuitemcheckbox'], [role='option'], [role='radio'], [role='checkbox'], [role='tab'], [role='link'], [role='button']";
@@ -280,7 +280,7 @@ const measurementAttempts = 3;
 export function useFluidHover<T extends HTMLElement>(
   containerRef: RefObject<T | null>,
   options: UseFluidHoverOptions = {}
-): UseFluidHoverReturn {
+): UseFluidHoverResult {
   const {
     axis = "y",
     isItemDisabled,
@@ -329,22 +329,22 @@ export function useFluidHover<T extends HTMLElement>(
     // The registry map itself, which is never replaced: the cleanup reads
     // who holds the index by then, not who held it now.
     const items = itemsRef.current;
-    if (activeIndex === null) container?.removeAttribute(ACTIVE_INDEX_ATTR);
-    else container?.setAttribute(ACTIVE_INDEX_ATTR, String(activeIndex));
+    if (activeIndex === null) container?.removeAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE);
+    else container?.setAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE, String(activeIndex));
     const active = activeIndex === null ? undefined : items.get(activeIndex);
-    active?.setAttribute(ACTIVE_ATTR, "");
+    active?.setAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE, "");
     return () => {
-      active?.removeAttribute(ACTIVE_ATTR);
+      active?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
       // A row that re-registered under this index while it was highlighted
       // (a remount under a new key) was marked by registerItem, not by this
       // effect: drop the mark from whatever element holds the index now.
       if (activeIndex !== null)
-        items.get(activeIndex)?.removeAttribute(ACTIVE_ATTR);
+        items.get(activeIndex)?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
     };
   }, [activeIndex, containerRef]);
-  const [itemRects, setItemRects] = useState<ItemRect[]>([]);
+  const [itemRects, setItemRects] = useState<HoverItemRect[]>([]);
   const [isMeasured, setIsMeasured] = useState(false);
-  const itemRectsRef = useRef<ItemRect[]>([]);
+  const itemRectsRef = useRef<HoverItemRect[]>([]);
   const [session, setSession] = useState(0);
   const sessionRef = useRef(0);
   // Set when the pointer enters; the pointer's first change of highlight
@@ -362,7 +362,7 @@ export function useFluidHover<T extends HTMLElement>(
   const runMeasurement = useCallback(() => {
     const container = containerRef.current;
     if (!container) return false;
-    const rects: ItemRect[] = [];
+    const rects: HoverItemRect[] = [];
     let everyItemHasLayout = true;
     itemsRef.current.forEach((element, index) => {
       // An element inside a display:none / not-yet-laid-out popup has no
@@ -489,13 +489,13 @@ export function useFluidHover<T extends HTMLElement>(
         itemsRef.current.set(index, element);
         getItemRo()?.observe(element);
         if (index === activeIndexRef.current)
-          element.setAttribute(ACTIVE_ATTR, "");
+          element.setAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE, "");
       } else {
         const previous = itemsRef.current.get(index);
         if (previous) itemRoRef.current?.unobserve(previous);
         // The mark leaves with the element: a row that only moved to another
         // index (a filtering list re-ordering) must not carry it there.
-        previous?.removeAttribute(ACTIVE_ATTR);
+        previous?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
         itemsRef.current.delete(index);
         // The highlighted row is gone: nothing should stay lit or receive a
         // routed click until the pointer picks again. Decided when the
@@ -518,7 +518,7 @@ export function useFluidHover<T extends HTMLElement>(
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      if (!isOwnEvent(e)) return;
+      if (!isEventFromContainer(e)) return;
       const mouseX = e.clientX;
       const mouseY = e.clientY;
       const target = e.target as Node;
@@ -546,7 +546,7 @@ export function useFluidHover<T extends HTMLElement>(
             }
           }
         } else
-          next = pickNearest({
+          next = findNearestHoverItemIndex({
             axis,
             point: { x: mouseX, y: mouseY },
             rects: itemRectsRef.current,
@@ -605,7 +605,7 @@ export function useFluidHover<T extends HTMLElement>(
       // Nor is a click from something rendered through a portal (a dropdown
       // opened from a row, a submenu): it bubbles here through React, but it
       // never happened between these rows.
-      if (!isOwnEvent(e)) return;
+      if (!isEventFromContainer(e)) return;
       // A control that sits between the rows (a search field at the top of
       // a menu, a footer button) keeps its own click too.
       const control = (target as Element).closest?.(

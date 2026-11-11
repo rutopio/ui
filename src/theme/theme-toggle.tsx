@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useCallback, useRef, useSyncExternalStore } from "react";
 
 import { Button } from "../primitives/button.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 const TRANSITION_STYLE_ID = "theme-transition-style";
 const REVEAL_FEATHER_RATIO = 0.12;

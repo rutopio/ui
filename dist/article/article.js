@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { HashIcon } from "@phosphor-icons/react";
 import { SectionHeading } from "./section-heading.js";
 import { CodeBlock } from "./code-block.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 export const articleLinkClassName = "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
 export function Article({ className, ...props }) {
     return (_jsx("article", { className: cn("base-article flex w-full min-w-0 flex-col gap-16 text-base text-neutral-800 tabular-nums leading-[1.65] dark:text-neutral-300", className), ...props }));
@@ -22,7 +22,7 @@ function MinorHeading({ level, id, children, className, ...props }) {
     const Heading = level === 5 ? "h5" : "h6";
     return (_jsx(Heading, { id: id, className: cn("group mt-6 scroll-m-20 text-balance font-bold font-heading text-base first:mt-0", className), ...props, children: _jsx(HeadingAnchor, { id: id, children: children }) }));
 }
-export const articleComponents = {
+export const articleMdxComponents = {
     h1: ({ className, ...props }) => (_jsx("h1", { className: cn("scroll-m-20 text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50", className), ...props })),
     h2: ({ className, ...props }) => (_jsx(SectionHeading, { className: className, ...props })),
     h3: (props) => (_jsx(SectionHeading, { level: 3, ...props })),

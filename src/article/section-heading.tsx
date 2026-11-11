@@ -1,6 +1,6 @@
 import type { HTMLAttributes, MouseEventHandler } from "react";
 import { SectionHeadingAnchor } from "./section-heading-anchor.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 export function SectionHeading({
   level = 2,

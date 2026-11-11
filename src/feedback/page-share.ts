@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export function shareTargets(url: string) {
+export function getSocialShareTargets(url: string) {
   const encodedUrl = encodeURIComponent(url)
   return [
     {
@@ -89,7 +89,7 @@ export function usePageShare({
     setOpen,
     copied,
     shareUrl,
-    targets: shareTargets(shareUrl),
+    targets: getSocialShareTargets(shareUrl),
     copy,
     share,
   }

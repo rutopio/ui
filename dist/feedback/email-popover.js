@@ -4,7 +4,7 @@ import { AtIcon } from "@phosphor-icons/react";
 import { CopyFeedbackIcon } from "./copy-feedback-icon.js";
 import { Popover } from "../primitives/popover.js";
 import { Button } from "../primitives/button.js";
-export function MailPopover({ email, trigger, triggerClassName }) {
+export function EmailPopover({ email, trigger, triggerClassName }) {
     const [emailLocal, emailDomain] = email.split("@");
     const obfuscated = `${emailLocal}[AT]${emailDomain}`;
     const [copied, setCopied] = useState(false);

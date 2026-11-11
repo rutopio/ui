@@ -1,6 +1,6 @@
 {
   "name": "ui",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "ChingRu <hello@chingru.com>",
   "license": "MIT",
   "description": "Shared interface primitives for ChingRu's sites",
@@ -61,9 +61,9 @@
       "types": "./dist/feedback/copy-feedback-icon.d.ts",
       "import": "./dist/feedback/copy-feedback-icon.js"
     },
-    "./mail-popover": {
-      "types": "./dist/feedback/mail-popover.d.ts",
-      "import": "./dist/feedback/mail-popover.js"
+    "./email-popover": {
+      "types": "./dist/feedback/email-popover.d.ts",
+      "import": "./dist/feedback/email-popover.js"
     },
     "./language-toggle": {
       "types": "./dist/navigation/language-toggle.d.ts",
@@ -89,9 +89,9 @@
       "types": "./dist/primitives/scroll-area.d.ts",
       "import": "./dist/primitives/scroll-area.js"
     },
-    "./outline-nav": {
-      "types": "./dist/navigation/outline-nav.d.ts",
-      "import": "./dist/navigation/outline-nav.js"
+    "./outline-menu": {
+      "types": "./dist/navigation/outline-menu.d.ts",
+      "import": "./dist/navigation/outline-menu.js"
     },
     "./fluid-hover-controls": {
       "types": "./dist/motion/fluid-hover-controls.d.ts",
@@ -146,9 +146,9 @@
       "types": "./dist/layout/site-layout.d.ts",
       "import": "./dist/layout/site-layout.js"
     },
-    "./motion": {
-      "types": "./dist/motion/motion.d.ts",
-      "import": "./dist/motion/motion.js"
+    "./motion-tokens": {
+      "types": "./dist/motion/motion-tokens.d.ts",
+      "import": "./dist/motion/motion-tokens.js"
     },
     "./page-transition": {
       "types": "./dist/motion/page-transition.d.ts",
@@ -162,9 +162,9 @@
       "types": "./dist/layout/page-intro.d.ts",
       "import": "./dist/layout/page-intro.js"
     },
-    "./use-mobile": {
-      "types": "./dist/shared/use-mobile.d.ts",
-      "import": "./dist/shared/use-mobile.js"
+    "./use-is-narrow-viewport": {
+      "types": "./dist/shared/use-is-narrow-viewport.d.ts",
+      "import": "./dist/shared/use-is-narrow-viewport.js"
     },
     "./rehype-article-sections": {
       "types": "./dist/build/rehype-article-sections.d.ts",
@@ -211,17 +211,17 @@
       "types": "./dist/layout/not-found.d.ts",
       "import": "./dist/layout/not-found.js"
     },
-    "./screen-size": {
-      "types": "./dist/layout/screen-size.d.ts",
-      "import": "./dist/layout/screen-size.js"
+    "./breakpoint-indicator": {
+      "types": "./dist/layout/breakpoint-indicator.d.ts",
+      "import": "./dist/layout/breakpoint-indicator.js"
     },
     "./code-block": {
       "types": "./dist/article/code-block.d.ts",
       "import": "./dist/article/code-block.js"
     },
-    "./rehype-code": {
-      "types": "./dist/build/rehype-code.d.ts",
-      "import": "./dist/build/rehype-code.js"
+    "./rehype-code-highlighting": {
+      "types": "./dist/build/rehype-code-highlighting.d.ts",
+      "import": "./dist/build/rehype-code-highlighting.js"
     },
     "./code-block.css": "./dist/code-block.css"
   },

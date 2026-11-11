@@ -1,4 +1,4 @@
-export const spring = {
+export const springPresets = {
   fast: {
     type: "spring" as const,
     duration: 0.08,

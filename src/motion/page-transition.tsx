@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useSyncExternalStore } from "react";
 import type { ComponentProps } from "react";
-import { transitions } from "./motion.js";
+import { motionTransitions } from "./motion-tokens.js";
 
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
@@ -21,7 +21,7 @@ export function PageTransition({
     <motion.div
       initial={clientReady && !reducedMotion ? { opacity: 0 } : false}
       animate={{ opacity: 1 }}
-      transition={reducedMotion ? transitions.instant : transitions.page}
+      transition={reducedMotion ? motionTransitions.instant : motionTransitions.page}
       className="flex min-h-full min-w-0 w-full flex-auto flex-col"
     >
       {children}

@@ -2,8 +2,8 @@ import { Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs } from "react/jsx-run
 import { SpinnerGapIcon } from "@phosphor-icons/react";
 import { cloneElement, useCallback, useState, } from "react";
 import Zoom from "react-medium-image-zoom";
-import { cn } from "../shared/utils.js";
-function ZoomLoaderContent({ img, isZoomImgLoaded, buttonUnzoom, }) {
+import { cn } from "../shared/class-names.js";
+function ZoomImageWithLoader({ img, isZoomImgLoaded, buttonUnzoom, }) {
     const [imgComplete, setImgComplete] = useState(false);
     const setRef = useCallback((element) => {
         if (element?.complete)
@@ -40,7 +40,7 @@ export function ArticleImage({ className, alt, src, srcSet, title, width, height
             aspectRatio: hasSize ? undefined : unknownSizeAspectRatio,
             ...style,
         }, loading: "lazy", decoding: "async", ref: measure, onLoad: onLoad, "data-fallback": original, onError: imageOnError, ...props }));
-    const zoomed = enableZoom ? (_jsx(Zoom, { zoomMargin: 24, classDialog: "mdx-image-zoom-dialog", zoomImg: original ? { src: original, alt } : undefined, ZoomContent: ZoomLoaderContent, wrapElement: "span", children: img })) : (img);
+    const zoomed = enableZoom ? (_jsx(Zoom, { zoomMargin: 24, classDialog: "mdx-image-zoom-dialog", zoomImg: original ? { src: original, alt } : undefined, ZoomContent: ZoomImageWithLoader, wrapElement: "span", children: img })) : (img);
     if (title) {
         return (_jsxs("span", { className: cn("my-4 flex flex-col gap-2", portrait ? "items-center" : "items-stretch"), children: [zoomed, _jsx("span", { className: cn("block text-center text-muted-foreground text-sm italic", captionClassName), children: caption ?? title })] }));
     }

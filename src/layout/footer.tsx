@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { cn } from "../shared/utils.js"
+import { cn } from "../shared/class-names.js"
 
 type FooterLink = { href: string; label: string }
 

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { rehypeCode } from "../dist/build/rehype-code.js";
+import { rehypeCodeHighlighting } from "../dist/build/rehype-code-highlighting.js";
 
 const flatten = (node) => [node, ...(node.children ?? []).flatMap(flatten)];
 const text = (node) => node.type === "text" ? node.value : (node.children ?? []).map(text).join("");
@@ -8,7 +8,7 @@ async function highlight(source, language, meta = "") {
   const tree = { type: "root", children: [{ type: "element", tagName: "pre", properties: {}, children: [{
     type: "element", tagName: "code", properties: { className: [`language-${language}`] }, data: { meta }, children: [{ type: "text", value: `${source}\n` }],
   }] }] };
-  await rehypeCode()(tree);
+  await rehypeCodeHighlighting()(tree);
   return flatten(tree);
 }
 

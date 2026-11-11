@@ -11,7 +11,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
 const CROSSFADE = {

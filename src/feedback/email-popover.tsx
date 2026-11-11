@@ -5,7 +5,7 @@ import { CopyFeedbackIcon } from "./copy-feedback-icon.js";
 import { Popover } from "../primitives/popover.js";
 import { Button } from "../primitives/button.js";
 
-export function MailPopover({ email, trigger, triggerClassName }: { email: string; trigger: ReactNode; triggerClassName?: string }) {
+export function EmailPopover({ email, trigger, triggerClassName }: { email: string; trigger: ReactNode; triggerClassName?: string }) {
   const [emailLocal, emailDomain] = email.split("@");
   const obfuscated = `${emailLocal}[AT]${emailDomain}`;
   const [copied, setCopied] = useState(false);

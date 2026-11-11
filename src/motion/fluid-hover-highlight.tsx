@@ -6,9 +6,9 @@ import {
   type Transition,
   useReducedMotion,
 } from "motion/react"
-import type { ItemRect, UseFluidHoverReturn } from "./use-fluid-hover.js"
-import { spring } from "./springs.js"
-import { cn } from "../shared/utils.js"
+import type { HoverItemRect, UseFluidHoverResult } from "./use-fluid-hover.js"
+import { springPresets } from "./spring-presets.js"
+import { cn } from "../shared/class-names.js"
 
 // ---------------------------------------------------------------------------
 // The one hover highlight every fluid hover list renders: an absolutely
@@ -25,7 +25,7 @@ import { cn } from "../shared/utils.js"
 /** What the highlight reads off the hook: the highlighted index, the
  *  measured rects, whether they are current, and the pointer session. */
 export type FluidHoverSource = Pick<
-  UseFluidHoverReturn,
+  UseFluidHoverResult,
   "activeIndex" | "itemRects" | "isMeasured" | "session"
 >
 
@@ -43,8 +43,8 @@ interface HighlightFromHook {
 interface HighlightFromRect {
   /** For lists that resolve their own rect (the sidebar's unified scope):
    *  the rect to sit on, in the container's coordinate space. `null` hides
-   *  the highlight (it fades out on `spring.fast.exit`). */
-  rect: ItemRect | null
+   *  the highlight (it fades out on `springPresets.fast.exit`). */
+  rect: HoverItemRect | null
   /** `session` from `useFluidHover`. It steps when the cursor enters the
    *  container, which re-keys the highlight so it fades in at `from ?? rect`
    *  instead of sliding over from wherever it was last. */
@@ -59,7 +59,7 @@ export type FluidHoverHighlightProps = (
 ) & {
   /** Where a fresh session fades in from. A dropdown passes its checked row,
    *  a nav menu its active route. Defaults to the rect itself. */
-  from?: ItemRect | null
+  from?: HoverItemRect | null
   /** `false` starts a fresh session opaque instead of fading in: for a
    *  `from` under a filled item (the calendar's range start), so the
    *  highlight reads as sliding out of it. */
@@ -67,7 +67,7 @@ export type FluidHoverHighlightProps = (
   /** Radius, z-index, anything else. Merged onto
    *  `absolute bg-hover pointer-events-none`. */
   className?: string
-  /** The positional spring. Defaults to `spring.fast`. Pass `false` to snap
+  /** The positional spring. Defaults to `springPresets.fast`. Pass `false` to snap
    *  to the new rect with no travel (a layout reflow that moved the rows
    *  underneath, not a hover change). The opacity fade is always 0.08s. */
   transition?: Transition | false
@@ -78,7 +78,7 @@ const snap: Transition = { duration: 0 }
 
 /** A measured rect as animation targets: position as a transform, size as
  *  layout. Exported for the unit test. */
-export function toTarget(rect: ItemRect) {
+export function getHighlightAnimationTarget(rect: HoverItemRect) {
   return { x: rect.left, y: rect.top, width: rect.width, height: rect.height }
 }
 
@@ -92,13 +92,13 @@ export function resolveHighlightTransition(
   reduceMotion: boolean,
 ): Transition {
   const positional =
-    transition === false || reduceMotion ? snap : (transition ?? spring.fast)
+    transition === false || reduceMotion ? snap : (transition ?? springPresets.fast)
   return { ...positional, opacity: fade }
 }
 
 /** The rect and session a set of props resolves to. Exported for the test. */
 export function resolveHighlightSource(props: FluidHoverHighlightProps): {
-  rect: ItemRect | null
+  rect: HoverItemRect | null
   session: number
 } {
   if (props.hover) {
@@ -135,9 +135,9 @@ export function FluidHoverHighlight(props: FluidHoverHighlightProps) {
             "pointer-events-none absolute top-0 left-0 bg-hover",
             className,
           )}
-          initial={{ opacity: fadeIn ? 0 : 1, ...toTarget(from ?? rect) }}
-          animate={{ opacity: 1, ...toTarget(rect) }}
-          exit={{ opacity: 0, transition: spring.fast.exit }}
+          initial={{ opacity: fadeIn ? 0 : 1, ...getHighlightAnimationTarget(from ?? rect) }}
+          animate={{ opacity: 1, ...getHighlightAnimationTarget(rect) }}
+          exit={{ opacity: 0, transition: springPresets.fast.exit }}
           transition={resolveHighlightTransition(transition, reduceMotion)}
         />
       )}

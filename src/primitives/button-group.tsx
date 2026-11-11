@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import type * as React from "react"
-import { cn } from "../shared/utils.js"
+import { cn } from "../shared/class-names.js"
 
 const buttonGroupVariants = cva(
   "group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10",

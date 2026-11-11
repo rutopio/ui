@@ -1,4 +1,4 @@
-export declare const spring: {
+export declare const springPresets: {
     readonly fast: {
         readonly type: "spring";
         readonly duration: 0.08;

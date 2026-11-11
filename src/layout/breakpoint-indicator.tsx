@@ -1,5 +1,5 @@
 /** Render behind the consuming app's development-mode guard. */
-export function ScreenSize() {
+export function BreakpointIndicator() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed right-[max(1.25rem,env(safe-area-inset-right))] bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-50 flex size-8 items-center justify-center rounded-full bg-gray-800 font-mono text-xs text-white">
       <span className="sm:hidden">xs</span>

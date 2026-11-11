@@ -13,10 +13,10 @@ import {
 } from "react"
 import { FluidHoverHighlight } from "../motion/fluid-hover-highlight.js"
 import { ScrollArea } from "../primitives/scroll-area.js"
-import { spring } from "../motion/springs.js"
+import { springPresets } from "../motion/spring-presets.js"
 import { useFluidHover } from "../motion/use-fluid-hover.js"
 import { useMountEffect } from "../shared/use-mount-effect.js"
-import { cn } from "../shared/utils.js"
+import { cn } from "../shared/class-names.js"
 
 export type ActionMenuItem = {
   id: string
@@ -226,8 +226,8 @@ export function ActionMenu({
               ref={scrollActiveIntoView}
               initial={reducedMotion ? { opacity: 0 } : side === "left" ? { opacity: 0, scale: 0.97, x: 8 } : { opacity: 0, scale: 0.96, y: -4 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, scale: side === "left" ? 0.97 : 0.96, ...(side === "left" ? { x: 6 } : { y: -4 }), transition: side === "left" ? spring.moderate.exit : spring.fast.exit }}
-              transition={side === "left" ? spring.moderate : spring.fast}
+              exit={{ opacity: 0, scale: side === "left" ? 0.97 : 0.96, ...(side === "left" ? { x: 6 } : { y: -4 }), transition: side === "left" ? springPresets.moderate.exit : springPresets.fast.exit }}
+              transition={side === "left" ? springPresets.moderate : springPresets.fast}
               style={{ transformOrigin: side === "left" ? "center right" : align === "end" ? "top right" : "top left" }}
               className="w-max min-w-full max-w-full rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md"
             >

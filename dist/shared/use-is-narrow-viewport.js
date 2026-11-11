@@ -1,13 +1,13 @@
 import { useSyncExternalStore } from "react";
-const MOBILE_QUERY = "(max-width: 767px)";
+const NARROW_VIEWPORT_QUERY = "(max-width: 767px)";
 function subscribe(onChange) {
-    const media = window.matchMedia(MOBILE_QUERY);
+    const media = window.matchMedia(NARROW_VIEWPORT_QUERY);
     media.addEventListener("change", onChange);
     return () => media.removeEventListener("change", onChange);
 }
 function getSnapshot() {
-    return window.matchMedia(MOBILE_QUERY).matches;
+    return window.matchMedia(NARROW_VIEWPORT_QUERY).matches;
 }
-export function useIsMobile() {
+export function useIsNarrowViewport() {
     return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }

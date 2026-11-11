@@ -6,7 +6,7 @@ export declare function ArticleBody({ className, ...props }: React.ComponentProp
 export declare function ArticleSection({ heading, children, ...props }: Omit<React.ComponentProps<"section">, "className"> & {
     heading: React.ReactNode;
 }): React.JSX.Element;
-export declare const articleComponents: {
+export declare const articleMdxComponents: {
     h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => React.JSX.Element;
     h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => React.JSX.Element;
     h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => React.JSX.Element;

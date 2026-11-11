@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Command as CommandPrimitive } from "cmdk";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, } from "./dialog.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 function Command({ className, ...props }) {
     return (_jsx(CommandPrimitive, { "data-slot": "command", className: cn("flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground", className), ...props }));
 }

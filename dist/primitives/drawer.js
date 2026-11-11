@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 const DrawerContext = React.createContext(null);
 function useDrawer() {
     const context = React.useContext(DrawerContext);

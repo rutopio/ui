@@ -2,7 +2,7 @@ import { type ReactNode, useLayoutEffect, useRef } from "react"
 import { FluidHoverHighlight } from "./fluid-hover-highlight.js"
 import { ButtonGroup } from "../primitives/button-group.js"
 import { useFluidHover } from "./use-fluid-hover.js"
-import { cn } from "../shared/utils.js"
+import { cn } from "../shared/class-names.js"
 
 export function FluidHoverControls({
   children,

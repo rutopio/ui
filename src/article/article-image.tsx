@@ -9,9 +9,9 @@ import {
   type SyntheticEvent,
 } from "react"
 import Zoom from "react-medium-image-zoom"
-import { cn } from "../shared/utils.js"
+import { cn } from "../shared/class-names.js"
 
-function ZoomLoaderContent({
+function ZoomImageWithLoader({
   img,
   isZoomImgLoaded,
   buttonUnzoom,
@@ -146,7 +146,7 @@ export function ArticleImage({
       zoomMargin={24}
       classDialog="mdx-image-zoom-dialog"
       zoomImg={original ? { src: original, alt } : undefined}
-      ZoomContent={ZoomLoaderContent}
+      ZoomContent={ZoomImageWithLoader}
       wrapElement="span"
     >
       {img}

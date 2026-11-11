@@ -1,5 +1,5 @@
 import { useState } from "react";
-export function shareTargets(url) {
+export function getSocialShareTargets(url) {
     const encodedUrl = encodeURIComponent(url);
     return [
         {
@@ -69,7 +69,7 @@ export function usePageShare({ fallbackUrl = "", onCopied, onCopyError, } = {}) 
         setOpen,
         copied,
         shareUrl,
-        targets: shareTargets(shareUrl),
+        targets: getSocialShareTargets(shareUrl),
         copy,
         share,
     };

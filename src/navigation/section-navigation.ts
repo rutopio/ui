@@ -1,4 +1,4 @@
-export function navigateToSection(id: string, onBeforeNavigate?: () => void) {
+export function scrollToSection(id: string, onBeforeNavigate?: () => void) {
   onBeforeNavigate?.()
   const reduceMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",

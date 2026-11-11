@@ -1,13 +1,13 @@
 "use client";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { AnimatePresence, motion, useReducedMotion, } from "motion/react";
-import { spring } from "./springs.js";
-import { cn } from "../shared/utils.js";
+import { springPresets } from "./spring-presets.js";
+import { cn } from "../shared/class-names.js";
 const fade = { duration: 0.08 };
 const snap = { duration: 0 };
 /** A measured rect as animation targets: position as a transform, size as
  *  layout. Exported for the unit test. */
-export function toTarget(rect) {
+export function getHighlightAnimationTarget(rect) {
     return { x: rect.left, y: rect.top, width: rect.width, height: rect.height };
 }
 /**
@@ -16,7 +16,7 @@ export function toTarget(rect) {
  * none. Exported for the unit test.
  */
 export function resolveHighlightTransition(transition, reduceMotion) {
-    const positional = transition === false || reduceMotion ? snap : (transition ?? spring.fast);
+    const positional = transition === false || reduceMotion ? snap : (transition ?? springPresets.fast);
     return { ...positional, opacity: fade };
 }
 /** The rect and session a set of props resolves to. Exported for the test. */
@@ -44,5 +44,5 @@ export function FluidHoverHighlight(props) {
             // re-laying out every frame. Width and height are real layout
             // values, but they only change when the target rect's size does,
             // which in most lists is never.
-            className: cn("pointer-events-none absolute top-0 left-0 bg-hover", className), initial: { opacity: fadeIn ? 0 : 1, ...toTarget(from ?? rect) }, animate: { opacity: 1, ...toTarget(rect) }, exit: { opacity: 0, transition: spring.fast.exit }, transition: resolveHighlightTransition(transition, reduceMotion) }, session)) }));
+            className: cn("pointer-events-none absolute top-0 left-0 bg-hover", className), initial: { opacity: fadeIn ? 0 : 1, ...getHighlightAnimationTarget(from ?? rect) }, animate: { opacity: 1, ...getHighlightAnimationTarget(rect) }, exit: { opacity: 0, transition: springPresets.fast.exit }, transition: resolveHighlightTransition(transition, reduceMotion) }, session)) }));
 }

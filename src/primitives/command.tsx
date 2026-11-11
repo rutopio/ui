@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "./dialog.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 import type * as React from "react";
 

@@ -21,19 +21,19 @@ export function LanguageToggle<T extends string>({
   current,
   options,
   onChange,
-  isMobile,
+  isNarrowViewport,
   className,
 }: {
   label: string;
   current: T;
   options: readonly LanguageOption<T>[];
   onChange: (value: T) => void;
-  isMobile: boolean;
+  isNarrowViewport: boolean;
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
 
-  if (isMobile) {
+  if (isNarrowViewport) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger

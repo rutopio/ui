@@ -8,7 +8,7 @@ import { createHighlighter } from "shiki";
 import { pseudocodeLanguage } from "./pseudocode-language.js";
 
 /** Shared build-time highlighting policy. Import only from MDX build configuration. */
-export function rehypeCode(): ReturnType<typeof rehypePrettyCode> {
+export function rehypeCodeHighlighting(): ReturnType<typeof rehypePrettyCode> {
   return rehypePrettyCode({
     theme: { light: "github-light", dark: "github-dark" },
     keepBackground: false,

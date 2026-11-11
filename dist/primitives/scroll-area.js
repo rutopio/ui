@@ -1,7 +1,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 export function ScrollArea({ className, viewportClassName, viewportRef, children, scrollFade = false, scrollbarGutter = false, fill = false, clampContentMinWidth = true, overscrollContain = false, ...props }) {
     return (_jsxs(ScrollAreaPrimitive.Root, { "data-slot": "scroll-area", className: cn("size-full min-h-0", className), ...props, children: [_jsx(ScrollAreaPrimitive.Viewport, { ref: viewportRef, className: cn("h-full rounded-[inherit] outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background", overscrollContain &&
                     "data-has-overflow-y:overscroll-y-contain data-has-overflow-x:overscroll-x-contain", scrollFade &&

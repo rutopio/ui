@@ -1,6 +1,6 @@
 import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
 
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 function Separator({
   className,

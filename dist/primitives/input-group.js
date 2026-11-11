@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { cva } from "class-variance-authority";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 import { Button } from "./button.js";
 import { Input } from "./input.js";
 function InputGroup({ className, ...props }) {

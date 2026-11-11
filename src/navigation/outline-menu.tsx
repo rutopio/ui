@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ActionMenu } from "./action-menu.js";
-import { transitions } from "../motion/motion.js";
-import { cn } from "../shared/utils.js";
+import { motionTransitions } from "../motion/motion-tokens.js";
+import { cn } from "../shared/class-names.js";
 
 const RING_CIRCUMFERENCE = 2 * Math.PI * 6.25;
 
@@ -18,17 +18,17 @@ export interface OutlineItem {
 
 // Text outline shown in the mobile drawer: full labels, the active one bolded.
 // Compute the deepest entered item from reading progress.
-export function useOutlineActive(
+export function useActiveOutlineId(
   items: OutlineItem[],
-  progress: Record<string, number>,
+  sectionProgress: Record<string, number>,
 ): string {
   return useMemo(() => {
     let active = items[0]?.id ?? "";
     for (const item of items) {
-      if ((progress[item.id] ?? 0) > 0) active = item.id;
+      if ((sectionProgress[item.id] ?? 0) > 0) active = item.id;
     }
     return active;
-  }, [items, progress]);
+  }, [items, sectionProgress]);
 }
 
 export function ReadingProgressRing({ progress }: { progress: number }) {
@@ -60,27 +60,27 @@ export function ReadingProgressRing({ progress }: { progress: number }) {
         strokeDasharray={RING_CIRCUMFERENCE}
         initial={false}
         animate={{ strokeDashoffset: (1 - progress) * RING_CIRCUMFERENCE }}
-        transition={reducedMotion ? transitions.instant : transitions.progress}
+        transition={reducedMotion ? motionTransitions.instant : motionTransitions.progress}
       />
     </svg>
   );
 }
 
 // An action-rail progress ring reveals a single-level heading dropdown.
-export function OutlineNav({
+export function OutlineMenu({
   items,
   ariaLabel,
   pageProgress,
-  progress,
+  sectionProgress,
   className,
 }: {
   items: OutlineItem[];
   ariaLabel: string;
   pageProgress: number;
-  progress: Record<string, number>;
+  sectionProgress: Record<string, number>;
   className?: string;
 }) {
-  const activeId = useOutlineActive(items, progress);
+  const activeId = useActiveOutlineId(items, sectionProgress);
 
   if (items.length === 0) return null;
 

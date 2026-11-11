@@ -1,5 +1,5 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 function Table({ className, ...props }) {
     return (_jsx("div", { "data-slot": "table-container", className: "relative w-full overflow-x-auto", children: _jsx("table", { "data-slot": "table", className: cn("w-full caption-bottom text-base", className), ...props }) }));
 }

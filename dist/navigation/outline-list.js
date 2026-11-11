@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 export function OutlineList({ items, activeId, onNavigate, indicator, className, }) {
     return (_jsx("ul", { className: cn("flex flex-col gap-1", className), children: items.map((item) => {
             const active = activeId === item.id;

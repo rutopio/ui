@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v1.0.0
+pnpm add github:rutopio/ui#v2.0.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -34,7 +34,7 @@ The shared `Button` owns the variants, sizes, and one-pixel press feedback for e
 
 `ThemeProvider` accepts a site-owned `storageKey`; the package supplies the common theme settings. `usePageScrollProgress` and `isScrollLocked` keep article progress stable while image zoom locks scrolling.
 
-`MailPopover` owns the address display and copy feedback. The site provides its email address and inline trigger so the library does not hard-code site identity.
+`EmailPopover` owns the address display and copy feedback. The site provides its email address and inline trigger so the library does not hard-code site identity.
 
 `LanguageToggle` owns the responsive drawer/dropdown and selection state. Each site supplies its translated label, languages, current value, mobile breakpoint result, and route-change callback. The dropdown opens on hover and remains open after a click until dismissed.
 
@@ -60,7 +60,7 @@ Typography has three roles, all defined in `fonts.css`: `font-normal` uses weigh
 
 ## Articles
 
-Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
+Import `@rutopio/ui/article.css` with the shared styles. `articleMdxComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
 
 `Article` is the reading container; `ArticleBody` owns body spacing. For hand-written pages, use `<ArticleSection heading={<SectionHeading id="example">Example</SectionHeading>}>…</ArticleSection>` so the heading-to-body gap is 8px and body blocks are 24px apart. Sections are 64px apart. In a body, paragraphs before h2/h3 leave 64px and headings before content leave 8px.
 
@@ -68,9 +68,9 @@ Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` sup
 
 To render LaTeX, the site still configures its MDX math plugins and imports `katex/dist/katex.min.css` from its own installed KaTeX version in `src/styles/globals.css`. That vendor stylesheet supplies the matching glyph positioning and math fonts. The shared article styles do not load the KaTeX renderer or fonts for sites without equations.
 
-`article.css` also includes `code-block.css`. `CodeBlock` supplies the common Paper Mono code frame and copy action, and is already the `pre` renderer in `articleComponents`. It accepts the generated `<code>` children and native `<pre>` attributes. Copying reads only code text, so line numbers, captions and copy feedback are excluded. Keyboard focus and touch reveal the copy control; clipboard errors are reported beside the code.
+`article.css` also includes `code-block.css`. `CodeBlock` supplies the common Paper Mono code frame and copy action, and is already the `pre` renderer in `articleMdxComponents`. It accepts the generated `<code>` children and native `<pre>` attributes. Copying reads only code text, so line numbers, captions and copy feedback are excluded. Keyboard focus and touch reveal the copy control; clipboard errors are reported beside the code.
 
-For syntax highlighting, install `shiki`, `rehype-pretty-code` and `@shikijs/transformers` as development dependencies, then add `rehypeCode` from `@rutopio/ui/rehype-code` to the MDX rehype plugins before `rehypeArticleSections`. This build-only entry point owns GitHub light/dark token colors, line and word highlights, diff markers and the `pseudocode` TextMate grammar. It leaves inline code unhighlighted and treats unlabelled fences as plain text. The highlighter is not imported by the component or the root package entry point.
+For syntax highlighting, install `shiki`, `rehype-pretty-code` and `@shikijs/transformers` as development dependencies, then add `rehypeCodeHighlighting` from `@rutopio/ui/rehype-code-highlighting` to the MDX rehype plugins before `rehypeArticleSections`. This build-only entry point owns GitHub light/dark token colors, line and word highlights, diff markers and the `pseudocode` TextMate grammar. It leaves inline code unhighlighted and treats unlabelled fences as plain text. The highlighter is not imported by the component or the root package entry point.
 
 Use a fenced block tagged `pseudocode` for algorithm notation, including `←`, `q_*`, hash comments and `sort … by`. Plain fenced blocks remain suitable for ASCII diagrams. Both use the same code-block presentation as other languages.
 
@@ -82,15 +82,15 @@ For MDX builds, import `rehypeArticleSections` from the matching subpath. It gro
 
 ## Development tools
 
-`ScreenSize` from `@rutopio/ui/screen-size` shows the active Tailwind breakpoint using the shared Paper Mono `text-xs` badge. Render it behind the app’s development guard, for example `{import.meta.env.DEV && <ScreenSize />}` in Vite. The component is independent of the build tool, ignores pointer events and stays hidden from assistive technology.
+`BreakpointIndicator` from `@rutopio/ui/breakpoint-indicator` shows the active Tailwind breakpoint using the shared Paper Mono `text-xs` badge. Render it behind the app’s development guard, for example `{import.meta.env.DEV && <BreakpointIndicator />}` in Vite. The component is independent of the build tool, ignores pointer events and stays hidden from assistive technology.
 
 ## Controls and motion
 
 Import `input`, `input-group`, `table`, `badge`, `command`, `separator` and `sonner` from their named subpaths. Badge always defaults to `text-xs`. Command and Sonner keep their optional peers isolated to those entry points; install `cmdk` or `sonner` only where used.
 
-`PageTransition` owns the shared 200ms entrance fade, reduced motion and visible server-rendered content. Key it by pathname, with the router outlet as its child; query and hash changes must not remount it. Import `transitions` and `spring` from `motion` for common content, copy-feedback and progress animations.
+`PageTransition` owns the shared 200ms entrance fade, reduced motion and visible server-rendered content. Key it by pathname, with the router outlet as its child; query and hash changes must not remount it. Import `motionTransitions` and `springPresets` from `motion-tokens` for common content, copy-feedback and progress animations.
 
-`ReadingProgressRing` comes from `outline-nav`. `PageActionRail` owns the 50rem desktop breakpoint; sites no longer pass their own gutter result. `useIsMobile` from `use-mobile` owns the 768px dialog/navigation breakpoint.
+`ReadingProgressRing` comes from `outline-menu`. `PageActionRail` owns the 50rem desktop breakpoint; sites no longer pass their own gutter result. `useIsNarrowViewport` from `use-is-narrow-viewport` owns the 768px dialog/navigation breakpoint.
 
 Header navigation, action spacing and title typography use one common default. Site adapters supply labels, routes, logos and callbacks instead of title, navigation or action-area class overrides.
 
@@ -122,3 +122,31 @@ Source files are grouped by responsibility. Public imports such as
 Keep related implementation files together and import directly between modules.
 The root `index.ts` is the public runtime entry; build-only modules stay separate
 so consumers do not bundle syntax highlighters with their client code.
+
+## Naming and v2 migration
+
+Version 2 uses explicit names throughout the shared API. All five sites migrate
+together; old export names and paths are removed.
+
+| Previous name | Current name | Meaning |
+| --- | --- | --- |
+| ScreenSize / screen-size | BreakpointIndicator / breakpoint-indicator | Active Tailwind breakpoint, not physical screen dimensions |
+| useIsMobile / use-mobile | useIsNarrowViewport / use-is-narrow-viewport | Viewport below 768px, not device detection |
+| MailPopover / mail-popover | EmailPopover / email-popover | Display and copy an email address |
+| OutlineNav / outline-nav | OutlineMenu / outline-menu | Heading dropdown with reading progress |
+| useOutlineActive | useActiveOutlineId | Returns the active heading ID |
+| motion | motion-tokens | Named Motion transition configuration |
+| transitions / spring | motionTransitions / springPresets | Transition tokens and grouped spring presets |
+| rehypeCode / rehype-code | rehypeCodeHighlighting / rehype-code-highlighting | Build-time syntax highlighting |
+| articleComponents | articleMdxComponents | MDX element-to-component mapping |
+| navigateToSection | scrollToSection | Scroll and replace the current hash |
+| shareTargets | getSocialShareTargets | Build platform-specific share URLs |
+| ItemRect / UseFluidHoverReturn | HoverItemRect / UseFluidHoverResult | Hover geometry and hook result |
+
+LanguageToggle takes `isNarrowViewport` instead of `isMobile`. OutlineMenu takes
+`sectionProgress` for the per-heading map and `pageProgress` for the whole page.
+
+Use domain nouns for data and components, verbs for functions, and include the
+returned value in a hook name when it avoids ambiguity. Keep familiar primitive
+names such as Button, Dialog and cn. Local site wrappers describe their role
+(for example ContactEmailLink) rather than shadowing the shared component.

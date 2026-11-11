@@ -2,7 +2,7 @@ import { Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs } from "react/jsx-run
 import { Fragment, useState } from "react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, } from "../primitives/drawer.js";
 import { FluidHoverControls } from "../motion/fluid-hover-controls.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 export function HeaderNavigation({ items, renderLink, label, title, menuIcon, selectedIcon, }) {
     const [open, setOpen] = useState(false);
     const routeLinkClass = "flex h-9 items-center whitespace-nowrap rounded-lg px-3 font-semibold text-base text-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=page]:bg-muted";

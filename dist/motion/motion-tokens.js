@@ -1,9 +1,9 @@
-import { spring } from "./springs.js";
-export { spring };
+import { springPresets } from "./spring-presets.js";
+export { springPresets };
 /** Existing site motion, named by purpose rather than by the consuming site. */
-export const transitions = {
-    iconSwap: { ...spring.slow, bounce: 0 },
-    gentleFade: { ...spring.moderate.exit, ease: "easeOut" },
+export const motionTransitions = {
+    iconSwap: { ...springPresets.slow, bounce: 0 },
+    gentleFade: { ...springPresets.moderate.exit, ease: "easeOut" },
     instant: { duration: 0 },
     page: { duration: 0.2, ease: "easeOut" },
     content: { duration: 0.18, ease: "easeOut" },

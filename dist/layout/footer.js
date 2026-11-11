@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 const linkClass = "rounded-sm hover:text-foreground hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring";
 export function AttributionFooter({ repository, author, partner, className, }) {
     const authorLink = (_jsx("a", { href: author.href, target: "_blank", rel: "noopener noreferrer", className: linkClass, children: author.label }));

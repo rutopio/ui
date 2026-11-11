@@ -1,4 +1,4 @@
-export declare function shareTargets(url: string): readonly [{
+export declare function getSocialShareTargets(url: string): readonly [{
     readonly label: "Facebook";
     readonly url: `https://www.facebook.com/sharer/sharer.php?u=${string}`;
 }, {

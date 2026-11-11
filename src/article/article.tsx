@@ -2,7 +2,7 @@ import * as React from "react";
 import { HashIcon } from "@phosphor-icons/react";
 import { SectionHeading } from "./section-heading.js";
 import { CodeBlock } from "./code-block.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 
 export const articleLinkClassName =
   "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
@@ -92,7 +92,7 @@ function MinorHeading({
   );
 }
 
-export const articleComponents = {
+export const articleMdxComponents = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1
       className={cn(

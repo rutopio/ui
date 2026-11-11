@@ -4,14 +4,14 @@ export interface OutlineItem {
     href: string;
     depth: 2 | 3;
 }
-export declare function useOutlineActive(items: OutlineItem[], progress: Record<string, number>): string;
+export declare function useActiveOutlineId(items: OutlineItem[], sectionProgress: Record<string, number>): string;
 export declare function ReadingProgressRing({ progress }: {
     progress: number;
 }): import("react").JSX.Element;
-export declare function OutlineNav({ items, ariaLabel, pageProgress, progress, className, }: {
+export declare function OutlineMenu({ items, ariaLabel, pageProgress, sectionProgress, className, }: {
     items: OutlineItem[];
     ariaLabel: string;
     pageProgress: number;
-    progress: Record<string, number>;
+    sectionProgress: Record<string, number>;
     className?: string;
 }): import("react").JSX.Element | null;

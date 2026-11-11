@@ -1,5 +1,5 @@
 import { type Dispatch, type RefObject, type SetStateAction } from "react";
-export interface ItemRect {
+export interface HoverItemRect {
     top: number;
     height: number;
     left: number;
@@ -54,12 +54,12 @@ export interface FluidHoverActiveStore {
     subscribe: (listener: () => void) => () => void;
     get: () => number | null;
 }
-export interface UseFluidHoverReturn {
+export interface UseFluidHoverResult {
     activeIndex: number | null;
     setActiveIndex: Dispatch<SetStateAction<number | null>>;
     /** `activeIndex` as a stable store, for rows (see `useFluidHoverSelect`). */
     activeStore: FluidHoverActiveStore;
-    itemRects: ItemRect[];
+    itemRects: HoverItemRect[];
     /**
      * True once every registered item has been measured and no remeasure is
      * pending, i.e. `itemRects` describes the current item set. Gate absolutely
@@ -112,7 +112,7 @@ export interface UseFluidHoverReturn {
      */
     measureItems: () => void;
 }
-export interface PickNearestInput {
+export interface NearestHoverItemOptions {
     axis: "x" | "y" | "xy";
     /** The pointer, in viewport coordinates. */
     point: {
@@ -121,7 +121,7 @@ export interface PickNearestInput {
     };
     /** Item rects in the container's layout space (sparse: unregistered slots
      *  are undefined). */
-    rects: readonly (ItemRect | undefined)[];
+    rects: readonly (HoverItemRect | undefined)[];
     /** The container's bounding rect and live scroll / border offsets, which
      *  map layout rects into the pointer's viewport space. */
     containerRect: {
@@ -155,7 +155,7 @@ export interface PickNearestInput {
  * first item. The hook calls this once per animation frame; the docs page
  * times it.
  */
-export declare function pickNearest({ axis, point, rects, containerRect, scroll, border, layoutSize, isDisabled, }: PickNearestInput): number | null;
+export declare function findNearestHoverItemIndex({ axis, point, rects, containerRect, scroll, border, layoutSize, isDisabled, }: NearestHoverItemOptions): number | null;
 /**
  * Whether an event happened inside the element whose handler hears it.
  * React bubbles events from portalled children (a dropdown opened from a
@@ -166,15 +166,15 @@ export declare function pickNearest({ axis, point, rects, containerRect, scroll,
  * point with no target (a caller re-picking at a remembered position)
  * counts as the list's own.
  */
-export declare function isOwnEvent(e: {
+export declare function isEventFromContainer(e: {
     currentTarget?: EventTarget | null;
     target?: EventTarget | null;
 }): boolean;
 /** Set on the highlighted item (boolean attribute). */
-export declare const ACTIVE_ATTR = "data-fluid-hover-active";
+export declare const FLUID_HOVER_ACTIVE_ATTRIBUTE = "data-fluid-hover-active";
 /** Set on the container: the highlighted index, or absent. */
-export declare const ACTIVE_INDEX_ATTR = "data-fluid-hover-active-index";
-export declare function useFluidHover<T extends HTMLElement>(containerRef: RefObject<T | null>, options?: UseFluidHoverOptions): UseFluidHoverReturn;
+export declare const FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE = "data-fluid-hover-active-index";
+export declare function useFluidHover<T extends HTMLElement>(containerRef: RefObject<T | null>, options?: UseFluidHoverOptions): UseFluidHoverResult;
 /**
  * Reads one value derived from the highlighted index, re-rendering only when
  * that value changes. The selector must return a primitive:

@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { XIcon } from "@phosphor-icons/react";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { Button } from "./button.js";
-import { cn } from "../shared/utils.js";
+import { cn } from "../shared/class-names.js";
 function Dialog({ ...props }) {
     return _jsx(DialogPrimitive.Root, { "data-slot": "dialog", ...props });
 }

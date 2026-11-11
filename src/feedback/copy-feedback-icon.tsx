@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { transitions } from "../motion/motion.js";
-import { cn } from "../shared/utils.js";
+import { motionTransitions } from "../motion/motion-tokens.js";
+import { cn } from "../shared/class-names.js";
 
 const swap = (visible: boolean, reducedMotion: boolean | null) => ({
   opacity: visible ? 1 : 0,
@@ -26,8 +26,8 @@ export function CopyFeedbackIcon({
 }) {
   const reducedMotion = useReducedMotion();
   const transition = reducedMotion
-    ? transitions.gentleFade
-    : transitions.iconSwap;
+    ? motionTransitions.gentleFade
+    : motionTransitions.iconSwap;
 
   return (
     <div className={cn("relative size-4", className)}>
