@@ -60,6 +60,14 @@ function App() {
               <Paragraph lang="ja">
                 日本語の文章も、同じ文字サイズと余白で表示します。
               </Paragraph>
+              <div className="max-w-xs space-y-6">
+                <SectionHeading id="wrapped-heading">
+                  換行的章節標題，分隔線接在最後一行文字後面
+                </SectionHeading>
+                <SectionHeading>
+                  A longer heading with <em>inline emphasis</em> that wraps
+                </SectionHeading>
+              </div>
               <SectionHeading level={3} id="details">
                 次標題
               </SectionHeading>

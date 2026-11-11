@@ -43,6 +43,6 @@ test("section heading levels preserve link targets and show a divider only for h
     const html = renderToStaticMarkup(createElement(SectionHeading, { level, id: "details" }, "Details"));
     assert.match(html, new RegExp(`<h${level}\\b`));
     assert.match(html, /href="#details"/);
-    assert.equal(html.includes("min-w-4"), level === 2);
+    assert.equal(html.includes('data-slot="section-heading-divider"'), level === 2);
   }
 });
