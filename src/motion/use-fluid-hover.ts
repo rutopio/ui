@@ -5,13 +5,13 @@ import {
   useState,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useSyncExternalStore,
   type Dispatch,
   type RefObject,
   type SetStateAction,
 } from "react";
+import { useMountEffect } from "../shared/use-mount-effect.js";
 
 export interface HoverItemRect {
   top: number;
@@ -266,9 +266,6 @@ function resolveActivator(element: HTMLElement): HTMLElement {
   return element.querySelector<HTMLElement>(ACTIVATOR_SELECTOR) ?? element;
 }
 
-const useIsoLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
 /**
  * How many frames the coalesced remeasure retries while the registered items
  * still have no layout box. A popup can be in the DOM one frame before it is
@@ -292,10 +289,7 @@ export function useFluidHover<T extends HTMLElement>(
       ? (gapClick.maxDistance ?? Infinity)
       : Infinity;
   const itemsRef = useRef(new Map<number, HTMLElement>());
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  // Mirrored for handlers that read it outside a render (the gap click, a
-  // row registering). Written in a layout effect, which runs before any
-  // row's registration effect in the same commit.
+  // The store is authoritative for both pointer handlers and subscribed rows.
   const activeIndexRef = useRef<number | null>(null);
   const listenersRef = useRef(new Set<() => void>());
   const activeStore = useMemo<FluidHoverActiveStore>(
@@ -310,38 +304,32 @@ export function useFluidHover<T extends HTMLElement>(
     }),
     []
   );
-  useIsoLayoutEffect(() => {
-    activeIndexRef.current = activeIndex;
-    // The store lags `activeIndex` by this one effect, so a row rendering
-    // alongside the change reads the old value; subscribed rows re-render
-    // with the new one in this same commit, before paint.
-    listenersRef.current.forEach((listener) => {
-      listener();
-    });
-  }, [activeIndex]);
-
-  // The state, in the DOM: `data-fluid-hover-active` on the highlighted item
-  // and `data-fluid-hover-active-index` on the container. Devtools shows it
-  // and a test asserts on it without waiting for a frame. React does not
-  // manage these attributes, so it never clobbers them.
-  useEffect(() => {
-    const container = containerRef.current;
-    // The registry map itself, which is never replaced: the cleanup reads
-    // who holds the index by then, not who held it now.
-    const items = itemsRef.current;
-    if (activeIndex === null) container?.removeAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE);
-    else container?.setAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE, String(activeIndex));
-    const active = activeIndex === null ? undefined : items.get(activeIndex);
-    active?.setAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE, "");
-    return () => {
-      active?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
-      // A row that re-registered under this index while it was highlighted
-      // (a remount under a new key) was marked by registerItem, not by this
-      // effect: drop the mark from whatever element holds the index now.
-      if (activeIndex !== null)
-        items.get(activeIndex)?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
-    };
-  }, [activeIndex, containerRef]);
+  const activeIndex = useSyncExternalStore(
+    activeStore.subscribe,
+    activeStore.get,
+    () => null
+  );
+  const setActiveIndex = useCallback<Dispatch<SetStateAction<number | null>>>(
+    (action) => {
+      const previous = activeIndexRef.current;
+      const next = typeof action === "function" ? action(previous) : action;
+      if (next === previous) return;
+      if (previous !== null)
+        itemsRef.current.get(previous)?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
+      activeIndexRef.current = next;
+      const container = containerRef.current;
+      if (next === null)
+        container?.removeAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE);
+      else {
+        container?.setAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE, String(next));
+        itemsRef.current.get(next)?.setAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE, "");
+      }
+      listenersRef.current.forEach((listener) => {
+        listener();
+      });
+    },
+    [containerRef]
+  );
   const [itemRects, setItemRects] = useState<HoverItemRect[]>([]);
   const [isMeasured, setIsMeasured] = useState(false);
   const itemRectsRef = useRef<HoverItemRect[]>([]);
@@ -498,13 +486,14 @@ export function useFluidHover<T extends HTMLElement>(
         previous?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
         itemsRef.current.delete(index);
         // The highlighted row is gone: nothing should stay lit or receive a
-        // routed click until the pointer picks again. Decided when the
-        // update applies, after this commit's registrations, so a row that
-        // only moved index hands the highlight to the row now under it.
+        // routed click until the pointer picks again. Wait for this commit's
+        // registrations so a replacement row can retain the same index.
         if (index === activeIndexRef.current) {
-          setActiveIndex((current) =>
-            current === index && !itemsRef.current.has(index) ? null : current
-          );
+          queueMicrotask(() => {
+            if (!itemsRef.current.has(index)) {
+              setActiveIndex((current) => current === index ? null : current);
+            }
+          });
         }
       }
       // Coalesce rapid register/unregister calls (e.g. when an AnimatePresence
@@ -513,7 +502,7 @@ export function useFluidHover<T extends HTMLElement>(
       // container's children swap.
       remeasure();
     },
-    [remeasure, getItemRo]
+    [remeasure, getItemRo, setActiveIndex]
   );
 
   const handleMouseMove = useCallback(
@@ -575,7 +564,7 @@ export function useFluidHover<T extends HTMLElement>(
         setActiveIndex(next);
       });
     },
-    [axis, containerRef, isItemDisabled, nearest]
+    [axis, containerRef, isItemDisabled, nearest, setActiveIndex]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -588,7 +577,7 @@ export function useFluidHover<T extends HTMLElement>(
       rafIdRef.current = null;
     }
     setActiveIndex(null);
-  }, []);
+  }, [setActiveIndex]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
@@ -649,8 +638,12 @@ export function useFluidHover<T extends HTMLElement>(
   }, [containerRef, scheduleMeasurement]);
 
   // Clean up rAF and the item observer on unmount
-  useEffect(() => {
+  useMountEffect(() => {
     return () => {
+      containerRef.current?.removeAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE);
+      itemsRef.current.forEach((element) => {
+        element.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
+      });
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
       }
@@ -660,7 +653,7 @@ export function useFluidHover<T extends HTMLElement>(
       itemRoRef.current?.disconnect();
       itemRoRef.current = null;
     };
-  }, []);
+  });
 
   return {
     activeIndex,
