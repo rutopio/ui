@@ -1,6 +1,5 @@
 import { springPresets } from "./spring-presets.js";
 export { springPresets };
-/** Existing site motion, named by purpose rather than by the consuming site. */
 export declare const motionTransitions: {
     readonly iconSwap: {
         readonly type: "spring";

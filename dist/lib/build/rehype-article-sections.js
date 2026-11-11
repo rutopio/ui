@@ -24,8 +24,6 @@ function groupBlocksWithRhythm(children) {
     }
     return flow ? [flow] : [];
 }
-// Match the article rhythm: 64px from paragraphs to the next heading and
-// between h2 sections, 8px after headings, and 24px between body blocks.
 export function rehypeArticleSections() {
     return (tree) => {
         const children = tree.children;
@@ -36,8 +34,7 @@ export function rehypeArticleSections() {
         const prelude = [];
         let body;
         for (const child of children) {
-            // Frontmatter exports compile to MDX ESM and render no DOM. Keep them at
-            // the root so they cannot create an empty prelude before the first h2.
+            // MDX exports render no DOM and must not create an empty prelude section.
             if (child.type === "mdxjsEsm") {
                 grouped.push(child);
                 continue;

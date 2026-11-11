@@ -6,7 +6,6 @@
     overflow-y: hidden;
   }
 
-  /* Keep IntD's lower spacing for aligned and multiline display equations. */
   main .katex-display:has(mtable) > .katex {
     padding-bottom: 0.3em;
   }

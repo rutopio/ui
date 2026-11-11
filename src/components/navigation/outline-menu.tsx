@@ -46,7 +46,6 @@ export function ReadingProgressRing({ progress }: { progress: number }) {
   );
 }
 
-// An action-rail progress ring reveals a single-level heading dropdown.
 export function OutlineMenu({
   items,
   ariaLabel,

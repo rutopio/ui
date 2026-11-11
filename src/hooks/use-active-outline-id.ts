@@ -1,8 +1,6 @@
 import { useMemo } from "react";
 import type { OutlineItem } from "../types/outline.js";
 
-// Text outline shown in the mobile drawer: full labels, the active one bolded.
-// Compute the deepest entered item from reading progress.
 export function useActiveOutlineId(
   items: OutlineItem[],
   sectionProgress: Record<string, number>,

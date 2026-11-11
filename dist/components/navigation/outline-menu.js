@@ -11,7 +11,6 @@ export function ReadingProgressRing({ progress }) {
     const reducedMotion = useReducedMotion();
     return (_jsxs("svg", { "aria-hidden": "true", viewBox: "0 0 16 16", className: cn("size-4", "-rotate-90"), children: [_jsx("circle", { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", className: "opacity-20" }), _jsx(motion.circle, { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeDasharray: RING_CIRCUMFERENCE, initial: false, animate: { strokeDashoffset: (1 - progress) * RING_CIRCUMFERENCE }, transition: reducedMotion ? motionTransitions.instant : motionTransitions.progress })] }));
 }
-// An action-rail progress ring reveals a single-level heading dropdown.
 export function OutlineMenu({ items, ariaLabel, pageProgress, sectionProgress, className, }) {
     const activeId = useActiveOutlineId(items, sectionProgress);
     if (items.length === 0)

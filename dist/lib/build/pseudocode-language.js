@@ -1,4 +1,3 @@
-/** TextMate grammar for algorithm notation, including arrows and mathematical identifiers. */
 export const pseudocodeLanguage = {
     name: "pseudocode",
     scopeName: "source.pseudocode",

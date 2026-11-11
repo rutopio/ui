@@ -1,14 +1,6 @@
 "use client";
 import { useRef, useState, useCallback, useEffect, useMemo, useSyncExternalStore, } from "react";
 import { useMountEffect } from "./use-mount-effect.js";
-/**
- * The rule, as one pure function: an item the pointer is inside wins;
- * otherwise the item whose center is nearest does, so a pointer in a gap, in
- * the padding, or past the last row still lands. `y` and `x` measure one
- * coordinate; `xy` measures the straight line to each center. Ties keep the
- * first item. The hook calls this once per animation frame; the docs page
- * times it.
- */
 export function findNearestHoverItemIndex({ axis, point, rects, containerRect, scroll, border, layoutSize, isDisabled, }) {
     const scaleX = layoutSize.width > 0 ? containerRect.width / layoutSize.width : 1;
     const scaleY = layoutSize.height > 0 ? containerRect.height / layoutSize.height : 1;
@@ -59,45 +51,23 @@ export function findNearestHoverItemIndex({ axis, point, rects, containerRect, s
     }
     return containingIndex ?? closestIndex;
 }
-/**
- * Whether an event happened inside the element whose handler hears it.
- * React bubbles events from portalled children (a dropdown opened from a
- * row, a submenu, a tooltip) through their React ancestors, so a list's
- * handlers also hear moves, clicks and focus changes that happened in
- * another layer. The hook's own move and click handlers skip those; a
- * consumer with handlers of its own (focus, keys) can call this too. A bare
- * point with no target (a caller re-picking at a remembered position)
- * counts as the list's own.
- */
+/** React portals bubble through the component tree but are outside the container DOM. */
 export function isEventFromContainer(e) {
     const { currentTarget, target } = e;
     if (!(currentTarget instanceof Node) || !(target instanceof Node))
         return true;
     return currentTarget.contains(target);
 }
-/** Set on the highlighted item (boolean attribute). */
 export const FLUID_HOVER_ACTIVE_ATTRIBUTE = "data-fluid-hover-active";
-/** Set on the container: the highlighted index, or absent. */
 export const FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE = "data-fluid-hover-active-index";
 const ACTIVATOR_SELECTOR = "a[href], button, [role='menuitem'], [role='menuitemradio'], [role='menuitemcheckbox'], [role='option'], [role='radio'], [role='checkbox'], [role='tab'], [role='link'], [role='button']";
-/**
- * The element a routed click should land on. A registered item is usually
- * the interactive row itself; when it is only a box around one (a sidebar
- * row around its button, a card around its link), the first control inside
- * is what a real click on the row would have reached.
- */
 function resolveActivator(element) {
     if (element.matches(ACTIVATOR_SELECTOR) || element.hasAttribute("tabindex")) {
         return element;
     }
     return element.querySelector(ACTIVATOR_SELECTOR) ?? element;
 }
-/**
- * How many frames the coalesced remeasure retries while the registered items
- * still have no layout box. A popup can be in the DOM one frame before it is
- * laid out; retrying beats publishing zeroed rects, and the cap keeps a list
- * that stays hidden for good from spinning frames forever.
- */
+// Retry delayed popup layout, but stop if the popup stays hidden.
 const measurementAttempts = 3;
 export function useFluidHover(containerRef, options = {}) {
     const { axis = "y", isItemDisabled, gapClick = true, nearest = false, } = options;
@@ -142,17 +112,10 @@ export function useFluidHover(containerRef, options = {}) {
     const itemRectsRef = useRef([]);
     const [session, setSession] = useState(0);
     const sessionRef = useRef(0);
-    // Set when the pointer enters; the pointer's first change of highlight
-    // starts the new session, in the same update as the change itself.
+    // Update the session and its first highlight together to avoid animating from a stale row.
     const sessionPendingRef = useRef(false);
     const rafIdRef = useRef(null);
     const remeasureRafIdRef = useRef(null);
-    /**
-     * Publishes a rect for every registered item. Returns false when the
-     * measurement could not be completed (no container, or an item without a
-     * layout box) — nothing is published in that case, so the last complete
-     * measurement stands instead of being overwritten with zeroes.
-     */
     const runMeasurement = useCallback(() => {
         const container = containerRef.current;
         if (!container)
@@ -160,11 +123,7 @@ export function useFluidHover(containerRef, options = {}) {
         const rects = [];
         let everyItemHasLayout = true;
         itemsRef.current.forEach((element, index) => {
-            // An element inside a display:none / not-yet-laid-out popup has no
-            // offsetParent and reports every offset as 0. Publishing that would pin
-            // overlays to the top of the list, so treat the whole pass as
-            // incomplete. A boxless element is the only case: `position: fixed`
-            // items also have no offsetParent but do have a size.
+            // Hidden elements report zero offsets; fixed-position elements can still have a size.
             const hasLayoutBox = element.offsetParent !== null ||
                 element.offsetWidth > 0 ||
                 element.offsetHeight > 0;
@@ -172,15 +131,7 @@ export function useFluidHover(containerRef, options = {}) {
                 everyItemHasLayout = false;
                 return;
             }
-            // Use offset* instead of getBoundingClientRect so measurements are
-            // unaffected by CSS transforms (e.g. scaleY animation on the parent
-            // motion.div). offsetTop/offsetLeft are layout values relative to the
-            // offsetParent (the scroll container), matching the coordinate space
-            // used by `position: absolute` children. Items nested inside positioned
-            // descendants of the container (a sidebar sub-menu's rows live inside a
-            // positioned row) accumulate those ancestors' offsets, so every rect
-            // lands in the container's own coordinate space; for a flat list the
-            // loop never runs and this is exactly the plain offsetTop/offsetLeft.
+            // Layout offsets ignore transforms. Accumulate positioned ancestors to match the overlay container.
             let top = element.offsetTop;
             let left = element.offsetLeft;
             let ancestor = element.offsetParent;
@@ -200,8 +151,6 @@ export function useFluidHover(containerRef, options = {}) {
         });
         if (!everyItemHasLayout)
             return false;
-        // Skip the state update when nothing moved (a cheap top/left/width/height
-        // compare) so redundant remeasures don't churn re-renders.
         const prev = itemRectsRef.current;
         let changed = prev.length !== rects.length;
         for (let i = 0; !changed && i < rects.length; i++) {
@@ -226,12 +175,6 @@ export function useFluidHover(containerRef, options = {}) {
     const measureItems = useCallback(() => {
         runMeasurement();
     }, [runMeasurement]);
-    /**
-     * The hook's single measurement pass: coalesces every trigger (item
-     * registration, container resize) into one remeasure on the next frame and
-     * is the only place readiness is reported, so `isMeasured` can never turn
-     * true while another pass is still queued.
-     */
     const scheduleMeasurement = useCallback((attempts) => {
         const attempt = (attemptsLeft) => {
             if (remeasureRafIdRef.current !== null) {
@@ -250,17 +193,11 @@ export function useFluidHover(containerRef, options = {}) {
         attempt(attempts);
     }, [runMeasurement]);
     const remeasure = useCallback(() => {
-        // Readiness drops first: until the pass below settles, the published rects
-        // may not describe what is on screen, and an overlay positioned from them
-        // would be corrected after mounting — which animates as a slide.
+        // Hide overlays until corrected rects are ready, so they do not animate from a stale position.
         setIsMeasured(false);
         scheduleMeasurement(measurementAttempts);
     }, [scheduleMeasurement]);
-    // Observes the registered items themselves (not just the container): rows
-    // that change size in place — e.g. the site-wide size step flipping while a
-    // selection background is up — must invalidate the published rects even when
-    // the container the effect below captured has since been remounted and the
-    // ref points at a different element than the one being observed.
+    // Rows can resize without changing the container size.
     const itemRoRef = useRef(null);
     const getItemRo = useCallback(() => {
         if (itemRoRef.current === null && typeof ResizeObserver !== "undefined") {
@@ -279,13 +216,10 @@ export function useFluidHover(containerRef, options = {}) {
             const previous = itemsRef.current.get(index);
             if (previous)
                 itemRoRef.current?.unobserve(previous);
-            // The mark leaves with the element: a row that only moved to another
-            // index (a filtering list re-ordering) must not carry it there.
+            // A reused DOM node must not carry its highlight to a different index.
             previous?.removeAttribute(FLUID_HOVER_ACTIVE_ATTRIBUTE);
             itemsRef.current.delete(index);
-            // The highlighted row is gone: nothing should stay lit or receive a
-            // routed click until the pointer picks again. Wait for this commit's
-            // registrations so a replacement row can retain the same index.
+            // Wait for this commit's registrations before clearing a possibly replaced row.
             if (index === activeIndexRef.current) {
                 queueMicrotask(() => {
                     if (!itemsRef.current.has(index)) {
@@ -294,10 +228,6 @@ export function useFluidHover(containerRef, options = {}) {
                 });
             }
         }
-        // Coalesce rapid register/unregister calls (e.g. when an AnimatePresence
-        // remounts a list of rows) into a single remeasure on the next frame,
-        // so consumers don't have to manually call measureItems after the
-        // container's children swap.
         remeasure();
     }, [remeasure, getItemRo, setActiveIndex]);
     const handleMouseMove = useCallback((e) => {
@@ -316,9 +246,7 @@ export function useFluidHover(containerRef, options = {}) {
                 return;
             let next;
             if (!nearest) {
-                // The item under the pointer, or none. Items can nest (a sidebar
-                // row's sub-rows sit inside it): the innermost one holding the
-                // pointer wins.
+                // Nested items take precedence over their containing row.
                 next = null;
                 let hit = null;
                 for (const [index, el] of itemsRef.current) {
@@ -354,8 +282,7 @@ export function useFluidHover(containerRef, options = {}) {
                 sessionRef.current += 1;
                 setSession(sessionRef.current);
             }
-            // Empty space put the highlight out: the next item lit fades it in
-            // there, as on entering, instead of sliding from the last one.
+            // After crossing a gap, fade in at the next row instead of sliding from the old one.
             if (next === null)
                 sessionPendingRef.current = true;
             setActiveIndex(next);
@@ -375,29 +302,19 @@ export function useFluidHover(containerRef, options = {}) {
         const target = e.target;
         if (!target)
             return;
-        // Inside an item: the item owns the click.
         for (const element of itemsRef.current.values()) {
             if (element.contains(target))
                 return;
         }
-        // A row that unmounted while its own click was still bubbling (a pick
-        // whose primitive re-renders the list synchronously, like a "create"
-        // row that becomes a real item) already landed; it is not a gap.
+        // A click may unmount its row before bubbling here; do not route it a second time.
         if (!target.isConnected)
             return;
-        // Nor is a click from something rendered through a portal (a dropdown
-        // opened from a row, a submenu): it bubbles here through React, but it
-        // never happened between these rows.
         if (!isEventFromContainer(e))
             return;
-        // A control that sits between the rows (a search field at the top of
-        // a menu, a footer button) keeps its own click too.
         const control = target.closest?.("input, textarea, select, button, a, summary, [contenteditable], [role='textbox'], [role='searchbox'], [role='button']");
         if (control)
             return;
-        // Without nearest nothing is lit between items. The highlight updates a
-        // frame late, so one still lit from the item just left must not take
-        // a click that landed in the gap.
+        // Pointer updates lag by one frame; a stale highlight must not receive gap clicks.
         if (gapClick === false || !nearest)
             return;
         const index = activeIndexRef.current;
@@ -413,15 +330,9 @@ export function useFluidHover(containerRef, options = {}) {
             if (Math.hypot(dx, dy) > gapClickMaxDistance)
                 return;
         }
-        // A real DOM click on the item, so its own handlers (and the primitive
-        // wrapping it, if any) run exactly as if the pointer had been inside.
         resolveActivator(element).click();
     }, [isItemDisabled, gapClick, gapClickMaxDistance, nearest]);
-    // Remeasure when the container resizes — a reflow moves items even though
-    // the registered set is unchanged, which would otherwise leave itemRects
-    // stale. Coalesced through the same rAF as register/unregister. Readiness is
-    // deliberately not dropped: the item set is unchanged, so the published rects
-    // stay usable, and hiding overlays on every reflow would flicker them.
+    // Keep overlays visible during reflow; invalidating readiness here would cause flicker.
     useEffect(() => {
         const container = containerRef.current;
         if (!container || typeof ResizeObserver === "undefined")
@@ -430,7 +341,6 @@ export function useFluidHover(containerRef, options = {}) {
         ro.observe(container);
         return () => ro.disconnect();
     }, [containerRef, scheduleMeasurement]);
-    // Clean up rAF and the item observer on unmount
     useMountEffect(() => {
         return () => {
             containerRef.current?.removeAttribute(FLUID_HOVER_ACTIVE_INDEX_ATTRIBUTE);
@@ -467,24 +377,10 @@ export function useFluidHover(containerRef, options = {}) {
     };
 }
 const subscribeNever = () => () => { };
-/**
- * Reads one value derived from the highlighted index, re-rendering only when
- * that value changes. The selector must return a primitive:
- *
- *   const isActive = useFluidHoverSelect(ctx?.activeStore, (i) => i === index);
- *
- * A missing store (a row rendered outside a list) reads as nothing lit.
- */
+/** Return a stable snapshot from `select`; fresh objects would trigger repeated renders. */
 export function useFluidHoverSelect(store, select) {
     return useSyncExternalStore(store?.subscribe ?? subscribeNever, () => select(store ? store.get() : null), () => select(null));
 }
-/**
- * Registers an item's element with its list for as long as it is mounted.
- * The one way rows join a list: pass the hook's `registerItem` (or the copy
- * a context hands down), the row's index, and its ref. Either may be
- * missing for a row rendered outside a list (a standalone card, an accordion
- * item that is not grouped); then nothing is registered.
- */
 export function useRegisterFluidHoverItem(registerItem, index, ref) {
     useEffect(() => {
         if (!registerItem || index === undefined)

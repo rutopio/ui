@@ -1,3 +1,3 @@
 import rehypePrettyCode from "rehype-pretty-code";
-/** Shared build-time highlighting policy. Import only from MDX build configuration. */
+/** Build-time only; importing this in client code bundles the syntax highlighter. */
 export declare function rehypeCodeHighlighting(): ReturnType<typeof rehypePrettyCode>;

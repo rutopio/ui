@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from "react";
 import { useMountEffect } from "./use-mount-effect.js";
-/** Copy completion owns its timer; rendering never starts or restarts it. */
 export function useCopyFeedback() {
     const [copied, setCopied] = useState(false);
     const timer = useRef(undefined);

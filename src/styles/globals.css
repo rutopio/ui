@@ -207,7 +207,6 @@
   }
 }
 
-/* Variants and utility used by the checked-in shadcn components. */
 @custom-variant data-open {
   &:where([data-state="open"]),
   &:where([data-open]:not([data-open="false"])) {

@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { useCopyFeedback } from "../../hooks/use-copy-feedback.js";
 import { Button } from "../ui/button.js";
 import { CopyFeedbackIcon } from "../feedback/copy-feedback-icon.js";
-/** A shared pre renderer; syntax highlighting is supplied at build time. */
 export function CodeBlock({ children, ...props }) {
     const preRef = useRef(null);
     const [copied, showCopied, clearCopied] = useCopyFeedback();

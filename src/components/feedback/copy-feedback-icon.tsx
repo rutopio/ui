@@ -11,10 +11,6 @@ const swap = (visible: boolean, reducedMotion: boolean | null) => ({
   filter: reducedMotion ? "none" : visible ? "blur(0px)" : "blur(4px)",
 });
 
-// Cross-fades an idle icon to a check on success: the two glyphs sit stacked and
-// swap with a spring scale + blur, matching the mail-dialog feedback. Shared so
-// every "copied!" affordance animates the same way. `idle` overrides the default
-// copy glyph (e.g. a link icon).
 export function CopyFeedbackIcon({
   copied,
   idle = <CopyIcon className="size-4" aria-hidden="true" />,

@@ -7,7 +7,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { createHighlighter } from "shiki";
 import { pseudocodeLanguage } from "./pseudocode-language.js";
 
-/** Shared build-time highlighting policy. Import only from MDX build configuration. */
+/** Build-time only; importing this in client code bundles the syntax highlighter. */
 export function rehypeCodeHighlighting(): ReturnType<typeof rehypePrettyCode> {
   return rehypePrettyCode({
     theme: { light: "github-light", dark: "github-dark" },

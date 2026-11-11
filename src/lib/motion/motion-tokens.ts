@@ -1,7 +1,6 @@
 import { springPresets } from "./spring-presets.js";
 export { springPresets };
 
-/** Existing site motion, named by purpose rather than by the consuming site. */
 export const motionTransitions = {
   iconSwap: { ...springPresets.slow, bounce: 0 },
   gentleFade: { ...springPresets.moderate.exit, ease: "easeOut" },
