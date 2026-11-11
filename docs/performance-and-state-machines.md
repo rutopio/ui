@@ -26,7 +26,7 @@ database bindings. No schema or data migration is needed for this item.
 | URL parsing | Complete; redundant redirect and asset parsing removed |
 | Regular expression allocation | Complete; static patterns moved to module scope |
 | JSONB field promotion | Complete; no JSONB storage or queries |
-| Sequential asynchronous work | In review |
+| Sequential asynchronous work | Complete; independent work overlaps |
 | State machines and regression fixes | In review |
 
 ## URL parsing
@@ -69,3 +69,24 @@ per emoji. Neither is a database column.
 Validation: searched runtime source and manifests for JSONB, JSON query
 functions, and database clients, then reviewed the asset loader call sites.
 Portfolio articles describing other applications are not runtime database use.
+
+## Asynchronous hot paths
+
+- Writing starts the article module import and translation lookup together
+  after validating the article metadata.
+- EmojiSalon starts JSON body parsing and WASM initialization together after
+  checking the emoji asset status and content type. Unknown emoji still return
+  404 without starting WASM.
+- UI sound playback prepares the audio buffer while resuming AudioContext.
+  Playback still waits for both; both failures have rejection handlers.
+
+Regression tests hold one operation pending and verify that the other has
+started. They also check returned content, image bytes, and rejection handling.
+No wall-clock speedup is claimed without measurements.
+
+Intentional dependencies remain sequential: response body reads require their
+response; rasterization requires SVG; delivery requires the raster; emoji
+fallback assets must preserve candidate priority; cache misses must be checked
+before rendering. Writing's HTML shell fetch remains gated by a known route
+and GET method to avoid extra reads for HEAD, missing metadata, or unknown
+routes. Portfolio already reads HTML and SEO metadata concurrently.

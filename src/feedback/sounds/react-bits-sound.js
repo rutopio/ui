@@ -1054,13 +1054,10 @@ function preloadSound(recipe, tune = {}) {
 async function playSound(recipe, tune = {}) {
   if (typeof window === "undefined" || muted || masterVolume <= 0) return;
   const context = audio();
-  if (context.state === "suspended") await context.resume();
-  const buffer = await bufferFor(
-    recipe,
-    tune,
-    context.sampleRate,
-    pickVariant(recipe)
-  );
+  const [, buffer] = await Promise.all([
+    context.state === "suspended" ? context.resume() : undefined,
+    bufferFor(recipe, tune, context.sampleRate, pickVariant(recipe)),
+  ]);
   const source = context.createBufferSource();
   source.buffer = buffer;
   const variation = clamp(tune.variation ?? 0, 0, 1);
