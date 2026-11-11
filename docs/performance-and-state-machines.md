@@ -28,6 +28,7 @@ database bindings. No schema or data migration is needed for this item.
 | JSONB field promotion | Complete; no JSONB storage or queries |
 | Sequential asynchronous work | Complete; independent work overlaps |
 | State machines and regression fixes | Complete; 11 confirmed issue groups fixed |
+| React effect ownership | Complete; state chains removed and external synchronization reviewed |
 
 ## URL parsing
 
@@ -106,7 +107,7 @@ refs are named here even where the code has no enum.
 | Writing `src/lib/posts.ts`; Portfolio `src/lib/webmcp.ts` | Empty, loading, ready | Read: empty → loading; concurrent read joins; success → ready; failure → empty | Failed HTTP responses are not indexed; failed requests remain retryable |
 | Both sites `src/lib/search-index-store.ts` | Idle, loading, ready, failed | Open search → loading; success → ready; failure → failed; reopen → loading | One pending request; a published snapshot has stable identity |
 | Mahjong `src/lib/tiles-data.ts` | Empty, loading, ready | Import → loading; success → ready; failure → empty | Concurrent callers share the import; application cache cannot retain rejection forever |
-| EmojiSalon `src/lib/emoji-utils.ts` and `src/hooks/use-emoji-svg.ts` | Uncached, trying original, trying fallback, cached, query error | Read → original; concurrent reads join; unavailable → fallback; success → cached; exhausted → query error/uncached | Original ID wins; missing data is a query error, so retries remain possible |
+| EmojiSalon `src/lib/emoji-utils.ts`, `src/lib/emoji-query.ts`, and `src/hooks/use-emoji-svg.ts` | Uncached, trying original, trying fallback, cached, query error | Read → original; concurrent reads join; unavailable → fallback; success → cached; exhausted → query error/uncached | Original ID wins; missing data is a query error, so retries remain possible |
 | IntD, Mahjong, EmojiSalon `functions/og.ts` | Uninitialized, initializing, ready | First valid request → initializing; concurrent requests join; success → ready; failure → uninitialized | Only successful initialization is permanent; resvg marks itself initialized only after success |
 | Mahjong `functions/og.ts`, `functions/img/[tile].ts` | Invalid, cache lookup, hit, render, cache write | Invalid → 400; hit → response; miss → render; render → response plus `waitUntil` write | No invalid input is rendered; response body is cloned for caching |
 | Site middleware | Redirect, bypass, metadata lookup, rewrite, missing | Preview host → redirect; asset/non-GET → bypass; known page → rewrite; unknown page → 404 | Canonical host is fixed; path/query survive; HEAD does not consume an HTML body |
@@ -120,11 +121,11 @@ promise recovery from a deleted deployment chunk without a reload.
 
 | Machine and owning files | States | Event and transition | Invariant |
 | --- | --- | --- | --- |
-| EmojiSalon `src/contexts/emoji-context.tsx` | Empty, ready, loading next selection | Select → loading; newest success → ready; stale success ignored; failure keeps previous ready snapshot | Identity, label, geometry, and original palette belong to the same emoji |
+| EmojiSalon `src/contexts/emoji-context.tsx`, `src/lib/prepare-emoji-route.ts` | Initial query pending/error, ready, loading next selection | Route resolves URL/storage/random input; query success supplies the initial snapshot; select → loading; newest success → ready; stale success ignored; failure keeps previous ready snapshot | Identity, label, geometry, and palette change together; late initial data cannot replace edits; failed or cancelled route loads do not replace stored selections |
 | Emoji palette persistence in the same provider | Clean, dirty with timer, saved, disposed | Edit → dirty; later edit replaces timer; timeout → saved; select/reset/randomize/dispose invalidates old timer | Old edits cannot overwrite a newer selection or route |
 | Emoji export in the same provider | Idle, decoding, drawing, delivering, completed/failed/cancelled | Export → decode → draw → delivery; decode/delivery failure → failed; share cancellation → cancelled | Every export owns its canvas; preview is published only after decoding |
 | Emoji showcase `src/components/showcase/showcase-section.tsx` | Idle, rendering, download/share, done/failed/cancelled | Click → independent canvas render → delivery; decode/delivery failure → error feedback | Each operation captures its own SVG and canvas |
-| IntD `src/hooks/use-decomposition.ts` | Empty input, invalid input, results by sort mode, exhausted | Submit validates; valid submit clears old modes; mode switch reuses or computes; shuffle excludes seen results; blank submit clears session | Persisted values have validated shapes; current mode, target, result offsets, and seen keys are usable |
+| IntD `src/hooks/use-decomposition.ts`, `src/lib/prepare-calculation-route.ts` | Empty input, invalid input, results by sort mode, exhausted | Route restores a validated target or prepares the URL target before rendering; preloads do not mutate storage; submit validates; valid submit clears old modes; mode switch reuses or computes; shuffle excludes seen results; blank submit clears session | Persisted values have validated shapes; current mode, target, result offsets, and seen keys are usable |
 | IntD `src/components/settings-dialog.tsx` | Closed, editing, invalid, saved, reset confirmation | Open → edit; invalid save stays open; valid save persists and clears calculations; reset requires confirmation | Only valid settings reach the solver; result data is invalidated when settings change |
 | IntD `src/hooks/use-local-storage.ts` | Persistent, volatile fallback, absent | Read parses and validates; write persists or falls back; remove → absent; storage event refreshes snapshot | React sees stable raw snapshots; unavailable storage does not crash rendering |
 | Mahjong `src/hooks/use-mahjong-state.ts`, `src/lib/url-state.ts` | Default, edited, empty input | Initialize from URL; input/theme/color edit → state and URL; clear → explicit empty input | URL represents the current generator state, including empty input |
@@ -136,10 +137,10 @@ promise recovery from a deleted deployment chunk without a reload.
 | --- | --- | --- | --- |
 | UI `src/navigation/action-menu.tsx` | Closed, hover delay, hover open, click open | Enter schedules; leave cancels/closes hover; click promotes; arrows move focus; Escape/outside closes | At most one hover timer/focus frame; cleanup cancels both; empty menus do not open |
 | UI popover, search command, language toggle, site header; site outline/download/share dialogs | Closed/open, plus focused item or selected tab | Trigger/keyboard → open; selection/Escape/outside → close | Controlled state belongs to the caller; uncontrolled state stays local; focus behavior delegates to primitives where applicable |
-| UI `src/motion/use-fluid-hover.ts` | Unmeasured, measured inactive, active item, leaving, disposed | Registration/resize measures; pointer/focus activates; leave clears; cleanup removes observers/listeners | Active geometry comes from registered items; scroll locking does not move the highlight |
+| UI `src/motion/use-fluid-hover.ts` | Unmeasured, measured inactive, active item, leaving, disposed | Registration/resize measures; pointer/focus activates; leave clears; cleanup removes observers/listeners | Active geometry comes from registered items; handlers, DOM attributes, and React subscribers read one selection store |
 | UI `src/theme/theme-toggle.tsx` | Not hydrated, idle, transitioning | Hydrate resolves theme; reduced motion toggles directly; click starts transition; settlement returns to idle | One active transition; temporary styles are removed; failure does not swallow the requested theme |
 | UI `src/feedback/page-share.ts`, `email-popover.tsx`; Mahjong action buttons | Idle, copying, copied, failed; native sharing or dialog | Clipboard success → copied; another success renews feedback; timeout → idle; cancellation → idle | Failed copying never shows success; timers do not outlive their component |
-| UI `src/article/code-block.tsx` | Idle, copied, error | Clipboard settles → feedback; feedback change restarts expiry; unmount clears timer | Feedback describes the clipboard result; effect cleanup owns expiry |
+| UI `src/article/code-block.tsx` | Idle, copied, error | Clipboard success starts or renews expiry; failure clears copied feedback; timeout → idle; unmount cancels the timer | Completion handlers own expiry; rendering does not start timers |
 | UI `src/feedback/sounds/react-bits-sound.js` | Muted/unavailable, suspended/running, buffer loading/ready, playing/ended | Play resumes and renders concurrently; both ready → playback; ended → resolve | Render failures can retry; rejected evicted buffers cannot remove a newer cache entry |
 | UI article image; site tile preview | Loading, loaded/error, zoom closed/open | Source change/load updates preview; zoom opens/closes | Zoom and measurement use the current element; image ownership stays with the component |
 | UI `section-navigation.ts` | Idle, delayed scroll, cancelled/completed | Heading click replaces pending scroll; URL change cancels its effect; timeout on the same URL → scroll and fragment | An old click cannot navigate a new route |
@@ -172,16 +173,84 @@ reachable sequence rather than merely checking source text.
 | STATE-10: Showcase caches failed loads as success | P2 | `useShowcaseEmojiData` returned `null` on fetch failure with infinite stale time. React Query treated it as permanent successful data and skipped retries. | Fixed: reject missing data; query-client tests cover retry and successful caching. Concurrent raw emoji reads also share one pending request. |
 | STATE-11: Delayed outline navigation crosses routes | P2 | `scrollToSection` waited 350 ms without checking the current URL or cancelling an earlier click. Navigating to another article with the same heading ID let the old callback scroll it and change its fragment. | Fixed: latest click wins and callbacks verify the source URL; timer tests cover both cases. |
 
+## React effect review
+
+The review covers runtime source in all six repositories, including effects
+hidden behind `useMountEffect` and layout effects. Application state should be
+derived during rendering or changed by its owning event. External systems still
+need subscriptions and cleanup.
+
+### Changes
+
+| Owner | Previous coupling | Current ownership |
+| --- | --- | --- |
+| UI `useCopyFeedback` and `CodeBlock`; Mahjong action buttons | Success state triggered an effect that created the expiry timer | Clipboard completion starts or renews the timer directly; mount cleanup cancels it |
+| UI `useFluidHover` | React state was copied into a ref/store in a layout effect, then another effect updated DOM attributes | One store publishes selection and DOM changes synchronously; React reads it with `useSyncExternalStore` |
+| Portfolio and Writing `useReadingProgress` | An effect mirrored browser readings into local React state | A subscribed store caches section readings and preserves snapshot identity when values do not change |
+| IntD `useDecomposition` | A guarded mount effect copied search parameters into several storage states and calculated results | Route `beforeLoad` restores or prepares the target; submit, strategy, and shuffle handlers own later changes |
+| IntD `GlowCard` | A prop change triggered imperative animation controls | The overlay is keyed by its signature and uses declarative Motion animation; card children retain their state |
+| IntD `PageActions` | Heading discovery set state, which started a second subscription effect; opening the drawer triggered another effect | One mount subscription reads the article; language keys refresh ownership; a ref callback positions the mounted drawer and cancels its frame on removal |
+| EmojiSalon editor | A zero-delay mount timer fetched data and updated seven state fields; a pathname effect invalidated pending work | Routes prepare a shared React Query request; initial display is derived from query data; handlers replace one complete edited snapshot; a pathname key disposes the previous editor |
+
+### Retained reactive effects
+
+| Owner | External system and reason |
+| --- | --- |
+| UI `usePopover` layout effect | Measures DOM geometry before paint when the popover opens or positioning options change |
+| UI `usePopover` passive effect | Subscribes to scroll, resize, and `ResizeObserver` while open, using the current positioning callback |
+| UI `Popover` passive effect | Owns document-level outside-pointer and Escape listeners only while open, including controlled opens |
+| UI `useFluidHover` container observer | Observes the container and reconnects if its ref or measurement callback changes |
+| UI `useRegisterFluidHoverItem` | Registers DOM nodes against the current list and index, with cleanup on index or owner changes |
+| UI `FluidHoverControls` layout effect | Observes actual child nodes and registers them for measurement before paint |
+| IntD `RollNumber` | Synchronizes an external MotionValue with the current target and reduced-motion preference, stopping interrupted animations; remounting would lose the current interpolated value |
+
+These dependencies describe external synchronization. Replacing them with an
+empty dependency array would capture stale inputs. A blanket hook ban would
+hide this ownership rather than improve it.
+
+### Retained mount synchronization
+
+- Search commands subscribe to a document keyboard shortcut.
+- Writing's Tweet and Instagram children initialize third-party embeds. Their
+  existing ID/URL keys give each embed its own lifecycle.
+- UI page progress, IntD outlines, Mahjong API outlines, and EmojiSalon About
+  outlines read DOM geometry and subscribe to scroll/resize observers. Their
+  route or language boundaries own their lifetime.
+- UI action menus and logo wobble release listeners, timers, animation frames,
+  or animation handles. Copy feedback and the emoji editor cancel pending work.
+- The sound footer prepares an external audio resource.
+
+`useMountEffect` is reserved for these lifecycle operations. It must not become
+a wrapper for fetching application data, copying props into state, or triggering
+user actions through flags. If a subscription depends on changing inputs, use a
+reactive subscription or an explicit keyed boundary.
+
+Regression coverage includes repeated copy completion, clipboard completion
+after unmount, hover store consistency and row replacement, stable progress
+snapshots and cleanup, route preloads, calculator cache compatibility, keyed
+outline replacement, drawer frame cancellation, preserved card child state,
+late initial emoji queries, failed-query retry, stale selection completion,
+and palette actions before data is ready.
+
+Official references: [You might not need an Effect](https://react.dev/learn/you-might-not-need-an-effect),
+[`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore),
+and [ref callbacks](https://react.dev/reference/react-dom/components/common#ref-callback).
+
 ## Final validation
+
+The counts below include the effect review. Its frontend changes also passed
+Vite builds with the current pins and with the updated local UI package. The
+OG generation and prerender results refer to the preceding performance review;
+those pipelines were not changed by the effect work.
 
 | Repository | Type/lint checks | Regression tests | Build |
 | --- | --- | --- | --- |
-| UI | Passed | 11 passed | Library and declarations passed |
-| Portfolio | Passed | 1 passed | Production build, OG generation, and prerender passed |
-| Writing | Passed, including 223 MDX compilation checks | 5 passed | Production build and OG generation passed |
-| IntD | Passed | 5 passed | Production build passed |
+| UI | Passed | 12 passed | Library and declarations passed |
+| Portfolio | Passed | 2 passed | Production build, OG generation, and prerender passed |
+| Writing | Passed, including 223 MDX compilation checks | 6 passed | Production build and OG generation passed |
+| IntD | Passed | 8 passed | Production build passed |
 | Mahjong | Passed | 5 passed | Production build passed |
-| EmojiSalon | Passed | 10 passed | Production build passed |
+| EmojiSalon | Passed | 15 passed | Production build passed |
 
 All five sites also passed type checks, Vite production builds, and their tests
 with a temporary copy of the updated UI package. The original dependency links
