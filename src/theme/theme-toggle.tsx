@@ -5,6 +5,7 @@ import { useCallback, useRef, useSyncExternalStore } from "react";
 
 import { Button } from "../primitives/button.js";
 import { cn } from "../shared/class-names.js";
+import { runThemeTransition } from "./run-theme-transition.js";
 
 const TRANSITION_STYLE_ID = "theme-transition-style";
 const REVEAL_FEATHER_RATIO = 0.12;
@@ -107,14 +108,12 @@ export function ThemeToggle({
       const style = installTransitionStyle(x, y, radius, duration);
 
       try {
-        const transition = document.startViewTransition(() => {
+        await runThemeTransition(() => {
           root.classList.toggle("dark", nextTheme === "dark");
           applyTheme();
         });
-        await transition.ready;
-        await transition.finished;
       } catch {
-        // Theme is already applied if the view transition is interrupted.
+        // The transition helper also applies the theme if startup fails.
       } finally {
         style.remove();
         root.classList.remove("theme-transitioning");
