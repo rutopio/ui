@@ -27,7 +27,7 @@ import { SectionHeading } from "../src/section-heading";
 import { SiteLayout } from "../src/site-layout";
 import { ThemeProvider } from "../src/theme-provider";
 import { ThemeToggle } from "../src/theme-toggle";
-import "./style.css";
+import "./styles/globals.css";
 
 const { p: Paragraph } = articleComponents;
 function App() {

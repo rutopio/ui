@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/ui",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -140,7 +140,6 @@
       "types": "./dist/section-navigation.d.ts",
       "import": "./dist/section-navigation.js"
     },
-    "./styles.css": "./dist/styles.css",
     "./neutral-theme.css": "./dist/neutral-theme.css",
     "./site-layout": {
       "types": "./dist/site-layout.d.ts",
@@ -203,10 +202,12 @@
     "./input-group": {
       "types": "./dist/input-group.d.ts",
       "import": "./dist/input-group.js"
-    }
+    },
+    "./globals.css": "./dist/globals.css",
+    "./fonts.css": "./dist/fonts.css"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp src/*.css dist/",
+    "build": "tsc -p tsconfig.json && cp src/styles/*.css dist/",
     "check": "tsc --noEmit -p tsconfig.json && tsc -p playground/tsconfig.json",
     "test": "node --test tests/*.test.mjs",
     "playground": "vite --config playground/vite.config.ts",

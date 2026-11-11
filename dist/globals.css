@@ -1,20 +1,6 @@
+@import "./fonts.css";
+
 @custom-variant dark (&:is(.dark, .dark *));
-
-@theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-sans);
-  --font-mono: "Paper Mono", ui-monospace, monospace;
-  --font-weight-normal: 400;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 700;
-
-  --text-xs: 0.625rem;
-  --text-sm: 0.75rem;
-  --text-base: 0.875rem;
-  --text-lg: 1rem;
-  --text-xl: 1.125rem;
-  --text-2xl: 1.375rem;
-}
 
 @theme inline {
   --color-background: var(--background);
@@ -93,7 +79,7 @@
   }
 
   html {
-    @apply bg-background font-sans;
+    @apply bg-background;
     scrollbar-gutter: stable;
   }
 
@@ -104,12 +90,6 @@
 
   body {
     @apply bg-background text-foreground;
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    font-optical-sizing: auto;
-    font-variant-numeric: tabular-nums;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -269,8 +249,4 @@
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-@utility opsz-* {
-  font-variation-settings: "opsz" --value(integer);
 }

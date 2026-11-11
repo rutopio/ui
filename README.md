@@ -5,26 +5,26 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.15.0
+pnpm add github:rutopio/ui#v0.16.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
 
 The section heading anchor owns the shared link icon and hover style. The search package owns shortcut, controlled-open, highlight, and mobile drawer behavior; each site supplies its search index and result rows. `usePageShare` owns native sharing, copy state, and social URLs; each site supplies its translated controls. `ArticleImage` owns zoom, portrait sizing, loader, and wrapper rules; sites supply CDN functions and captions.
 
-Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
+Tailwind v4 sites must scan package styles, for example in `src/styles/globals.css`:
 
 ```css
-@source "../node_modules/@rutopio/ui/dist";
-@import "@rutopio/ui/styles.css";
+@source "../../node_modules/@rutopio/ui/dist";
+@import "@rutopio/ui/globals.css";
 @import "@rutopio/ui/neutral-theme.css";
 ```
 
-For `src/styles/globals.css`, use `../../node_modules/...` instead.
+All five sites use `src/styles/globals.css` as the entry point and `src/styles/fonts.css` for font assets and locale or brand configuration. Generated declarations live in `generated-fonts.css`; font scripts must not overwrite the hand-written `fonts.css`.
 
-Import `styles.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should contain font assets, explicit brand overrides, and product-specific content rules. Common layout and typography belong in the package. The grayscale `destructive` token remains distinct by luminance rather than hue.
+Import `globals.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should contain font assets, explicit brand overrides, and product-specific content rules. Common layout and typography belong in the package. The grayscale `destructive` token remains distinct by luminance rather than hue.
 
-`styles.css` also sets the shared dark variant, `text-autospace`, body type defaults (including optical sizing and tabular numerals), the HTML font and stable scrollbar gutter, overscroll containment, and the image zoom overlay. Keep these rules in the library so a new site receives the same baseline without copying a local reset.
+`globals.css` also sets the shared dark variant, `text-autospace`, body type defaults (including optical sizing and tabular numerals), the HTML font and stable scrollbar gutter, overscroll containment, and the image zoom overlay. Keep these rules in the library so a new site receives the same baseline without copying a local reset.
 
 The shared stylesheet sets `cursor: pointer` only on `:link` and `:visited`. Buttons and other controls keep their default cursor. Components must not add `cursor-pointer` or `cursor-default` classes that override this rule.
 
@@ -52,7 +52,7 @@ The tag pin keeps production builds reproducible. A library edit reaches the sit
 
 `SiteLayout` owns the centered `max-w-2xl` frame and `px-6` gutters at every viewport width. It takes children and native div attributes, with no class override. Keep routing, skip-link translations, metadata and product state in the site. Wide tool workspaces remain inside this common frame.
 
-The default sans font is Inter Variable; monospace is Paper Mono. Sites with Chinese or Japanese content also import `@rutopio/ui/cjk-fonts.css` after `styles.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
+The default sans font is Inter Variable; monospace is Paper Mono. The library keeps font families, weights, type sizes and font-related base rules in `fonts.css`, imported by `globals.css`. Sites with Chinese or Japanese content import `@rutopio/ui/cjk-fonts.css` from their local `fonts.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. `font-mono` selects Paper Mono without forcing a font size, weight, stretch or OpenType character variants; components choose their own size and weight. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
 
 `SectionHeading` owns h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` owns page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
 
