@@ -10,7 +10,7 @@ image URLs.
 Install a tagged version under the import name used by the sites:
 
 ```sh
-pnpm add @rutopio/ui@github:rutopio/ui#v2.0.1
+pnpm add @rutopio/ui@github:rutopio/ui#v2.0.2
 ```
 
 Import components through their named entry points, such as
@@ -58,11 +58,13 @@ Pinned tags keep builds reproducible. Sites receive library changes when they up
 
 `SiteLayout` provides the centered `max-w-2xl` frame and `px-6` gutters at every viewport width. It takes children and native div attributes, with no class override. Keep routing, skip-link translations, metadata and product state in the site. Wide tool workspaces remain inside this common frame.
 
-The default sans font is Inter Variable; monospace is Paper Mono. The library keeps font families, weights, type sizes and font-related base rules in `fonts.css`, imported by `globals.css`. Sites with Chinese or Japanese content import `@rutopio/ui/cjk-fonts.css` from their local `fonts.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. `font-mono` selects Paper Mono without forcing a font size, weight, stretch or OpenType character variants; components choose their own size and weight. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
+The default sans font is Inter Variable; monospace is Paper Mono. The library keeps font families, weights and font-related base rules in `fonts.css`, imported by `globals.css`. Sites with Chinese or Japanese content import `@rutopio/ui/cjk-fonts.css` from their local `fonts.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. `font-mono` selects Paper Mono without forcing a font size, weight, stretch or OpenType character variants; components choose their own size and weight. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
+
+Font sizes use Tailwind’s default scale: `text-xs` is 12px, `text-sm` 14px, `text-base` 16px, `text-lg` 18px, `text-xl` 20px and `text-2xl` 24px at the default root size.
 
 Typography has three roles, all defined in `fonts.css`: `font-normal` uses weight 400 and optical size 14, `font-semibold` uses weight 550 and optical size 18, and `font-bold` uses weight 700 and optical size 25. Each utility sets both properties, including Tailwind state and responsive variants. Body text defaults to normal, headings to bold, and semantic `b`/`strong` to semibold. Components do not specify optical-size classes or inline variation settings. Fonts without an `opsz` axis simply ignore that axis.
 
-`SectionHeading` provides h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` provides page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
+`SectionHeading` provides h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. The divider follows the final line of a wrapped heading. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` provides page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
 
 ## Articles
 
