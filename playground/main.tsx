@@ -33,12 +33,12 @@ const { p: Paragraph } = articleComponents;
 function App() {
   const [page, setPage] = useState(0);
   return (
-    <ThemeProvider storageKey="base-component-playground">
+    <ThemeProvider storageKey="ui-playground">
       <SiteLayout>
         <main className="py-6 sm:py-12">
           <Article>
             <PageIntro
-              title="Base Component"
+              title="Rutopio UI"
               subtitle="共用介面的標準組合"
               actions={<ThemeToggle />}
             />

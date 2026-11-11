@@ -1,23 +1,23 @@
-# Base Component
+# Rutopio UI
 
 Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com, and writing.chingru.com. The package owns the button variants, dialog, theme toggle, scroll area, drawer, popover, action menu, outline navigation, header, footer, page action rail, heading link, page sharing behavior, search controls, article image rules, and shared icons. It also owns the common typography scale, neutral palette, chart colors, radii, shadows, base styles, theme transition, and shadcn state and scrollbar utilities. Each site supplies its routing, copy, fonts, and image CDN adapter. The optional `SoundCelebrationFooter` also owns the shared fill sound and confetti effect used by chingru.com and writing.chingru.com.
 
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.14.0
+pnpm add github:rutopio/ui#v0.15.0
 ```
 
-Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
+Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
 
 The section heading anchor owns the shared link icon and hover style. The search package owns shortcut, controlled-open, highlight, and mobile drawer behavior; each site supplies its search index and result rows. `usePageShare` owns native sharing, copy state, and social URLs; each site supplies its translated controls. `ArticleImage` owns zoom, portrait sizing, loader, and wrapper rules; sites supply CDN functions and captions.
 
 Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
 
 ```css
-@source "../node_modules/@rutopio/base-component/dist";
-@import "@rutopio/base-component/styles.css";
-@import "@rutopio/base-component/neutral-theme.css";
+@source "../node_modules/@rutopio/ui/dist";
+@import "@rutopio/ui/styles.css";
+@import "@rutopio/ui/neutral-theme.css";
 ```
 
 For `src/styles/globals.css`, use `../../node_modules/...` instead.
@@ -44,7 +44,7 @@ The `sound` entry point exports the shared audio engine and `fillSound` recipe. 
 
 1. Change the package and run `pnpm check && pnpm build`.
 2. Update the package version, commit, tag, and push the tag.
-3. Update each site's pinned `github:rutopio/base-component#vX.Y.Z` dependency and lockfile; run its type check and production build.
+3. Update each site's pinned `github:rutopio/ui#vX.Y.Z` dependency and lockfile; run its type check and production build.
 
 The tag pin keeps production builds reproducible. A library edit reaches the sites after they update that pin and deploy. Titles inherit the library heading font.
 
@@ -52,13 +52,13 @@ The tag pin keeps production builds reproducible. A library edit reaches the sit
 
 `SiteLayout` owns the centered `max-w-2xl` frame and `px-6` gutters at every viewport width. It takes children and native div attributes, with no class override. Keep routing, skip-link translations, metadata and product state in the site. Wide tool workspaces remain inside this common frame.
 
-The default sans font is Inter Variable; monospace is Paper Mono. Sites with Chinese or Japanese content also import `@rutopio/base-component/cjk-fonts.css` after `styles.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
+The default sans font is Inter Variable; monospace is Paper Mono. Sites with Chinese or Japanese content also import `@rutopio/ui/cjk-fonts.css` after `styles.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
 
 `SectionHeading` owns h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` owns page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
 
 ## Articles
 
-Import `@rutopio/base-component/article.css` with the shared styles. `articleComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
+Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
 
 `Article` is the reading container; `ArticleBody` owns body spacing. For hand-written pages, use `<ArticleSection heading={<SectionHeading id="example">Example</SectionHeading>}>…</ArticleSection>` so the heading-to-body gap is 8px and body blocks are 24px apart. Sections are 64px apart. In a body, paragraphs before h2/h3 leave 64px and headings before content leave 8px.
 
