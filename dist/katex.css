@@ -1,0 +1,13 @@
+@layer base {
+  /* Long display math must scroll within itself, not widen the whole page. */
+  .katex-display {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* Keep IntD's lower spacing for aligned and multiline display equations. */
+  main .katex-display:has(mtable) > .katex {
+    padding-bottom: 0.3em;
+  }
+}

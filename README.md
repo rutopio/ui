@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.16.0
+pnpm add github:rutopio/ui#v0.17.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -61,6 +61,10 @@ The default sans font is Inter Variable; monospace is Paper Mono. The library ke
 Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
 
 `Article` is the reading container; `ArticleBody` owns body spacing. For hand-written pages, use `<ArticleSection heading={<SectionHeading id="example">Example</SectionHeading>}>…</ArticleSection>` so the heading-to-body gap is 8px and body blocks are 24px apart. Sections are 64px apart. In a body, paragraphs before h2/h3 leave 64px and headings before content leave 8px.
+
+`article.css` includes the shared `katex.css` layout rules by default: long display equations scroll within their own block, and aligned or multiline equations keep IntD's 0.3em lower spacing. Sites do not need local KaTeX layout overrides. A math-only view can import `@rutopio/ui/katex.css` directly.
+
+To render LaTeX, the site still configures its MDX math plugins and imports `katex/dist/katex.min.css` from its own installed KaTeX version in `src/styles/globals.css`. That vendor stylesheet supplies the matching glyph positioning and math fonts. The shared article styles do not load the KaTeX renderer or fonts for sites without equations.
 
 For MDX builds, import `rehypeArticleSections` from the matching subpath. It groups h2 sections with the same Writing rhythm, preserves MDX exports and heading IDs, and adds section labels. Each site chooses which content files run through it.
 
