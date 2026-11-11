@@ -1,7 +1,13 @@
+let pendingScroll;
 export function scrollToSection(id, onBeforeNavigate) {
     onBeforeNavigate?.();
+    window.clearTimeout(pendingScroll);
+    const sourceUrl = window.location.href;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.setTimeout(() => {
+    pendingScroll = window.setTimeout(() => {
+        pendingScroll = undefined;
+        if (window.location.href !== sourceUrl)
+            return;
         const heading = document.getElementById(id);
         if (!heading)
             return;
