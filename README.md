@@ -114,6 +114,9 @@ The gallery is development-only and is not included in the published package.
 
 ## Source organization
 
+See [Repository structure](docs/repository-structure.md) for shared directory
+roles, naming rules, asset placement, and the exceptions used by these sites.
+
 Use the same top-level source roles as the five consuming sites:
 
 - `src/components/`: React components, grouped into `ui`, `article`, `layout`,
