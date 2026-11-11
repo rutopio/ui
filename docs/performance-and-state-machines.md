@@ -25,7 +25,7 @@ database bindings. No schema or data migration is needed for this item.
 | Database projections | Complete; no database queries |
 | URL parsing | Complete; redundant redirect and asset parsing removed |
 | Regular expression allocation | Complete; static patterns moved to module scope |
-| JSONB field promotion | In review |
+| JSONB field promotion | Complete; no JSONB storage or queries |
 | Sequential asynchronous work | In review |
 | State machines and regression fixes | In review |
 
@@ -57,3 +57,15 @@ code-free text throughout. Previously its first `exec` read stripped text but
 later calls read the original text with an offset from a different string.
 This could expose code-block headings or repeat headings. Regression tests
 cover fenced headings, duplicate slugs, inline formatting, and repeated calls.
+
+## JSONB fields
+
+No JSONB columns, JSON database queries, database clients, or database bindings
+are present. There is no hot database key to promote into a column. Mahjong's
+large tile asset contains geometry, palettes, and metrics used together by the
+renderer; it is loaded on demand. EmojiSalon already fetches separate assets
+per emoji. Neither is a database column.
+
+Validation: searched runtime source and manifests for JSONB, JSON query
+functions, and database clients, then reviewed the asset loader call sites.
+Portfolio articles describing other applications are not runtime database use.
