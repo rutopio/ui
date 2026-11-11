@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.20.0
+pnpm add github:rutopio/ui#v1.0.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.

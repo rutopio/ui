@@ -1,5 +1,6 @@
-export function playSound(recipe: any, tune?: {}): Promise<void>;
-export function preloadSound(recipe: any, tune?: {}): void;
-export function renderSound(recipe: any, tune?: {}, options?: {}): Promise<any>;
-export function setSoundMuted(value: any): void;
-export function setSoundVolume(value: any): void;
+declare function renderSound(recipe: any, tune?: {}, options?: {}): Promise<any>;
+declare function setSoundVolume(value: any): void;
+declare function setSoundMuted(value: any): void;
+declare function preloadSound(recipe: any, tune?: {}): void;
+declare function playSound(recipe: any, tune?: {}): Promise<void>;
+export { playSound, preloadSound, renderSound, setSoundMuted, setSoundVolume };

@@ -3,16 +3,16 @@ export { spring };
 /** Existing site motion, named by purpose rather than by the consuming site. */
 export declare const transitions: {
     readonly iconSwap: {
-        readonly bounce: 0;
         readonly type: "spring";
         readonly duration: 0.24;
         readonly exit: {
             readonly duration: 0.16;
         };
+        readonly bounce: 0;
     };
     readonly gentleFade: {
-        readonly ease: "easeOut";
         readonly duration: 0.12;
+        readonly ease: "easeOut";
     };
     readonly instant: {
         readonly duration: 0;

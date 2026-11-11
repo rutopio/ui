@@ -1,1 +1,24 @@
 verifyDepsBeforeRun: false
+
+saveExact: true
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+
+minimumReleaseAgeExclude:
+  - framer-motion@14.12.0
+  - motion-dom@14.12.0
+  - motion@14.12.0
+  - vite@8.3.8
+
+overrides:
+  # GHSA-g7r4-m6w7-qqqr: development-server file disclosure.
+  "esbuild@<0.28.1": ">=0.28.1 <0.29.0"
+  # GHSA-px8p-9vwx-vf98: malformed ZIP64 infinite loop in Satori's fflate.
+  "fflate@>=0.7.0 <0.7.5": "0.7.5"
+  # GHSA-238p-pmpm-9mq7: keep rehype/remark on the same patched KaTeX.
+  "katex@<0.18.2": "0.19.1"
+  # seroval-plugins 1.8 requires the matching serializer API.
+  "seroval@^1": "1.8.0"

@@ -18,10 +18,10 @@ export declare const pseudocodeLanguage: {
         }[];
         match?: undefined;
     } | {
-        name: string;
-        match: string;
         begin?: undefined;
         end?: undefined;
         patterns?: undefined;
+        name: string;
+        match: string;
     })[];
 };

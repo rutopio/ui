@@ -1,16 +1,15 @@
-export default fill;
-declare namespace fill {
-    let duration: number;
-    let seed: number;
-    let loudness: number;
-    let lowpass: number;
-    namespace reverb {
-        let mix: number;
-        let decay: number;
-        let predelay: number;
-        let damp: number;
-    }
-    let layers: ({
+declare const fill: {
+    duration: number;
+    seed: number;
+    loudness: number;
+    lowpass: number;
+    reverb: {
+        mix: number;
+        decay: number;
+        predelay: number;
+        damp: number;
+    };
+    layers: ({
         type: string;
         freq: {
             from: number;
@@ -30,6 +29,8 @@ declare namespace fill {
         gain?: undefined;
         filter?: undefined;
     } | {
+        freq?: undefined;
+        partials?: undefined;
         type: string;
         color: string;
         at: number;
@@ -50,7 +51,6 @@ declare namespace fill {
             decay: number;
             curve: number;
         };
-        freq?: undefined;
-        partials?: undefined;
     })[];
-}
+};
+export default fill;
