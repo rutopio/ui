@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useCopyFeedback } from "./use-copy-feedback.js"
 
 export function getSocialShareTargets(url: string) {
   const encodedUrl = encodeURIComponent(url)
@@ -56,15 +57,14 @@ export function usePageShare({
   onCopyError?: () => void
 } = {}) {
   const [open, setOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [copied, showCopied] = useCopyFeedback()
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : fallbackUrl
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
+      showCopied()
       onCopied?.(shareUrl)
     } catch {
       onCopyError?.()

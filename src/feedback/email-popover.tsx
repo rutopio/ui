@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { AtIcon } from "@phosphor-icons/react";
 
+import { useCopyFeedback } from "./use-copy-feedback.js";
 import { CopyFeedbackIcon } from "./copy-feedback-icon.js";
 import { Popover } from "../primitives/popover.js";
 import { Button } from "../primitives/button.js";
@@ -8,13 +9,12 @@ import { Button } from "../primitives/button.js";
 export function EmailPopover({ email, trigger, triggerClassName }: { email: string; trigger: ReactNode; triggerClassName?: string }) {
   const [emailLocal, emailDomain] = email.split("@");
   const obfuscated = `${emailLocal}[AT]${emailDomain}`;
-  const [copied, setCopied] = useState(false);
+  const [copied, showCopied] = useCopyFeedback();
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(obfuscated);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      showCopied();
     } catch {
       // Clipboard unavailable; leave the address visible for manual copying.
     }
