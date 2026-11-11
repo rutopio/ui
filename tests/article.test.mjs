@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { rehypeArticleSections } from "../dist/rehype-article-sections.js";
-import { PageTransition } from "../dist/page-transition.js";
-import { SectionHeading } from "../dist/section-heading.js";
+import { rehypeArticleSections } from "../dist/build/rehype-article-sections.js";
+import { PageTransition } from "../dist/motion/page-transition.js";
+import { SectionHeading } from "../dist/article/section-heading.js";
 
 const element = (tagName, text, properties = {}) => ({ type: "element", tagName, properties, children: [{ type: "text", value: text }] });
 const leaves = (node) => node.children ? node.children.flatMap(leaves) : [node];

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { rehypeCode } from "../dist/rehype-code.js";
+import { rehypeCode } from "../dist/build/rehype-code.js";
 
 const flatten = (node) => [node, ...(node.children ?? []).flatMap(flatten)];
 const text = (node) => node.type === "text" ? node.value : (node.children ?? []).map(text).join("");

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Article, ArticleSection, articleComponents } from "../src/article";
-import { CodeBlock } from "../src/code-block";
-import { Badge } from "../src/badge";
-import { Button } from "../src/button";
+import { Article, ArticleSection, articleComponents } from "../src/article/article";
+import { CodeBlock } from "../src/article/code-block";
+import { Badge } from "../src/primitives/badge";
+import { Button } from "../src/primitives/button";
 import {
   Dialog,
   DialogTrigger,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "../src/dialog";
+} from "../src/primitives/dialog";
 import {
   Drawer,
   DrawerTrigger,
@@ -19,15 +19,15 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-} from "../src/drawer";
-import { Input } from "../src/input";
-import { PageIntro } from "../src/page-intro";
-import { PageTransition } from "../src/page-transition";
-import { ReadingProgressRing } from "../src/outline-nav";
-import { SectionHeading } from "../src/section-heading";
-import { SiteLayout } from "../src/site-layout";
-import { ThemeProvider } from "../src/theme-provider";
-import { ThemeToggle } from "../src/theme-toggle";
+} from "../src/primitives/drawer";
+import { Input } from "../src/primitives/input";
+import { PageIntro } from "../src/layout/page-intro";
+import { PageTransition } from "../src/motion/page-transition";
+import { ReadingProgressRing } from "../src/navigation/outline-nav";
+import { SectionHeading } from "../src/article/section-heading";
+import { SiteLayout } from "../src/layout/site-layout";
+import { ThemeProvider } from "../src/theme/theme-provider";
+import { ThemeToggle } from "../src/theme/theme-toggle";
 import "./styles/globals.css";
 
 const { p: Paragraph } = articleComponents;

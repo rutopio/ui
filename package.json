@@ -13,219 +13,219 @@
       "import": "./dist/index.js"
     },
     "./drawer": {
-      "types": "./dist/drawer.d.ts",
-      "import": "./dist/drawer.js"
+      "types": "./dist/primitives/drawer.d.ts",
+      "import": "./dist/primitives/drawer.js"
     },
     "./action-menu": {
-      "types": "./dist/action-menu.d.ts",
-      "import": "./dist/action-menu.js"
+      "types": "./dist/navigation/action-menu.d.ts",
+      "import": "./dist/navigation/action-menu.js"
     },
     "./outline-list": {
-      "types": "./dist/outline-list.d.ts",
-      "import": "./dist/outline-list.js"
+      "types": "./dist/navigation/outline-list.d.ts",
+      "import": "./dist/navigation/outline-list.js"
     },
     "./button-group": {
-      "types": "./dist/button-group.d.ts",
-      "import": "./dist/button-group.js"
+      "types": "./dist/primitives/button-group.d.ts",
+      "import": "./dist/primitives/button-group.js"
     },
     "./button": {
-      "types": "./dist/button.d.ts",
-      "import": "./dist/button.js"
+      "types": "./dist/primitives/button.d.ts",
+      "import": "./dist/primitives/button.js"
     },
     "./github-mark-icon": {
-      "types": "./dist/github-mark-icon.d.ts",
-      "import": "./dist/github-mark-icon.js"
+      "types": "./dist/shared/github-mark-icon.d.ts",
+      "import": "./dist/shared/github-mark-icon.js"
     },
     "./theme-toggle": {
-      "types": "./dist/theme-toggle.d.ts",
-      "import": "./dist/theme-toggle.js"
+      "types": "./dist/theme/theme-toggle.d.ts",
+      "import": "./dist/theme/theme-toggle.js"
     },
     "./fluid-hover-highlight": {
-      "types": "./dist/fluid-hover-highlight.d.ts",
-      "import": "./dist/fluid-hover-highlight.js"
+      "types": "./dist/motion/fluid-hover-highlight.d.ts",
+      "import": "./dist/motion/fluid-hover-highlight.js"
     },
     "./use-mount-effect": {
-      "types": "./dist/use-mount-effect.d.ts",
-      "import": "./dist/use-mount-effect.js"
+      "types": "./dist/shared/use-mount-effect.d.ts",
+      "import": "./dist/shared/use-mount-effect.js"
     },
     "./use-fluid-hover": {
-      "types": "./dist/use-fluid-hover.d.ts",
-      "import": "./dist/use-fluid-hover.js"
+      "types": "./dist/motion/use-fluid-hover.d.ts",
+      "import": "./dist/motion/use-fluid-hover.js"
     },
     "./popover": {
-      "types": "./dist/popover.d.ts",
-      "import": "./dist/popover.js"
+      "types": "./dist/primitives/popover.d.ts",
+      "import": "./dist/primitives/popover.js"
     },
     "./copy-feedback-icon": {
-      "types": "./dist/copy-feedback-icon.d.ts",
-      "import": "./dist/copy-feedback-icon.js"
+      "types": "./dist/feedback/copy-feedback-icon.d.ts",
+      "import": "./dist/feedback/copy-feedback-icon.js"
     },
     "./mail-popover": {
-      "types": "./dist/mail-popover.d.ts",
-      "import": "./dist/mail-popover.js"
+      "types": "./dist/feedback/mail-popover.d.ts",
+      "import": "./dist/feedback/mail-popover.js"
     },
     "./language-toggle": {
-      "types": "./dist/language-toggle.d.ts",
-      "import": "./dist/language-toggle.js"
+      "types": "./dist/navigation/language-toggle.d.ts",
+      "import": "./dist/navigation/language-toggle.js"
     },
     "./theme-provider": {
-      "types": "./dist/theme-provider.d.ts",
-      "import": "./dist/theme-provider.js"
+      "types": "./dist/theme/theme-provider.d.ts",
+      "import": "./dist/theme/theme-provider.js"
     },
     "./use-page-scroll-progress": {
-      "types": "./dist/use-page-scroll-progress.d.ts",
-      "import": "./dist/use-page-scroll-progress.js"
+      "types": "./dist/navigation/use-page-scroll-progress.d.ts",
+      "import": "./dist/navigation/use-page-scroll-progress.js"
     },
     "./is-scroll-locked": {
-      "types": "./dist/is-scroll-locked.d.ts",
-      "import": "./dist/is-scroll-locked.js"
+      "types": "./dist/shared/is-scroll-locked.d.ts",
+      "import": "./dist/shared/is-scroll-locked.js"
     },
     "./dialog": {
-      "types": "./dist/dialog.d.ts",
-      "import": "./dist/dialog.js"
+      "types": "./dist/primitives/dialog.d.ts",
+      "import": "./dist/primitives/dialog.js"
     },
     "./scroll-area": {
-      "types": "./dist/scroll-area.d.ts",
-      "import": "./dist/scroll-area.js"
+      "types": "./dist/primitives/scroll-area.d.ts",
+      "import": "./dist/primitives/scroll-area.js"
     },
     "./outline-nav": {
-      "types": "./dist/outline-nav.d.ts",
-      "import": "./dist/outline-nav.js"
+      "types": "./dist/navigation/outline-nav.d.ts",
+      "import": "./dist/navigation/outline-nav.js"
     },
     "./fluid-hover-controls": {
-      "types": "./dist/fluid-hover-controls.d.ts",
-      "import": "./dist/fluid-hover-controls.js"
+      "types": "./dist/motion/fluid-hover-controls.d.ts",
+      "import": "./dist/motion/fluid-hover-controls.js"
     },
     "./footer": {
-      "types": "./dist/footer.d.ts",
-      "import": "./dist/footer.js"
+      "types": "./dist/layout/footer.d.ts",
+      "import": "./dist/layout/footer.js"
     },
     "./sound-celebration-footer": {
-      "types": "./dist/sound-celebration-footer.d.ts",
-      "import": "./dist/sound-celebration-footer.js"
+      "types": "./dist/feedback/sound-celebration-footer.d.ts",
+      "import": "./dist/feedback/sound-celebration-footer.js"
     },
     "./sound": {
-      "types": "./dist/sound.d.ts",
-      "import": "./dist/sound.js"
+      "types": "./dist/feedback/sound.d.ts",
+      "import": "./dist/feedback/sound.js"
     },
     "./page-action-rail": {
-      "types": "./dist/page-action-rail.d.ts",
-      "import": "./dist/page-action-rail.js"
+      "types": "./dist/navigation/page-action-rail.d.ts",
+      "import": "./dist/navigation/page-action-rail.js"
     },
     "./site-header": {
-      "types": "./dist/site-header.d.ts",
-      "import": "./dist/site-header.js"
+      "types": "./dist/layout/site-header.d.ts",
+      "import": "./dist/layout/site-header.js"
     },
     "./use-logo-wobble": {
-      "types": "./dist/use-logo-wobble.d.ts",
-      "import": "./dist/use-logo-wobble.js"
+      "types": "./dist/motion/use-logo-wobble.d.ts",
+      "import": "./dist/motion/use-logo-wobble.js"
     },
     "./section-heading-anchor": {
-      "types": "./dist/section-heading-anchor.d.ts",
-      "import": "./dist/section-heading-anchor.js"
+      "types": "./dist/article/section-heading-anchor.d.ts",
+      "import": "./dist/article/section-heading-anchor.js"
     },
     "./search-command": {
-      "types": "./dist/search-command.d.ts",
-      "import": "./dist/search-command.js"
+      "types": "./dist/navigation/search-command.d.ts",
+      "import": "./dist/navigation/search-command.js"
     },
     "./article-image": {
-      "types": "./dist/article-image.d.ts",
-      "import": "./dist/article-image.js"
+      "types": "./dist/article/article-image.d.ts",
+      "import": "./dist/article/article-image.js"
     },
     "./page-share": {
-      "types": "./dist/page-share.d.ts",
-      "import": "./dist/page-share.js"
+      "types": "./dist/feedback/page-share.d.ts",
+      "import": "./dist/feedback/page-share.js"
     },
     "./section-navigation": {
-      "types": "./dist/section-navigation.d.ts",
-      "import": "./dist/section-navigation.js"
+      "types": "./dist/navigation/section-navigation.d.ts",
+      "import": "./dist/navigation/section-navigation.js"
     },
     "./neutral-theme.css": "./dist/neutral-theme.css",
     "./site-layout": {
-      "types": "./dist/site-layout.d.ts",
-      "import": "./dist/site-layout.js"
+      "types": "./dist/layout/site-layout.d.ts",
+      "import": "./dist/layout/site-layout.js"
     },
     "./motion": {
-      "types": "./dist/motion.d.ts",
-      "import": "./dist/motion.js"
+      "types": "./dist/motion/motion.d.ts",
+      "import": "./dist/motion/motion.js"
     },
     "./page-transition": {
-      "types": "./dist/page-transition.d.ts",
-      "import": "./dist/page-transition.js"
+      "types": "./dist/motion/page-transition.d.ts",
+      "import": "./dist/motion/page-transition.js"
     },
     "./section-heading": {
-      "types": "./dist/section-heading.d.ts",
-      "import": "./dist/section-heading.js"
+      "types": "./dist/article/section-heading.d.ts",
+      "import": "./dist/article/section-heading.js"
     },
     "./page-intro": {
-      "types": "./dist/page-intro.d.ts",
-      "import": "./dist/page-intro.js"
+      "types": "./dist/layout/page-intro.d.ts",
+      "import": "./dist/layout/page-intro.js"
     },
     "./use-mobile": {
-      "types": "./dist/use-mobile.d.ts",
-      "import": "./dist/use-mobile.js"
+      "types": "./dist/shared/use-mobile.d.ts",
+      "import": "./dist/shared/use-mobile.js"
     },
     "./rehype-article-sections": {
-      "types": "./dist/rehype-article-sections.d.ts",
-      "import": "./dist/rehype-article-sections.js"
+      "types": "./dist/build/rehype-article-sections.d.ts",
+      "import": "./dist/build/rehype-article-sections.js"
     },
     "./input": {
-      "types": "./dist/input.d.ts",
-      "import": "./dist/input.js"
+      "types": "./dist/primitives/input.d.ts",
+      "import": "./dist/primitives/input.js"
     },
     "./table": {
-      "types": "./dist/table.d.ts",
-      "import": "./dist/table.js"
+      "types": "./dist/primitives/table.d.ts",
+      "import": "./dist/primitives/table.js"
     },
     "./badge": {
-      "types": "./dist/badge.d.ts",
-      "import": "./dist/badge.js"
+      "types": "./dist/primitives/badge.d.ts",
+      "import": "./dist/primitives/badge.js"
     },
     "./command": {
-      "types": "./dist/command.d.ts",
-      "import": "./dist/command.js"
+      "types": "./dist/primitives/command.d.ts",
+      "import": "./dist/primitives/command.js"
     },
     "./separator": {
-      "types": "./dist/separator.d.ts",
-      "import": "./dist/separator.js"
+      "types": "./dist/primitives/separator.d.ts",
+      "import": "./dist/primitives/separator.js"
     },
     "./sonner": {
-      "types": "./dist/sonner.d.ts",
-      "import": "./dist/sonner.js"
+      "types": "./dist/feedback/sonner.d.ts",
+      "import": "./dist/feedback/sonner.js"
     },
     "./article": {
-      "types": "./dist/article.d.ts",
-      "import": "./dist/article.js"
+      "types": "./dist/article/article.d.ts",
+      "import": "./dist/article/article.js"
     },
     "./cjk-fonts.css": "./dist/cjk-fonts.css",
     "./article.css": "./dist/article.css",
     "./input-group": {
-      "types": "./dist/input-group.d.ts",
-      "import": "./dist/input-group.js"
+      "types": "./dist/primitives/input-group.d.ts",
+      "import": "./dist/primitives/input-group.js"
     },
     "./globals.css": "./dist/globals.css",
     "./fonts.css": "./dist/fonts.css",
     "./katex.css": "./dist/katex.css",
     "./not-found": {
-      "types": "./dist/not-found.d.ts",
-      "import": "./dist/not-found.js"
+      "types": "./dist/layout/not-found.d.ts",
+      "import": "./dist/layout/not-found.js"
     },
     "./screen-size": {
-      "types": "./dist/screen-size.d.ts",
-      "import": "./dist/screen-size.js"
+      "types": "./dist/layout/screen-size.d.ts",
+      "import": "./dist/layout/screen-size.js"
     },
     "./code-block": {
-      "types": "./dist/code-block.d.ts",
-      "import": "./dist/code-block.js"
+      "types": "./dist/article/code-block.d.ts",
+      "import": "./dist/article/code-block.js"
     },
     "./rehype-code": {
-      "types": "./dist/rehype-code.d.ts",
-      "import": "./dist/rehype-code.js"
+      "types": "./dist/build/rehype-code.d.ts",
+      "import": "./dist/build/rehype-code.js"
     },
     "./code-block.css": "./dist/code-block.css"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp src/styles/*.css dist/",
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp src/styles/*.css dist/",
     "check": "tsc --noEmit -p tsconfig.json && tsc -p playground/tsconfig.json",
     "test": "node --test tests/*.test.mjs",
     "playground": "vite --config playground/vite.config.ts",

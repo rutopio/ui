@@ -102,3 +102,23 @@ Header navigation, action spacing and title typography use one common default. S
 - Before releasing, check the five consuming sites at desktop and narrow widths, both themes, keyboard focus, article anchors and reduced motion. Run their type checks and production builds against the release.
 
 The gallery is development-only and is not included in the published package.
+
+## Source organization
+
+Source files are grouped by responsibility. Public imports such as
+`@rutopio/ui/button` stay stable through `package.json` exports.
+
+- `primitives`: buttons, inputs, dialogs and other base controls
+- `article`: article rendering, images, code blocks and headings
+- `layout`: page skeleton, header, footer and fallback pages
+- `navigation`: menus, search, outlines and reading navigation
+- `motion`: shared motion tokens, transitions and hover behavior
+- `feedback`: copy, sharing, notifications, sound and celebrations
+- `theme`: theme provider and theme selection
+- `build`: MDX/rehype transforms and syntax grammars; import these by subpath
+- `shared`: small utilities, generic hooks and shared icons
+- `styles`: shared CSS and design tokens
+
+Keep related implementation files together and import directly between modules.
+The root `index.ts` is the public runtime entry; build-only modules stay separate
+so consumers do not bundle syntax highlighters with their client code.
