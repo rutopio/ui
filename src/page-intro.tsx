@@ -18,17 +18,17 @@ export function PageIntro({
       <div className="flex min-w-0 flex-col gap-2">
         <h1
           id={id}
-          className="opsz-25 text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50"
+          className="text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50"
         >
           {title}
         </h1>
         {subtitle && (
-          <p className="opsz-18 font-semibold text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50">
+          <p className="font-semibold text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50">
             {subtitle}
           </p>
         )}
         {year && (
-          <p className="opsz-18 font-semibold text-base text-neutral-950 leading-[1.65] dark:text-neutral-50">
+          <p className="font-semibold text-base text-neutral-950 leading-[1.65] dark:text-neutral-50">
             {year}
           </p>
         )}

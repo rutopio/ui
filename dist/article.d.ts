@@ -1,5 +1,5 @@
 import * as React from "react";
-export declare const articleLinkClassName = "opsz-14 break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
+export declare const articleLinkClassName = "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
 export declare function Article({ className, ...props }: React.ComponentProps<"article">): React.JSX.Element;
 export declare function ArticleBody({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element;
 export declare function ArticleSection({ heading, children, ...props }: Omit<React.ComponentProps<"section">, "className"> & {

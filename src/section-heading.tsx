@@ -20,7 +20,7 @@ export function SectionHeading({
     <Heading
       id={id}
       className={cn(
-        "group opsz-25 flex items-center text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50",
+        "group flex items-center text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50",
         level === 2 ? "scroll-mt-14" : "scroll-m-20",
         className,
       )}

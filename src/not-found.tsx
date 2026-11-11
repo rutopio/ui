@@ -15,10 +15,10 @@ export function NotFound({
       <meta name="robots" content="noindex" />
       <section className="flex flex-auto flex-col items-center justify-center gap-8 py-24 text-center font-heading">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="opsz-25 text-balance font-bold text-base leading-[1.65]">
+          <h1 className="text-balance font-bold text-base leading-[1.65]">
             {NOT_FOUND_TITLE}
           </h1>
-          <p className="opsz-18 max-w-md text-pretty font-semibold text-base text-muted-foreground leading-[1.65]">
+          <p className="max-w-md text-pretty font-semibold text-base text-muted-foreground leading-[1.65]">
             It looks like you are lost in cosmos!
           </p>
         </div>

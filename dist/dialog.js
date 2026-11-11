@@ -28,7 +28,7 @@ function DialogFooter({ className, children, ...props }) {
     return (_jsx("div", { "data-slot": "dialog-footer", className: cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className), ...props, children: children }));
 }
 function DialogTitle({ className, ...props }) {
-    return (_jsx(DialogPrimitive.Title, { "data-slot": "dialog-title", className: cn("font-heading text-balance text-lg leading-none font-medium", className), ...props }));
+    return (_jsx(DialogPrimitive.Title, { "data-slot": "dialog-title", className: cn("font-heading text-balance text-lg leading-none font-semibold", className), ...props }));
 }
 function DialogDescription({ className, ...props }) {
     return (_jsx(DialogPrimitive.Description, { "data-slot": "dialog-description", className: cn("text-pretty text-base text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground", className), ...props }));

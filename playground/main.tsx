@@ -51,6 +51,11 @@ function App() {
                 正文使用 Inter，中文與日文加入 Noto
                 Sans。章節之間留出空間，標題與內文保持緊密。
               </Paragraph>
+              <div className="flex flex-col gap-2">
+                <p className="font-normal">Regular · 400 / 14 · Aa 中文 日本語</p>
+                <p className="font-semibold">Semibold · 550 / 18 · Aa 中文 日本語</p>
+                <p className="font-bold">Bold · 550 / 25 · Aa 中文 日本語</p>
+              </div>
               <Paragraph lang="ja">
                 日本語の文章も、同じ文字サイズと余白で表示します。
               </Paragraph>

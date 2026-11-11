@@ -5,7 +5,7 @@ import { FluidHoverControls } from "./fluid-hover-controls.js";
 import { cn } from "./utils.js";
 export function HeaderNavigation({ items, renderLink, label, title, menuIcon, selectedIcon, }) {
     const [open, setOpen] = useState(false);
-    const routeLinkClass = "flex h-9 items-center whitespace-nowrap rounded-lg px-3 font-medium text-base text-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=page]:bg-muted";
+    const routeLinkClass = "flex h-9 items-center whitespace-nowrap rounded-lg px-3 font-semibold text-base text-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=page]:bg-muted";
     const drawerLinkClass = "flex min-h-10 items-center justify-between rounded-lg px-3 text-base text-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=page]:bg-muted";
     return (_jsxs(_Fragment, { children: [_jsx("div", { className: "md:hidden", children: _jsxs(Drawer, { open: open, onOpenChange: setOpen, children: [_jsx(DrawerTrigger, { render: _jsx("button", { type: "button", "aria-label": label, className: cn("base-header-action inline-flex size-9 items-center justify-center rounded-md border border-transparent text-primary hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring"), children: menuIcon }) }), _jsxs(DrawerContent, { children: [_jsx(DrawerHeader, { className: "border-border border-b pb-4", children: _jsx(DrawerTitle, { children: title }) }), _jsx("nav", { "aria-label": label, className: "flex flex-col gap-1 px-4 pt-4 pb-6", children: items.map((item) => (_jsx(Fragment, { children: renderLink(item, {
                                             className: drawerLinkClass,

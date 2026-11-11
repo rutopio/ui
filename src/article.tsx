@@ -4,7 +4,7 @@ import { SectionHeading } from "./section-heading.js";
 import { cn } from "./utils.js";
 
 export const articleLinkClassName =
-  "opsz-14 break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
+  "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
 
 export function Article({
   className,
@@ -81,7 +81,7 @@ function MinorHeading({
     <Heading
       id={id}
       className={cn(
-        "group opsz-25 mt-6 scroll-m-20 text-balance font-bold font-heading text-base first:mt-0",
+        "group mt-6 scroll-m-20 text-balance font-bold font-heading text-base first:mt-0",
         className,
       )}
       {...props}
@@ -95,7 +95,7 @@ export const articleComponents = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1
       className={cn(
-        "opsz-25 scroll-m-20 text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50",
+        "scroll-m-20 text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50",
         className,
       )}
       {...props}
@@ -116,7 +116,7 @@ export const articleComponents = {
     <h4
       id={id}
       className={cn(
-        "group opsz-25 mt-6 flex scroll-m-20 items-center text-balance font-bold font-heading text-base text-neutral-950 leading-[1.65] first:mt-0 sm:text-lg dark:text-neutral-50",
+        "group mt-6 flex scroll-m-20 items-center text-balance font-bold font-heading text-base text-neutral-950 leading-[1.65] first:mt-0 sm:text-lg dark:text-neutral-50",
         className,
       )}
       {...props}
@@ -140,7 +140,7 @@ export const articleComponents = {
     />
   ),
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className={cn("opsz-18 font-semibold", className)} {...props} />
+    <strong className={cn("font-semibold", className)} {...props} />
   ),
   ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
     <ul className={cn("my-4 ml-6 list-disc", className)} {...props} />
@@ -176,7 +176,7 @@ export const articleComponents = {
   ),
   th: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
     <th
-      className={cn("opsz-25 border px-4 py-2 text-left font-bold", className)}
+      className={cn("border px-4 py-2 text-left font-bold", className)}
       {...props}
     />
   ),
