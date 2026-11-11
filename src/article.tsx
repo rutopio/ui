@@ -1,6 +1,7 @@
 import * as React from "react";
 import { HashIcon } from "@phosphor-icons/react";
 import { SectionHeading } from "./section-heading.js";
+import { CodeBlock } from "./code-block.js";
 import { cn } from "./utils.js";
 
 export const articleLinkClassName =
@@ -183,6 +184,7 @@ export const articleComponents = {
   td: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
     <td className={cn("border px-4 py-2 text-left", className)} {...props} />
   ),
+  pre: CodeBlock,
   code: ({
     className,
     ...props

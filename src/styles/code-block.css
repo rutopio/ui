@@ -1,0 +1,79 @@
+/* Shared shell for plain and build-time highlighted code. */
+.base-code-block,
+[data-rehype-pretty-code-figure] {
+  @apply my-4 min-w-0 overflow-hidden rounded-lg border bg-muted/40;
+}
+
+.base-code-block { position: relative; }
+
+[data-rehype-pretty-code-figure] .base-code-block {
+  @apply m-0 rounded-none border-0 bg-transparent;
+}
+
+.base-code-block pre {
+  @apply m-0 max-w-full overflow-x-auto py-4 font-mono font-normal text-sm leading-6;
+}
+
+.base-code-block pre > code {
+  @apply block min-w-full rounded-none border-0 bg-transparent px-4 pr-12 py-0 font-mono font-normal text-sm leading-6;
+  white-space: pre;
+  overflow-wrap: normal;
+  counter-reset: line;
+}
+
+.base-code-block pre > code:has(> [data-line]) {
+  @apply grid px-0;
+}
+
+.base-code-block [data-line] {
+  @apply px-4 pr-12;
+  min-height: 1.5rem;
+}
+
+.base-code-block code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply mr-4 inline-block w-5 text-right select-none;
+  color: color-mix(in oklab, var(--color-muted-foreground) 40%, transparent);
+}
+
+[data-rehype-pretty-code-figure] code span { color: var(--shiki-light); }
+.dark [data-rehype-pretty-code-figure] code span { color: var(--shiki-dark); }
+
+[data-rehype-pretty-code-figure] :is([data-highlighted-line], .highlighted) {
+  @apply border-l-2 border-sky-400 bg-sky-400/10;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-chars] {
+  @apply rounded-md bg-sky-400/15 px-1 py-0.5;
+}
+
+[data-rehype-pretty-code-title] {
+  @apply border-b bg-muted/60 px-4 py-2 font-mono text-sm text-muted-foreground;
+}
+
+[data-rehype-pretty-code-figure] .diff { position: relative; }
+[data-rehype-pretty-code-figure] .diff.remove { @apply bg-rose-500/10 opacity-70; }
+[data-rehype-pretty-code-figure] .diff.remove::after {
+  content: "-";
+  @apply absolute left-1.5 text-rose-500;
+}
+[data-rehype-pretty-code-figure] .diff.add { @apply bg-emerald-500/15; }
+[data-rehype-pretty-code-figure] .diff.add::after {
+  content: "+";
+  @apply absolute left-1.5 text-emerald-500;
+}
+
+.base-code-block-copy {
+  @apply absolute top-2.5 right-2.5 z-10;
+}
+
+.base-code-block-error {
+  @apply m-0 border-t px-4 py-2 text-sm text-destructive;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .base-code-block-copy { opacity: 0; }
+  .base-code-block:hover .base-code-block-copy,
+  .base-code-block:focus-within .base-code-block-copy { opacity: 1; }
+}

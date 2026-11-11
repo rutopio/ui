@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Article, ArticleSection, articleComponents } from "../src/article";
+import { CodeBlock } from "../src/code-block";
 import { Badge } from "../src/badge";
 import { Button } from "../src/button";
 import {
@@ -65,6 +66,9 @@ function App() {
               <Paragraph>
                 正文區塊間距 24px；標題後間距 8px；章節間距 64px。
               </Paragraph>
+            </ArticleSection>
+            <ArticleSection heading={<SectionHeading id="code">程式碼</SectionHeading>}>
+              <CodeBlock><code>{'function example(value) {\n  return "# preserved" + value;\n}'}</code></CodeBlock>
             </ArticleSection>
             <ArticleSection
               heading={<SectionHeading id="controls">控制項</SectionHeading>}

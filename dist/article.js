@@ -1,6 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { HashIcon } from "@phosphor-icons/react";
 import { SectionHeading } from "./section-heading.js";
+import { CodeBlock } from "./code-block.js";
 import { cn } from "./utils.js";
 export const articleLinkClassName = "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
 export function Article({ className, ...props }) {
@@ -38,6 +39,7 @@ export const articleComponents = {
     tr: ({ className, ...props }) => (_jsx("tr", { className: cn("m-0 border-t p-0 even:bg-muted", className), ...props })),
     th: ({ className, ...props }) => (_jsx("th", { className: cn("border px-4 py-2 text-left font-bold", className), ...props })),
     td: ({ className, ...props }) => (_jsx("td", { className: cn("border px-4 py-2 text-left", className), ...props })),
+    pre: CodeBlock,
     code: ({ className, ...props }) => {
         if (props["data-language"])
             return _jsx("code", { className: className, ...props });

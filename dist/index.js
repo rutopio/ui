@@ -41,3 +41,4 @@ export * from "./separator.js";
 export * from "./article.js";
 export * from "./not-found.js";
 export * from "./screen-size.js";
+export * from "./code-block.js";

@@ -1,3 +1,4 @@
+@import "./code-block.css";
 @import "./katex.css";
 
 :is(.mdx, .base-article) :is(p, li, td, th, blockquote) a {

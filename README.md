@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.19.1
+pnpm add github:rutopio/ui#v0.20.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -67,6 +67,12 @@ Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` sup
 `article.css` includes the shared `katex.css` layout rules by default: long display equations scroll within their own block, and aligned or multiline equations keep IntD's 0.3em lower spacing. Sites do not need local KaTeX layout overrides. A math-only view can import `@rutopio/ui/katex.css` directly.
 
 To render LaTeX, the site still configures its MDX math plugins and imports `katex/dist/katex.min.css` from its own installed KaTeX version in `src/styles/globals.css`. That vendor stylesheet supplies the matching glyph positioning and math fonts. The shared article styles do not load the KaTeX renderer or fonts for sites without equations.
+
+`article.css` also includes `code-block.css`. `CodeBlock` supplies the common Paper Mono code frame and copy action, and is already the `pre` renderer in `articleComponents`. It accepts the generated `<code>` children and native `<pre>` attributes. Copying reads only code text, so line numbers, captions and copy feedback are excluded. Keyboard focus and touch reveal the copy control; clipboard errors are reported beside the code.
+
+For syntax highlighting, install `shiki`, `rehype-pretty-code` and `@shikijs/transformers` as development dependencies, then add `rehypeCode` from `@rutopio/ui/rehype-code` to the MDX rehype plugins before `rehypeArticleSections`. This build-only entry point owns GitHub light/dark token colors, line and word highlights, diff markers and the `pseudocode` TextMate grammar. It leaves inline code unhighlighted and treats unlabelled fences as plain text. The highlighter is not imported by the component or the root package entry point.
+
+Use a fenced block tagged `pseudocode` for algorithm notation, including `←`, `q_*`, hash comments and `sort … by`. Plain fenced blocks remain suitable for ASCII diagrams. Both use the same code-block presentation as other languages.
 
 For MDX builds, import `rehypeArticleSections` from the matching subpath. It groups h2 sections with the same Writing rhythm, preserves MDX exports and heading IDs, and adds section labels. Each site chooses which content files run through it.
 

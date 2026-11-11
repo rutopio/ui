@@ -1,4 +1,5 @@
 import * as React from "react";
+import { CodeBlock } from "./code-block.js";
 export declare const articleLinkClassName = "break-words font-normal text-primary underline decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-thickness] duration-150 hover:text-neutral-950 hover:decoration-[1px] dark:hover:text-neutral-50";
 export declare function Article({ className, ...props }: React.ComponentProps<"article">): React.JSX.Element;
 export declare function ArticleBody({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element;
@@ -22,6 +23,7 @@ export declare const articleComponents: {
     tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => React.JSX.Element;
     th: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => React.JSX.Element;
     td: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => React.JSX.Element;
+    pre: typeof CodeBlock;
     code: ({ className, ...props }: React.HTMLAttributes<HTMLElement> & {
         "data-language"?: string;
     }) => React.JSX.Element;
