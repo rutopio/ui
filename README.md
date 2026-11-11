@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/ui#v0.17.0
+pnpm add github:rutopio/ui#v0.18.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/ui/site-header`, `@rutopio/ui/footer`, or `@rutopio/ui/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -67,6 +67,14 @@ Import `@rutopio/ui/article.css` with the shared styles. `articleComponents` sup
 To render LaTeX, the site still configures its MDX math plugins and imports `katex/dist/katex.min.css` from its own installed KaTeX version in `src/styles/globals.css`. That vendor stylesheet supplies the matching glyph positioning and math fonts. The shared article styles do not load the KaTeX renderer or fonts for sites without equations.
 
 For MDX builds, import `rehypeArticleSections` from the matching subpath. It groups h2 sections with the same Writing rhythm, preserves MDX exports and heading IDs, and adds section labels. Each site chooses which content files run through it.
+
+## Not-found pages
+
+`NotFound` from `@rutopio/ui/not-found` owns the shared Writing-style 404 page, title, noindex metadata and home action. It uses React 19 metadata support. Sites pass a router link through `homeLink` to keep client navigation and the current language; they supply their normal page shell without overriding the page's styles. `NOT_FOUND_TITLE` is available to route-level metadata synchronizers.
+
+## Development tools
+
+`ScreenSize` from `@rutopio/ui/screen-size` shows the active Tailwind breakpoint using the shared Paper Mono `text-xs` badge. Render it behind the app’s development guard, for example `{import.meta.env.DEV && <ScreenSize />}` in Vite. The component is independent of the build tool, ignores pointer events and stays hidden from assistive technology.
 
 ## Controls and motion
 

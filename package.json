@@ -1,6 +1,6 @@
 {
   "name": "@rutopio/ui",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "Shared interface primitives for ChingRu's sites",
   "license": "MIT",
   "type": "module",
@@ -205,7 +205,15 @@
     },
     "./globals.css": "./dist/globals.css",
     "./fonts.css": "./dist/fonts.css",
-    "./katex.css": "./dist/katex.css"
+    "./katex.css": "./dist/katex.css",
+    "./not-found": {
+      "types": "./dist/not-found.d.ts",
+      "import": "./dist/not-found.js"
+    },
+    "./screen-size": {
+      "types": "./dist/screen-size.d.ts",
+      "import": "./dist/screen-size.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && cp src/styles/*.css dist/",
