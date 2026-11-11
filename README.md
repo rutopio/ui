@@ -5,7 +5,7 @@ Shared interface components used by IntD, Mahjong Font, EmojiSalon, chingru.com,
 Install a tagged version with pnpm:
 
 ```sh
-pnpm add github:rutopio/base-component#v0.13.0
+pnpm add github:rutopio/base-component#v0.14.0
 ```
 
 Import each component through its named entry point, such as `@rutopio/base-component/site-header`, `@rutopio/base-component/footer`, or `@rutopio/base-component/article-image`. The five sites use the same header structure and page action rail. The footer offers `AttributionFooter` for IntD, Mahjong Font, and EmojiSalon, and `CelebrationFooter` for chingru.com and writing.chingru.com.
@@ -22,7 +22,7 @@ Tailwind v4 sites must scan package styles, for example in `src/styles.css`:
 
 For `src/styles/globals.css`, use `../../node_modules/...` instead.
 
-Import `styles.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should only contain genuinely local font, layout, and content rules. The grayscale `destructive` token remains distinct by luminance rather than hue.
+Import `styles.css` before `neutral-theme.css`. The former provides shared Tailwind tokens and interaction styles; the latter provides the complete light and dark neutral palette, including monochrome charts, radii, and shadows. Site styles should contain font assets, explicit brand overrides, and product-specific content rules. Common layout and typography belong in the package. The grayscale `destructive` token remains distinct by luminance rather than hue.
 
 `styles.css` also sets the shared dark variant, `text-autospace`, body type defaults (including optical sizing and tabular numerals), the HTML font and stable scrollbar gutter, overscroll containment, and the image zoom overlay. Keep these rules in the library so a new site receives the same baseline without copying a local reset.
 
@@ -46,4 +46,39 @@ The `sound` entry point exports the shared audio engine and `fillSound` recipe. 
 2. Update the package version, commit, tag, and push the tag.
 3. Update each site's pinned `github:rutopio/base-component#vX.Y.Z` dependency and lockfile; run its type check and production build.
 
-The tag pin keeps production builds reproducible. A library edit reaches the sites after they update that pin and deploy. Pass site-specific heading fonts to drawer and dialog titles with `className`.
+The tag pin keeps production builds reproducible. A library edit reaches the sites after they update that pin and deploy. Titles inherit the library heading font.
+
+## Layout and typography
+
+`SiteLayout` owns the centered `max-w-2xl` frame and `px-6` gutters at every viewport width. It takes children and native div attributes, with no class override. Keep routing, skip-link translations, metadata and product state in the site. Wide tool workspaces remain inside this common frame.
+
+The default sans font is Inter Variable; monospace is Paper Mono. Sites with Chinese or Japanese content also import `@rutopio/base-component/cjk-fonts.css` after `styles.css`. It adds Noto Sans TC and Noto Sans JP, prioritizing JP on Japanese pages. Sites load their own font files. chingru.com intentionally overrides `--font-sans` with Albert Sans Variable.
+
+`SectionHeading` owns h2/h3 typography, optical size, scroll offset, anchor and the h2 divider. Pass `id`, `level`, text and optional translated `linkTitle`/`onLinkClick`; do not repeat heading classes. `PageIntro` owns page titles, subtitles, dates and action slots. Dialog and drawer titles also inherit the common heading font.
+
+## Articles
+
+Import `@rutopio/base-component/article.css` with the shared styles. `articleComponents` supplies the Writing-derived MDX typography. Spread it into the site's MDX mapping, then add only content adapters such as images, footnotes, code highlighting, embeds and routing behavior. `articleLinkClassName` is the same link treatment for those behavioral adapters.
+
+`Article` is the reading container; `ArticleBody` owns body spacing. For hand-written pages, use `<ArticleSection heading={<SectionHeading id="example">Example</SectionHeading>}>…</ArticleSection>` so the heading-to-body gap is 8px and body blocks are 24px apart. Sections are 64px apart. In a body, paragraphs before h2/h3 leave 64px and headings before content leave 8px.
+
+For MDX builds, import `rehypeArticleSections` from the matching subpath. It groups h2 sections with the same Writing rhythm, preserves MDX exports and heading IDs, and adds section labels. Each site chooses which content files run through it.
+
+## Controls and motion
+
+Import `input`, `input-group`, `table`, `badge`, `command`, `separator` and `sonner` from their named subpaths. Badge always defaults to `text-xs`. Command and Sonner keep their optional peers isolated to those entry points; install `cmdk` or `sonner` only where used.
+
+`PageTransition` owns the shared 200ms entrance fade, reduced motion and visible server-rendered content. Key it by pathname, with the router outlet as its child; query and hash changes must not remount it. Import `transitions` and `spring` from `motion` for common content, copy-feedback and progress animations.
+
+`ReadingProgressRing` comes from `outline-nav`. `PageActionRail` owns the 50rem desktop breakpoint; sites no longer pass their own gutter result. `useIsMobile` from `use-mobile` owns the 768px dialog/navigation breakpoint.
+
+Header navigation, action spacing and title typography use one common default. Site adapters supply labels, routes, logos and callbacks instead of title, navigation or action-area class overrides.
+
+## Preview and verify
+
+- `pnpm playground` opens a local Vite gallery for typography, controls, dialog, drawer, theme and page transitions.
+- `pnpm check && pnpm build && pnpm test` checks package and gallery types, builds the distributed files and exercises article grouping, heading semantics and visible SSR output.
+- `pnpm playground:build` builds the standalone gallery.
+- Before releasing, check the five consuming sites at desktop and narrow widths, both themes, keyboard focus, article anchors and reduced motion. Run their type checks and production builds against the release.
+
+The gallery is development-only and is not included in the published package.

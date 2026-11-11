@@ -23,7 +23,6 @@ export function LanguageToggle<T extends string>({
   onChange,
   isMobile,
   className,
-  titleClassName,
 }: {
   label: string;
   current: T;
@@ -31,7 +30,6 @@ export function LanguageToggle<T extends string>({
   onChange: (value: T) => void;
   isMobile: boolean;
   className?: string;
-  titleClassName?: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -40,14 +38,19 @@ export function LanguageToggle<T extends string>({
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger
           render={
-            <Button variant="ghost" size="icon" className={className} aria-label={label}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={className}
+              aria-label={label}
+            >
               <TranslateIcon aria-hidden="true" />
             </Button>
           }
         />
         <DrawerContent>
           <DrawerHeader className="border-border border-b pb-4">
-            <DrawerTitle className={titleClassName}>{label}</DrawerTitle>
+            <DrawerTitle>{label}</DrawerTitle>
           </DrawerHeader>
           <div className="flex flex-col gap-1 px-4 pt-4 pb-6">
             {options.map((option) => (

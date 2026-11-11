@@ -1,20 +1,17 @@
-import type { ReactNode } from "react"
-import { FluidHoverControls } from "./fluid-hover-controls.js"
-import { cn } from "./utils.js"
+import type { ReactNode } from "react";
+import { FluidHoverControls } from "./fluid-hover-controls.js";
+import { cn } from "./utils.js";
 
 export function PageActionRail({
   label,
   mobileOutline,
   desktopOutline,
   actions,
-  desktopVisible,
 }: {
-  label: string
-  mobileOutline?: ReactNode
-  desktopOutline?: ReactNode
-  actions: ReactNode
-  /** Omit for the standard 50rem breakpoint. Supply a measured gutter result when the rail depends on available space. */
-  desktopVisible?: boolean
+  label: string;
+  mobileOutline?: ReactNode;
+  desktopOutline?: ReactNode;
+  actions: ReactNode;
 }) {
   return (
     <>
@@ -24,9 +21,7 @@ export function PageActionRail({
         label={label}
         className={cn(
           "fixed right-4 bottom-[calc(2rem+env(safe-area-inset-bottom))] z-10 h-fit",
-          desktopVisible === undefined
-            ? "min-[50rem]:hidden"
-            : desktopVisible && "hidden",
+          "min-[50rem]:hidden",
         )}
       >
         {mobileOutline}
@@ -38,14 +33,12 @@ export function PageActionRail({
         label={label}
         className={cn(
           "fixed top-1/2 left-[var(--gutter-offset)] z-10 h-fit -translate-y-1/2",
-          desktopVisible === undefined
-            ? "hidden min-[50rem]:flex"
-            : !desktopVisible && "hidden",
+          "hidden min-[50rem]:flex",
         )}
       >
         {desktopOutline}
         {actions}
       </FluidHoverControls>
     </>
-  )
+  );
 }

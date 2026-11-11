@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ActionMenu } from "./action-menu.js";
+import { transitions } from "./motion.js";
 import { cn } from "./utils.js";
 const RING_CIRCUMFERENCE = 2 * Math.PI * 6.25;
 // Text outline shown in the mobile drawer: full labels, the active one bolded.
@@ -19,9 +20,7 @@ export function useOutlineActive(items, progress) {
 }
 export function ReadingProgressRing({ progress }) {
     const reducedMotion = useReducedMotion();
-    return (_jsxs("svg", { "aria-hidden": "true", viewBox: "0 0 16 16", className: cn("size-4", "-rotate-90"), children: [_jsx("circle", { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", className: "opacity-20" }), _jsx(motion.circle, { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeDasharray: RING_CIRCUMFERENCE, initial: false, animate: { strokeDashoffset: (1 - progress) * RING_CIRCUMFERENCE }, transition: reducedMotion
-                    ? { duration: 0 }
-                    : { type: "spring", stiffness: 200, damping: 30, mass: 0.4 } })] }));
+    return (_jsxs("svg", { "aria-hidden": "true", viewBox: "0 0 16 16", className: cn("size-4", "-rotate-90"), children: [_jsx("circle", { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", className: "opacity-20" }), _jsx(motion.circle, { cx: "8", cy: "8", r: "6.25", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeDasharray: RING_CIRCUMFERENCE, initial: false, animate: { strokeDashoffset: (1 - progress) * RING_CIRCUMFERENCE }, transition: reducedMotion ? transitions.instant : transitions.progress })] }));
 }
 // An action-rail progress ring reveals a single-level heading dropdown.
 export function OutlineNav({ items, ariaLabel, pageProgress, progress, className, }) {

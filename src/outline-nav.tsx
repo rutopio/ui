@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ActionMenu } from "./action-menu.js";
+import { transitions } from "./motion.js";
 import { cn } from "./utils.js";
 
 const RING_CIRCUMFERENCE = 2 * Math.PI * 6.25;
@@ -19,7 +20,7 @@ export interface OutlineItem {
 // Compute the deepest entered item from reading progress.
 export function useOutlineActive(
   items: OutlineItem[],
-  progress: Record<string, number>
+  progress: Record<string, number>,
 ): string {
   return useMemo(() => {
     let active = items[0]?.id ?? "";
@@ -59,11 +60,7 @@ export function ReadingProgressRing({ progress }: { progress: number }) {
         strokeDasharray={RING_CIRCUMFERENCE}
         initial={false}
         animate={{ strokeDashoffset: (1 - progress) * RING_CIRCUMFERENCE }}
-        transition={
-          reducedMotion
-            ? { duration: 0 }
-            : { type: "spring", stiffness: 200, damping: 30, mass: 0.4 }
-        }
+        transition={reducedMotion ? transitions.instant : transitions.progress}
       />
     </svg>
   );

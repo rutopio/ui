@@ -11,24 +11,19 @@ export type HeaderLinkProps = {
     ariaCurrent?: "page";
     children: ReactNode;
 };
-export declare function HeaderNavigation({ items, renderLink, label, title, menuIcon, selectedIcon, titleClassName, triggerClassName, }: {
+export declare function HeaderNavigation({ items, renderLink, label, title, menuIcon, selectedIcon, }: {
     items: HeaderNavItem[];
     renderLink: (item: HeaderNavItem, props: HeaderLinkProps) => ReactNode;
     label: string;
     title: string;
     menuIcon: ReactNode;
     selectedIcon: ReactNode;
-    titleClassName?: string;
-    triggerClassName?: string;
 }): import("react").JSX.Element;
-export declare function SiteHeader({ brand, navigation, actions, label, actionsLabel, compactActions, className, navClassName, actionsClassName, }: {
+export declare function SiteHeader({ brand, navigation, actions, label, actionsLabel, className, }: {
     brand: ReactNode;
     navigation?: ReactNode;
     actions: ReactNode;
     label: string;
     actionsLabel?: string;
-    compactActions?: boolean;
     className?: string;
-    navClassName?: string;
-    actionsClassName?: string;
 }): import("react").JSX.Element;

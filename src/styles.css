@@ -1,6 +1,9 @@
 @custom-variant dark (&:is(.dark, .dark *));
 
 @theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: "Paper Mono", ui-monospace, monospace;
   --font-weight-normal: 400;
   --font-weight-semibold: 550;
   --font-weight-bold: 700;
@@ -266,4 +269,8 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+@utility opsz-* {
+  font-variation-settings: "opsz" --value(integer);
 }

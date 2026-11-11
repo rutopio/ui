@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export function PageIntro({ title, subtitle, year, id, actions, }) {
+    return (_jsxs("div", { className: "flex flex-col items-start gap-4", children: [_jsxs("div", { className: "flex min-w-0 flex-col gap-2", children: [_jsx("h1", { id: id, className: "opsz-25 text-balance font-bold font-heading text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50", children: title }), subtitle && (_jsx("p", { className: "opsz-18 font-semibold text-lg text-neutral-950 leading-[1.65] dark:text-neutral-50", children: subtitle })), year && (_jsx("p", { className: "opsz-18 font-semibold text-base text-neutral-950 leading-[1.65] dark:text-neutral-50", children: year }))] }), actions && (_jsx("div", { className: "-ml-2 flex items-center gap-2", children: actions }))] }));
+}

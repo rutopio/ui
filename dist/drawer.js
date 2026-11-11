@@ -64,7 +64,7 @@ function DrawerFooter({ className, ...props }) {
     return (_jsx("div", { "data-slot": "drawer-footer", className: cn("mt-auto flex shrink-0 flex-col gap-2 p-4 pt-0", className), ...props }));
 }
 function DrawerTitle({ className, ...props }) {
-    return (_jsx(DrawerPrimitive.Title, { "data-slot": "drawer-title", className: cn("text-base font-semibold text-foreground", className), ...props }));
+    return (_jsx(DrawerPrimitive.Title, { "data-slot": "drawer-title", className: cn("font-heading text-base font-semibold text-foreground", className), ...props }));
 }
 function DrawerDescription({ className, ...props }) {
     return (_jsx(DrawerPrimitive.Description, { "data-slot": "drawer-description", className: cn("text-base text-balance text-muted-foreground", className), ...props }));

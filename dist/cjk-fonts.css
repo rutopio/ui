@@ -1,0 +1,9 @@
+/* Import for sites with Chinese or Japanese content; load the font files locally. */
+@theme {
+  --font-sans: "Inter Variable", "Noto Sans TC Variable", "Noto Sans JP Variable", ui-sans-serif, system-ui, sans-serif;
+}
+@layer base {
+  html:lang(ja) {
+    --font-sans: "Inter Variable", "Noto Sans JP Variable", "Noto Sans TC Variable", ui-sans-serif, system-ui, sans-serif;
+  }
+}

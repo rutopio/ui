@@ -1,0 +1,27 @@
+:is(.mdx, .base-article) :is(p, li, td, th, blockquote) a {
+  color: var(--color-primary);
+  transition:
+    color 0.15s,
+    text-decoration-thickness 0.15s;
+}
+
+:is(.mdx, .base-article) :is(p, li, td, th, blockquote) a:hover {
+  color: var(--color-neutral-950);
+  text-decoration-thickness: 1px;
+}
+
+.dark :is(.mdx, .base-article) :is(p, li, td, th, blockquote) a:hover {
+  color: var(--color-neutral-50);
+}
+
+/* footnotes may hold raw full URLs; allow them to break anywhere */
+:is(.mdx, .base-article) [data-footnotes] a {
+  @apply break-all;
+}
+
+/* Hand-written article bodies follow the same rhythm as the MDX transform. */
+@layer components {
+  .base-article-body > * + * { margin-block-start: 1.5rem; }
+  .base-article-body > :is(h2, h3) + * { margin-block-start: 0.5rem; }
+  .base-article-body > p + :is(h2, h3) { margin-block-start: 4rem; }
+}

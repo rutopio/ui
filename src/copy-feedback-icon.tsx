@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 
+import { transitions } from "./motion.js";
 import { cn } from "./utils.js";
 
 const swap = (visible: boolean, reducedMotion: boolean | null) => ({
@@ -9,8 +10,6 @@ const swap = (visible: boolean, reducedMotion: boolean | null) => ({
   scale: reducedMotion || visible ? 1 : 0.85,
   filter: reducedMotion ? "none" : visible ? "blur(0px)" : "blur(4px)",
 });
-
-const spring = { type: "spring", duration: 0.25, bounce: 0 } as const;
 
 // Cross-fades an idle icon to a check on success: the two glyphs sit stacked and
 // swap with a spring scale + blur, matching the mail-dialog feedback. Shared so
@@ -27,8 +26,8 @@ export function CopyFeedbackIcon({
 }) {
   const reducedMotion = useReducedMotion();
   const transition = reducedMotion
-    ? { duration: 0.12, ease: "easeOut" as const }
-    : spring;
+    ? transitions.gentleFade
+    : transitions.iconSwap;
 
   return (
     <div className={cn("relative size-4", className)}>
