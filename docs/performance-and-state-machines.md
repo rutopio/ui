@@ -27,7 +27,7 @@ database bindings. No schema or data migration is needed for this item.
 | Regular expression allocation | Complete; static patterns moved to module scope |
 | JSONB field promotion | Complete; no JSONB storage or queries |
 | Sequential asynchronous work | Complete; independent work overlaps |
-| State machines and regression fixes | In review |
+| State machines and regression fixes | Complete; 11 confirmed issue groups fixed |
 
 ## URL parsing
 
@@ -106,7 +106,7 @@ refs are named here even where the code has no enum.
 | Writing `src/lib/posts.ts`; Portfolio `src/lib/webmcp.ts` | Empty, loading, ready | Read: empty → loading; concurrent read joins; success → ready; failure → empty | Failed HTTP responses are not indexed; failed requests remain retryable |
 | Both sites `src/lib/search-index-store.ts` | Idle, loading, ready, failed | Open search → loading; success → ready; failure → failed; reopen → loading | One pending request; a published snapshot has stable identity |
 | Mahjong `src/lib/tiles-data.ts` | Empty, loading, ready | Import → loading; success → ready; failure → empty | Concurrent callers share the import; application cache cannot retain rejection forever |
-| EmojiSalon `src/lib/emoji-utils.ts` | Uncached, trying original, trying fallback, cached | Read → original; unavailable → fallback; success → cached; exhausted → uncached | Original ID wins over stripped variation-selector ID; failed results are not cached |
+| EmojiSalon `src/lib/emoji-utils.ts` and `src/hooks/use-emoji-svg.ts` | Uncached, trying original, trying fallback, cached, query error | Read → original; concurrent reads join; unavailable → fallback; success → cached; exhausted → query error/uncached | Original ID wins; missing data is a query error, so retries remain possible |
 | IntD, Mahjong, EmojiSalon `functions/og.ts` | Uninitialized, initializing, ready | First valid request → initializing; concurrent requests join; success → ready; failure → uninitialized | Only successful initialization is permanent; resvg marks itself initialized only after success |
 | Mahjong `functions/og.ts`, `functions/img/[tile].ts` | Invalid, cache lookup, hit, render, cache write | Invalid → 400; hit → response; miss → render; render → response plus `waitUntil` write | No invalid input is rendered; response body is cloned for caching |
 | Site middleware | Redirect, bypass, metadata lookup, rewrite, missing | Preview host → redirect; asset/non-GET → bypass; known page → rewrite; unknown page → 404 | Canonical host is fixed; path/query survive; HEAD does not consume an HTML body |
@@ -123,7 +123,7 @@ promise recovery from a deleted deployment chunk without a reload.
 | EmojiSalon `src/contexts/emoji-context.tsx` | Empty, ready, loading next selection | Select → loading; newest success → ready; stale success ignored; failure keeps previous ready snapshot | Identity, label, geometry, and original palette belong to the same emoji |
 | Emoji palette persistence in the same provider | Clean, dirty with timer, saved, disposed | Edit → dirty; later edit replaces timer; timeout → saved; select/reset/randomize/dispose invalidates old timer | Old edits cannot overwrite a newer selection or route |
 | Emoji export in the same provider | Idle, decoding, drawing, delivering, completed/failed/cancelled | Export → decode → draw → delivery; decode/delivery failure → failed; share cancellation → cancelled | Every export owns its canvas; preview is published only after decoding |
-| Emoji showcase `src/components/showcase/showcase-section.tsx` | Idle, rendering, download/share, done/cancelled | Click → independent canvas render → delivery | Each operation captures its own SVG and canvas |
+| Emoji showcase `src/components/showcase/showcase-section.tsx` | Idle, rendering, download/share, done/failed/cancelled | Click → independent canvas render → delivery; decode/delivery failure → error feedback | Each operation captures its own SVG and canvas |
 | IntD `src/hooks/use-decomposition.ts` | Empty input, invalid input, results by sort mode, exhausted | Submit validates; valid submit clears old modes; mode switch reuses or computes; shuffle excludes seen results; blank submit clears session | Persisted values have validated shapes; current mode, target, result offsets, and seen keys are usable |
 | IntD `src/components/settings-dialog.tsx` | Closed, editing, invalid, saved, reset confirmation | Open → edit; invalid save stays open; valid save persists and clears calculations; reset requires confirmation | Only valid settings reach the solver; result data is invalidated when settings change |
 | IntD `src/hooks/use-local-storage.ts` | Persistent, volatile fallback, absent | Read parses and validates; write persists or falls back; remove → absent; storage event refreshes snapshot | React sees stable raw snapshots; unavailable storage does not crash rendering |
@@ -142,6 +142,7 @@ promise recovery from a deleted deployment chunk without a reload.
 | UI `src/article/code-block.tsx` | Idle, copied, error | Clipboard settles → feedback; feedback change restarts expiry; unmount clears timer | Feedback describes the clipboard result; effect cleanup owns expiry |
 | UI `src/feedback/sounds/react-bits-sound.js` | Muted/unavailable, suspended/running, buffer loading/ready, playing/ended | Play resumes and renders concurrently; both ready → playback; ended → resolve | Render failures can retry; rejected evicted buffers cannot remove a newer cache entry |
 | UI article image; site tile preview | Loading, loaded/error, zoom closed/open | Source change/load updates preview; zoom opens/closes | Zoom and measurement use the current element; image ownership stays with the component |
+| UI `section-navigation.ts` | Idle, delayed scroll, cancelled/completed | Heading click replaces pending scroll; URL change cancels its effect; timeout on the same URL → scroll and fragment | An old click cannot navigate a new route |
 | UI scroll progress, site reading progress and outline hooks | Tracking, scroll locked, disposed | Scroll/resize schedules a frame; locked reads are skipped; cleanup cancels observers/frames | Fractions stay in 0..1; old observers do not update a replaced article |
 | Site Taipei clocks, client-only and viewport stores | Server snapshot, subscribed client snapshot, disposed | Subscribe installs interval/media listener; cleanup removes it | Server snapshot is stable; subscriptions do not leak after unmount |
 
@@ -161,7 +162,7 @@ reachable sequence rather than merely checking source text.
 | --- | --- | --- | --- |
 | STATE-01: Rejected caches prevent retry | P1 | A network/parse failure in Writing `loadPostsData`, Portfolio `searchIndex`, or Mahjong `loadTilesData` leaves the rejected promise assigned. OG `ensureWasm` and sound `bufferFor` have the same failure state. Every later caller receives that rejection. | Fixed: clear rejected cache entries; check HTTP status; tests cover concurrent callers, failure, retry, and reuse |
 | STATE-02: Emoji selection and delayed persistence | P1 | `updateEmoji` changed identity before awaiting data; failure retained old geometry. A color timer captured the old emoji and survived selection, reset, and unmount. | Fixed: React tests cover out-of-order selection, failure, timer invalidation, route changes, and blocked storage |
-| STATE-03: Emoji export completion and races | P1 | `updateCanvas` returned after assigning `onload`, so awaiting it opened an empty preview. Editor and showcase exports shared canvases. Decode had no error callback; showcase object URLs were never released. | Fixed: independent canvases, awaited decoding/delivery, no object URLs; tests cover reverse completion, JPG background, failed decoding/encoding, and stale previews |
+| STATE-03: Emoji export completion and races | P1 | `updateCanvas` returned after assigning `onload`, so awaiting it opened an empty preview. Editor and showcase exports shared canvases. Decode had no error callback; showcase object URLs were never released. | Fixed: independent canvases, awaited decoding/delivery, no object URLs; tests cover reverse completion, JPG background, failed decoding/encoding, and stale previews, including explicitly closed dialogs |
 | STATE-04: Invalid persisted calculator data | P2 | `JSON.parse` was cast to any requested type. Stored `null` for `idc:byMode` reached `byMode[sortMode]`; malformed settings reached `items.map`. Saving new items retained results from the old settings. Failed removal could reveal the old persistent value. | Fixed: validate storage with schemas, invalidate results on item changes, retain an absent-value fallback on removal failure; schema and React storage tests pass. Target/settings compatibility checks reject partial or interleaved cross-tab snapshots before display or shuffle. |
 | STATE-05: Clipboard feedback lifetime | P2 | Copy twice less than two seconds apart: the first timer clears the second success. Mahjong marked copied before clipboard completion. | Fixed: React tests cover delayed success, rejection, renewed expiry, and unmount cleanup |
 | STATE-06: Empty Mahjong input and URL mismatch | P2 | `update` returned early for empty input, leaving the prior tiles in the share URL. Decoder also treated explicit empty input as missing. | Fixed: React and decoder tests cover clear, round-trip, color/hash preservation, and subsequent editing |
@@ -170,3 +171,36 @@ reachable sequence rather than merely checking source text.
 | STATE-09: Canonical redirect host | P1 | Passing a `//host/path` pathname to a base-URL constructor selected that host. | Fixed in URL step; double/triple-slash regression tests |
 | STATE-10: Showcase caches failed loads as success | P2 | `useShowcaseEmojiData` returned `null` on fetch failure with infinite stale time. React Query treated it as permanent successful data and skipped retries. | Fixed: reject missing data; query-client tests cover retry and successful caching. Concurrent raw emoji reads also share one pending request. |
 | STATE-11: Delayed outline navigation crosses routes | P2 | `scrollToSection` waited 350 ms without checking the current URL or cancelling an earlier click. Navigating to another article with the same heading ID let the old callback scroll it and change its fragment. | Fixed: latest click wins and callbacks verify the source URL; timer tests cover both cases. |
+
+## Final validation
+
+| Repository | Type/lint checks | Regression tests | Build |
+| --- | --- | --- | --- |
+| UI | Passed | 11 passed | Library and declarations passed |
+| Portfolio | Passed | 1 passed | Production build, OG generation, and prerender passed |
+| Writing | Passed, including 223 MDX compilation checks | 5 passed | Production build and OG generation passed |
+| IntD | Passed | 5 passed | Production build passed |
+| Mahjong | Passed | 5 passed | Production build passed |
+| EmojiSalon | Passed | 10 passed | Production build passed |
+
+All five sites also passed type checks, Vite production builds, and their tests
+with a temporary copy of the updated UI package. The original dependency links
+were restored afterward. This verifies local compatibility without changing the
+sites' pinned library version. Publishing UI and updating those pins is a
+separate release step; these changes have only been committed locally.
+
+All six dependency audits reported zero known vulnerabilities. Happy DOM is a
+development-only dependency in UI, IntD, Mahjong, and EmojiSalon for React DOM
+regression tests. Tests use deferred promises and controlled timers to reproduce
+ordering problems without timing-dependent sleeps.
+
+A final syntax-tree scan found no regular-expression construction inside
+production functions or loops. It also covered module-level script loops. The
+last script-only hoists passed syntax checks, lint/type checks, tests, and the
+real article image-size checker; an AST comparison verified that their pattern
+text and flags did not change. Font audit data and history remain untouched.
+
+The tests mock browser image decoding, clipboard/share outcomes, and WASM
+initialization failures. They verify application transitions and generated
+outputs, not physical-device share sheets or Cloudflare isolate behavior.
+No deployment or benchmark was run. Existing bundle-size warnings remain.
