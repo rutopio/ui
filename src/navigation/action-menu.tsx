@@ -18,6 +18,9 @@ import { useFluidHover } from "../motion/use-fluid-hover.js"
 import { useMountEffect } from "../shared/use-mount-effect.js"
 import { cn } from "../shared/class-names.js"
 
+const HTTP_URL_RE = /^https?:\/\//;
+
+
 export type ActionMenuItem = {
   id: string
   label: string
@@ -247,7 +250,7 @@ export function ActionMenu({
                 >
                   <FluidHoverHighlight hover={hover} className="rounded-md" />
                   {items.map((item, index) => {
-                    const external = item.external ?? /^https?:\/\//.test(item.href ?? "")
+                    const external = item.external ?? HTTP_URL_RE.test(item.href ?? "")
                     const itemProps = {
                       role: "menuitem" as const,
                       lang: item.lang,
