@@ -125,7 +125,7 @@ export function SiteHeader({
           "relative flex w-full items-center justify-between pt-6 sm:pt-12",
         )}
       >
-        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-4">
           {brand}
           {navigation}
         </div>

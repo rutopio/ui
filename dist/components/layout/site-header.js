@@ -19,5 +19,5 @@ export function HeaderNavigation({ items, renderLink, label, title, menuIcon, se
                     }) }, item.id))) })] }));
 }
 export function SiteHeader({ brand, navigation, actions, label, actionsLabel, className, }) {
-    return (_jsx("header", { className: cn("w-full", className), children: _jsxs("nav", { "aria-label": label, className: cn("relative flex w-full items-center justify-between pt-6 sm:pt-12"), children: [_jsxs("div", { className: "flex min-w-0 items-center gap-1 sm:gap-2", children: [brand, navigation] }), _jsx(FluidHoverControls, { compact: true, label: actionsLabel, className: "base-site-header-actions", children: actions })] }) }));
+    return (_jsx("header", { className: cn("w-full", className), children: _jsxs("nav", { "aria-label": label, className: cn("relative flex w-full items-center justify-between pt-6 sm:pt-12"), children: [_jsxs("div", { className: "flex min-w-0 items-center gap-1 sm:gap-4", children: [brand, navigation] }), _jsx(FluidHoverControls, { compact: true, label: actionsLabel, className: "base-site-header-actions", children: actions })] }) }));
 }
