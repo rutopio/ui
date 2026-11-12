@@ -1,4 +1,5 @@
 import { Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { Fragment, useState } from "react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, } from "../ui/drawer.js";
 import { FluidHoverControls } from "../motion/fluid-hover-controls.js";
@@ -11,7 +12,8 @@ export function HeaderNavigation({ items, renderLink, label, title, menuIcon, se
                                             className: drawerLinkClass,
                                             onClick: () => setOpen(false),
                                             ariaCurrent: item.active ? "page" : undefined,
-                                            children: (_jsxs(_Fragment, { children: [item.label, item.active && selectedIcon] })),
+                                            children: (_jsxs(_Fragment, { children: [item.label, item.active &&
+                                                        (selectedIcon ?? (_jsx(ArrowLeftIcon, { className: "size-4", "aria-hidden": "true" })))] })),
                                         }) }, item.id))) })] })] }) }), _jsx(FluidHoverControls, { label: label, className: "hidden md:flex", children: items.map((item) => (_jsx(Fragment, { children: renderLink(item, {
                         className: cn(routeLinkClass, item.active && "bg-muted"),
                         ariaCurrent: item.active ? "page" : undefined,

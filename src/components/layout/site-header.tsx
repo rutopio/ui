@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { Fragment, type ReactNode, useState } from "react";
 import {
   Drawer,
@@ -36,7 +37,7 @@ export function HeaderNavigation({
   label: string;
   title: string;
   menuIcon: ReactNode;
-  selectedIcon: ReactNode;
+  selectedIcon?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const routeLinkClass =
@@ -77,7 +78,10 @@ export function HeaderNavigation({
                     children: (
                       <>
                         {item.label}
-                        {item.active && selectedIcon}
+                        {item.active &&
+                          (selectedIcon ?? (
+                            <ArrowLeftIcon className="size-4" aria-hidden="true" />
+                          ))}
                       </>
                     ),
                   })}

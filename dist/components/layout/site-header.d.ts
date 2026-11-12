@@ -17,7 +17,7 @@ export declare function HeaderNavigation({ items, renderLink, label, title, menu
     label: string;
     title: string;
     menuIcon: ReactNode;
-    selectedIcon: ReactNode;
+    selectedIcon?: ReactNode;
 }): import("react").JSX.Element;
 export declare function SiteHeader({ brand, navigation, actions, label, actionsLabel, className, }: {
     brand: ReactNode;
