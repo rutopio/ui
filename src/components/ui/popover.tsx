@@ -1,46 +1,15 @@
 "use client";
 
-import { usePopover, type PopoverSide, type PopoverAlign } from "../../hooks/use-popover.js";
-export { usePopover } from "../../hooks/use-popover.js";
-export type { PopoverSide, PopoverAlign, UsePopoverOptions, UsePopoverResult } from "../../hooks/use-popover.js";
-
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { createPortal } from "react-dom";
-
+import { Popover as BasePopover } from "@base-ui/react/popover";
+import { useRef, type ReactNode, type RefObject } from "react";
 import { cn } from "../../lib/class-names.js";
 
-const EASE = [0.23, 1, 0.32, 1] as const;
-const CROSSFADE = {
-  type: "spring",
-  stiffness: 260,
-  damping: 34,
-  mass: 0.8,
-} as const;
-
-const ARROW_EDGE: Record<PopoverSide, string> = {
-  bottom: "border-t border-l",
-  top: "border-b border-r",
-  right: "border-b border-l",
-  left: "border-t border-r",
-};
-
-const FROM: Record<PopoverSide, { x?: number; y?: number }> = {
-  top: { y: 6 },
-  bottom: { y: -6 },
-  left: { x: 6 },
-  right: { x: -6 },
-};
+export type PopoverSide = "top" | "right" | "bottom" | "left";
+export type PopoverAlign = "start" | "center" | "end";
 
 export type PopoverProps = {
-  trigger: React.ReactNode;
-  children: React.ReactNode;
+  trigger: ReactNode;
+  children: ReactNode;
   label: string;
   open?: boolean;
   defaultOpen?: boolean;
@@ -50,7 +19,7 @@ export type PopoverProps = {
   offset?: number;
   padding?: number;
   arrowSize?: number;
-  boundary?: React.RefObject<HTMLElement | null>;
+  boundary?: RefObject<HTMLElement | null>;
   unstyledTrigger?: boolean;
   triggerClassName?: string;
   className?: string;
@@ -60,7 +29,7 @@ export function Popover({
   trigger,
   children,
   label,
-  open: controlled,
+  open,
   defaultOpen = false,
   onOpenChange,
   side = "bottom",
@@ -70,89 +39,20 @@ export function Popover({
   arrowSize = 9,
   boundary,
   unstyledTrigger = false,
-  triggerClassName = "",
-  className = "",
+  triggerClassName,
+  className,
 }: PopoverProps) {
-  const [uncontrolled, setUncontrolled] = useState(defaultOpen);
-  const open = controlled ?? uncontrolled;
-
-  const id = useId();
-  const reduced = useReducedMotion();
-
-  const notify = useRef(onOpenChange);
-  notify.current = onOpenChange;
-
-  const {
-    anchorRef,
-    floatingRef,
-    panelRef,
-    contentRef,
-    arrowRef,
-    side: at,
-  } = usePopover<HTMLButtonElement>({
-    open,
-    side,
-    align,
-    offset,
-    padding,
-    arrowSize,
-    boundary,
-  });
-
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (controlled === undefined) setUncontrolled(next);
-      notify.current?.(next);
-    },
-    [controlled]
-  );
-
-  const setPanelRef = useCallback(
-    (element: HTMLDivElement | null) => {
-      panelRef.current = element;
-      element?.focus({ preventScroll: true });
-    },
-    [panelRef]
-  );
-
-  useEffect(() => {
-    if (!open) return;
-
-    const onPointerDown = (event: PointerEvent) => {
-      const target = event.target as Node | null;
-      if (!target) return;
-      if (
-        panelRef.current?.contains(target) ||
-        anchorRef.current?.contains(target)
-      )
-        return;
-      setOpen(false);
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      event.stopPropagation();
-      anchorRef.current?.focus({ preventScroll: true });
-      setOpen(false);
-    };
-
-    document.addEventListener("pointerdown", onPointerDown, true);
-    document.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown, true);
-      document.removeEventListener("keydown", onKeyDown, true);
-    };
-  }, [open, setOpen, anchorRef, panelRef]);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
-      <button
-        ref={anchorRef}
+    <BasePopover.Root
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+    >
+      <BasePopover.Trigger
+        ref={triggerRef}
         type="button"
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? id : undefined}
-        onClick={() => setOpen(!open)}
         className={cn(
           !unstyledTrigger &&
             "inline-flex h-9 select-none items-center gap-2 rounded-[9px] border border-stone-200 bg-white px-3 font-semibold text-[16px] text-stone-700 outline-none transition-[border-color,box-shadow] duration-150 hover:border-stone-300 focus-visible:border-[#4568FF] focus-visible:shadow-[0_1px_2px_rgba(28,25,23,0.08),0_10px_20px_-14px_rgba(69,104,255,0.6)] dark:border-white/[0.16] dark:bg-[#1D1D1A] dark:text-stone-200 dark:focus-visible:border-[#93B0FF] dark:focus-visible:shadow-[0_10px_20px_-14px_rgba(147,176,255,0.5)] dark:hover:border-white/20",
@@ -160,85 +60,48 @@ export function Popover({
         )}
       >
         {trigger}
-      </button>
-      {typeof document !== "undefined" &&
-        createPortal(
-          <AnimatePresence>
-            {open ? (
-              <div
-                key="popover"
-                ref={floatingRef}
-                className="fixed top-0 left-0 z-50"
-                onBlurCapture={(event) => {
-                  const next = event.relatedTarget as Node | null;
-                  if (!next) return;
-                  if (
-                    panelRef.current?.contains(next) ||
-                    anchorRef.current?.contains(next)
-                  )
-                    return;
-                  setOpen(false);
-                }}
-              >
-                <motion.div
-                  ref={setPanelRef}
-                  id={id}
-                  role="dialog"
-                  aria-label={label}
-                  tabIndex={-1}
-                  initial={
-                    reduced
-                      ? { opacity: 0 }
-                      : { opacity: 0, scale: 0.95, ...FROM[at] }
-                  }
-                  animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-                  exit={
-                    reduced
-                      ? { opacity: 0, transition: { duration: 0.1 } }
-                      : {
-                          opacity: 0,
-                          scale: 0.97,
-                          transition: { duration: 0.13, ease: EASE },
-                        }
-                  }
-                  transition={
-                    reduced
-                      ? { duration: 0 }
-                      : {
-                          ...CROSSFADE,
-                          opacity: { duration: 0.14, ease: EASE },
-                        }
-                  }
-                  className={cn(
-                    "relative rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md focus-visible:outline-none",
-                    className
-                  )}
-                >
-                  <span
-                    ref={arrowRef}
-                    aria-hidden
-                    style={{
-                      width: arrowSize,
-                      height: arrowSize,
-                      transform: "rotate(45deg)",
-                    }}
-                    className={cn(
-                      "absolute block border-border bg-popover",
-                      ARROW_EDGE[at]
-                    )}
-                  />
-                  <div
-                    ref={contentRef}
-                    className="relative overflow-y-auto overscroll-contain"
-                  >
-                    {children}
-                  </div>
-                </motion.div>
-              </div>
-            ) : null}
-          </AnimatePresence>,
-          document.body
-        )}
-    </>
+      </BasePopover.Trigger>
+      <BasePopover.Portal>
+        <BasePopover.Positioner
+          side={side}
+          align={align}
+          sideOffset={offset}
+          collisionPadding={padding}
+          collisionBoundary={boundary?.current ?? undefined}
+          arrowPadding={11 + arrowSize / 2}
+          positionMethod="fixed"
+          className="z-50"
+        >
+          <BasePopover.Popup
+            finalFocus={triggerRef}
+            className={cn(
+              "relative max-h-[calc(100dvh-1rem)] max-w-[calc(100vw-1rem)] origin-[var(--transform-origin)] rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md outline-none transition-[opacity,transform] duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[instant]:transition-none motion-reduce:transition-none",
+              className
+            )}
+          >
+            <BasePopover.Arrow
+              style={{ width: arrowSize, height: arrowSize }}
+              className={(state) =>
+                cn(
+                  "block rotate-45 border-border bg-popover",
+                  state.side === "bottom" &&
+                    "-translate-y-1/2 border-t border-l",
+                  state.side === "top" &&
+                    "translate-y-1/2 border-r border-b",
+                  state.side === "right" &&
+                    "-translate-x-1/2 border-b border-l",
+                  state.side === "left" &&
+                    "translate-x-1/2 border-t border-r"
+                )
+              }
+            />
+            <BasePopover.Title className="sr-only">{label}</BasePopover.Title>
+            <div className="relative max-h-[min(var(--available-height),calc(100dvh-3rem))] overflow-y-auto overscroll-contain">
+              {children}
+            </div>
+          </BasePopover.Popup>
+        </BasePopover.Positioner>
+      </BasePopover.Portal>
+    </BasePopover.Root>
   );
 }

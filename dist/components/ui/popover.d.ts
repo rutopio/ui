@@ -1,9 +1,9 @@
-import { type PopoverSide, type PopoverAlign } from "../../hooks/use-popover.js";
-export { usePopover } from "../../hooks/use-popover.js";
-export type { PopoverSide, PopoverAlign, UsePopoverOptions, UsePopoverResult } from "../../hooks/use-popover.js";
+import { type ReactNode, type RefObject } from "react";
+export type PopoverSide = "top" | "right" | "bottom" | "left";
+export type PopoverAlign = "start" | "center" | "end";
 export type PopoverProps = {
-    trigger: React.ReactNode;
-    children: React.ReactNode;
+    trigger: ReactNode;
+    children: ReactNode;
     label: string;
     open?: boolean;
     defaultOpen?: boolean;
@@ -13,9 +13,9 @@ export type PopoverProps = {
     offset?: number;
     padding?: number;
     arrowSize?: number;
-    boundary?: React.RefObject<HTMLElement | null>;
+    boundary?: RefObject<HTMLElement | null>;
     unstyledTrigger?: boolean;
     triggerClassName?: string;
     className?: string;
 };
-export declare function Popover({ trigger, children, label, open: controlled, defaultOpen, onOpenChange, side, align, offset, padding, arrowSize, boundary, unstyledTrigger, triggerClassName, className, }: PopoverProps): import("react").JSX.Element;
+export declare function Popover({ trigger, children, label, open, defaultOpen, onOpenChange, side, align, offset, padding, arrowSize, boundary, unstyledTrigger, triggerClassName, className, }: PopoverProps): import("react").JSX.Element;

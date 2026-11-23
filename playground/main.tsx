@@ -21,6 +21,7 @@ import {
   DrawerDescription,
 } from "../src/components/ui/drawer";
 import { Input } from "../src/components/ui/input";
+import { Popover } from "../src/components/ui/popover";
 import { PageIntro } from "../src/components/layout/page-intro";
 import { PageTransition } from "../src/components/motion/page-transition";
 import { ReadingProgressRing } from "../src/components/navigation/outline-menu";
@@ -125,6 +126,9 @@ function App() {
                     </div>
                   </DrawerContent>
                 </Drawer>
+                <Popover trigger="開啟彈出層" label="範例彈出層">
+                  <p>Escape 關閉，焦點返回觸發按鈕。</p>
+                </Popover>
               </div>
             </ArticleSection>
             <ArticleSection

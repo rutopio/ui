@@ -196,9 +196,6 @@ need subscriptions and cleanup.
 
 | Owner | External system and reason |
 | --- | --- |
-| UI `usePopover` layout effect | Measures DOM geometry before paint when the popover opens or positioning options change |
-| UI `usePopover` passive effect | Subscribes to scroll, resize, and `ResizeObserver` while open, using the current positioning callback |
-| UI `Popover` passive effect | Owns document-level outside-pointer and Escape listeners only while open, including controlled opens |
 | UI `useFluidHover` container observer | Observes the container and reconnects if its ref or measurement callback changes |
 | UI `useRegisterFluidHoverItem` | Registers DOM nodes against the current list and index, with cleanup on index or owner changes |
 | UI `FluidHoverControls` layout effect | Observes actual child nodes and registers them for measurement before paint |

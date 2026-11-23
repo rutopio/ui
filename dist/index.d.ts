@@ -10,7 +10,7 @@ export { ThemeToggle } from "./components/theme/theme-toggle.js";
 export { FluidHoverHighlight } from "./components/motion/fluid-hover-highlight.js";
 export { useMountEffect } from "./hooks/use-mount-effect.js";
 export { useFluidHover, useFluidHoverSelect, useRegisterFluidHoverItem, } from "./hooks/use-fluid-hover.js";
-export { Popover, usePopover } from "./components/ui/popover.js";
+export { Popover } from "./components/ui/popover.js";
 export { CopyFeedbackIcon } from "./components/feedback/copy-feedback-icon.js";
 export { EmailPopover } from "./components/feedback/email-popover.js";
 export { LanguageToggle } from "./components/navigation/language-toggle.js";
